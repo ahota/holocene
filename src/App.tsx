@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Odometer from './components/Odometer/Odometer';
 
+/**
+ * Main application component managing the initial reveal sequence
+ * and Holocene timeline state.
+ */
 export default function App() {
+  const [revealDone, setRevealDone] = useState(false);
+
   return (
     <div
       className="app"
@@ -14,8 +21,34 @@ export default function App() {
         justifyContent: 'center',
       }}
     >
-      <h1 style={{ fontWeight: 300, marginBottom: '2rem' }}>the year is</h1>
-      <div style={{ fontSize: '4rem', fontWeight: 'bold' }}>2026</div>
+      <h1
+        style={{
+          fontWeight: 300,
+          marginBottom: '2rem',
+          letterSpacing: '0.1rem',
+          textTransform: 'lowercase',
+          color: '#888',
+        }}
+      >
+        the year is
+      </h1>
+      <Odometer
+        targetYear={12026}
+        initialYear={2026}
+        onComplete={() => setRevealDone(true)}
+      />
+      {revealDone && (
+        <div
+          style={{
+            marginTop: '2rem',
+            opacity: 0.5,
+            transition: 'opacity 1s ease-in',
+            fontFamily: 'monospace',
+          }}
+        >
+          human era (HE)
+        </div>
+      )}
     </div>
   );
 }

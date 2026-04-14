@@ -1,0 +1,27 @@
+.odometer-container {
+  display: flex;
+  font-size: 5rem;
+  font-weight: 800;
+  height: 1.2em;
+  overflow: hidden;
+  justify-content: center;
+  width: 5ch; /* Width for exactly 5 digits */
+  background-color: transparent;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.reel {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 1ch;
+}
+
+.digit {
+  height: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+}
