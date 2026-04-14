@@ -1,0 +1,54 @@
+<h2>Visual Style & Layout</h2>
+<p class="subtitle">Select a direction for the Holocene timeline's look and feel.</p>
+
+<div class="options">
+  <div class="option" data-choice="minimal" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Modern Minimalist</h3>
+      <p>Clean lines, high contrast, focus on typography and space.</p>
+      <div class="mockup" style="margin-top: 1rem;">
+        <div class="mockup-header" style="background: #111; color: #eee; border: none;">the year is</div>
+        <div class="mockup-body" style="background: #000; color: #fff; text-align: center; padding: 2rem;">
+          <div style="font-size: 4rem; font-weight: 800; letter-spacing: -2px;">12026</div>
+          <div style="height: 2px; background: #333; margin: 2rem 0; position: relative;">
+            <div style="position: absolute; right: 50%; top: -10px; height: 20px; width: 2px; background: #fff;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="classic" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Classic Academic</h3>
+      <p>Serif fonts, parchment or subtle paper textures, reminiscent of historical atlases.</p>
+      <div class="mockup" style="margin-top: 1rem;">
+        <div class="mockup-header" style="background: #f4f1ea; color: #5d4037; border-bottom: 1px solid #d7ccc8;">the year is</div>
+        <div class="mockup-body" style="background: #fdfbf7; color: #3e2723; text-align: center; padding: 2rem; font-family: serif;">
+          <div style="font-size: 4rem; font-variant-numeric: oldstyle-nums;">12026</div>
+          <div style="height: 1px; background: #d7ccc8; margin: 2rem 0; position: relative;">
+            <div style="position: absolute; right: 50%; top: -5px; height: 10px; width: 1px; background: #3e2723;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="scientific" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Scientific Data</h3>
+      <p>Technical grids, monospace fonts, detailed tick marks and data overlays.</p>
+      <div class="mockup" style="margin-top: 1rem;">
+        <div class="mockup-header" style="background: #e0f2f1; color: #004d40; border-bottom: 2px solid #004d40;">the year is</div>
+        <div class="mockup-body" style="background: #fafafa; color: #263238; text-align: center; padding: 2rem; font-family: monospace;">
+          <div style="font-size: 4rem; border: 1px solid #cfd8dc; display: inline-block; padding: 0.5rem 1rem;">12026</div>
+          <div style="height: 30px; border-bottom: 1px solid #455a64; margin: 2rem 0; background-image: linear-gradient(to right, #455a64 1px, transparent 1px); background-size: 10px 100%;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

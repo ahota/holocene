@@ -1,0 +1,75 @@
+<h2>Timeline Ticks & Labels</h2>
+<p class="subtitle">How should the timeline markers behave at different zoom levels?</p>
+
+<div class="options">
+  <div class="option" data-choice="simple" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Simple Yearly Ticks</h3>
+      <p>Consistent markers for each year, with larger markers for decades, centuries, and millennia.</p>
+      <div class="mockup" style="margin-top: 1rem; background: #000; padding: 1rem; color: #fff;">
+        <div style="display: flex; align-items: flex-end; height: 40px; border-bottom: 2px solid #333; gap: 4px;">
+          <div style="width: 2px; height: 30px; background: #fff;"></div>
+          <div style="width: 2px; height: 10px; background: #666;"></div>
+          <div style="width: 2px; height: 10px; background: #666;"></div>
+          <div style="width: 2px; height: 10px; background: #666;"></div>
+          <div style="width: 2px; height: 10px; background: #666;"></div>
+          <div style="width: 2px; height: 20px; background: #999;"></div>
+          <div style="width: 2px; height: 10px; background: #666;"></div>
+          <div style="width: 2px; height: 10px; background: #666;"></div>
+          <div style="width: 2px; height: 10px; background: #666;"></div>
+          <div style="width: 2px; height: 10px; background: #666;"></div>
+          <div style="width: 2px; height: 30px; background: #fff;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-family: monospace; font-size: 0.7rem; margin-top: 0.5rem;">
+          <span>12020</span>
+          <span>12030</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="event" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Event-driven Ticks</h3>
+      <p>Ticks primarily highlight specific historical milestones, with subtle markers for intervening years.</p>
+      <div class="mockup" style="margin-top: 1rem; background: #000; padding: 1rem; color: #fff;">
+        <div style="position: relative; height: 60px; border-bottom: 2px solid #333;">
+          <div style="position: absolute; left: 20%; bottom: 0; width: 2px; height: 40px; background: #fff;">
+             <div style="position: absolute; top: -20px; left: 5px; font-size: 0.6rem; white-space: nowrap;">Great Pyramids</div>
+          </div>
+          <div style="position: absolute; left: 70%; bottom: 0; width: 2px; height: 40px; background: #fff;">
+             <div style="position: absolute; top: -20px; left: 5px; font-size: 0.6rem; white-space: nowrap;">Printing Press</div>
+          </div>
+          <div style="display: flex; align-items: flex-end; height: 10px; width: 100%; gap: 10px; opacity: 0.3;">
+             <div style="width: 1px; height: 5px; background: #666;"></div>
+             <div style="width: 1px; height: 5px; background: #666;"></div>
+             <div style="width: 1px; height: 5px; background: #666;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="adaptive" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Adaptive Ticks</h3>
+      <p>Ticks change based on zoom level (e.g., individual years at high zoom, millennia at low zoom).</p>
+      <div class="mockup" style="margin-top: 1rem; background: #000; padding: 1rem; color: #fff;">
+        <div style="font-size: 0.6rem; margin-bottom: 0.5rem; color: #999;">Zoom: Millennia</div>
+        <div style="display: flex; align-items: flex-end; height: 30px; border-bottom: 2px solid #333; gap: 20px;">
+          <div style="width: 2px; height: 25px; background: #fff;"></div>
+          <div style="width: 2px; height: 25px; background: #fff;"></div>
+          <div style="width: 2px; height: 25px; background: #fff;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-family: monospace; font-size: 0.7rem; margin-top: 0.5rem;">
+          <span>10000</span>
+          <span>11000</span>
+          <span>12000</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
