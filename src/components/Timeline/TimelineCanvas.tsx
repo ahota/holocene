@@ -11,7 +11,7 @@ interface Props {
 }
 
 /**
- * Performance-optimized canvas component with adaptive ticks and historical events.
+ * Performance-optimized canvas component with unified Pointer Events for mouse and touch.
  */
 export default function TimelineCanvas({
   centerYear,
@@ -23,7 +23,7 @@ export default function TimelineCanvas({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [lastMouseX, setLastMouseX] = useState<number | null>(null);
+  const [lastPointerX, setLastPointerX] = useState<number | null>(null);
 
   const screenToWorld = useCallback(
     (screenX: number, screenWidth: number) => {
@@ -50,7 +50,6 @@ export default function TimelineCanvas({
 
     ctx.clearRect(0, 0, width, height);
     
-    // Background baseline
     ctx.beginPath();
     ctx.moveTo(0, height / 2);
     ctx.lineTo(width, height / 2);
@@ -58,7 +57,6 @@ export default function TimelineCanvas({
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    // Adaptive Ticking Logic
     let interval = 1000;
     if (zoom > 0.5) interval = 100;
     if (zoom > 5) interval = 10;
@@ -87,20 +85,17 @@ export default function TimelineCanvas({
       }
     }
 
-    // Historical Events
     events.forEach((event) => {
       const x = worldToScreen(event.year, centerYear, zoom, width);
       if (x < -200 || x > width + 200) return;
 
       const isToday = event.year >= 12026.3;
       
-      // Marker
       ctx.beginPath();
       ctx.arc(x, height / 2, isToday ? 5 : 4, 0, Math.PI * 2);
       ctx.fillStyle = isToday ? '#f00' : '#fff';
       ctx.fill();
 
-      // Label
       const shouldShowLabel = zoom > 5 || event.importance >= 3 || (zoom > 1 && event.importance >= 2);
       if (shouldShowLabel || isToday) {
         ctx.fillStyle = isToday ? '#f00' : '#fff';
@@ -123,27 +118,37 @@ export default function TimelineCanvas({
     return () => window.removeEventListener('resize', draw);
   }, [draw]);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handlePointerDown = (e: React.PointerEvent) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    // Capture pointer to ensure move events are received even if finger leaves canvas
+    canvas.setPointerCapture(e.pointerId);
     setIsDragging(true);
-    setLastMouseX(e.clientX);
+    setLastPointerX(e.clientX);
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging && lastMouseX !== null) {
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (isDragging && lastPointerX !== null) {
       const rect = canvasRef.current?.getBoundingClientRect();
       if (!rect) return;
-      const deltaX = e.clientX - lastMouseX;
+      const deltaX = e.clientX - lastPointerX;
       onScroll(deltaX, rect.width);
-      setLastMouseX(e.clientX);
+      setLastPointerX(e.clientX);
     }
   };
 
-  const handleMouseUp = () => {
+  const handlePointerUp = (e: React.PointerEvent) => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.releasePointerCapture(e.pointerId);
+    }
     setIsDragging(false);
-    setLastMouseX(null);
+    setLastPointerX(null);
   };
 
   const handleClick = (e: React.MouseEvent) => {
+    // Avoid triggering click during a drag
     if (isDragging) return;
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -152,7 +157,6 @@ export default function TimelineCanvas({
     const mouseY = e.clientY - rect.top;
     const width = rect.width;
 
-    // Hit detection for events
     for (const event of events) {
       const x = worldToScreen(event.year, centerYear, zoom, width);
       const y = rect.height / 2;
@@ -185,10 +189,10 @@ export default function TimelineCanvas({
     <div ref={containerRef} style={{ width: '100%', height: '400px', margin: '2rem 0' }}>
       <canvas
         ref={canvasRef}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
         onClick={handleClick}
         onWheel={handleWheel}
         onDoubleClick={handleDoubleClick}
