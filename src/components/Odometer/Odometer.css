@@ -4,11 +4,12 @@
   font-weight: 800;
   height: 1.2em;
   overflow: hidden;
-  justify-content: center;
-  width: 5ch; /* Width for exactly 5 digits */
+  justify-content: flex-end; /* Align to right for off-center effect */
+  width: 5ch; /* Exactly 5 digits wide */
   background-color: transparent;
   color: #fff;
   line-height: 1.2;
+  font-family: monospace; /* Monospace is essential for consistent digit width */
 }
 
 .reel {
@@ -16,6 +17,7 @@
   flex-direction: column;
   position: relative;
   width: 1ch;
+  text-align: center;
 }
 
 .digit {

@@ -21,6 +21,7 @@ export default function TimelineCanvas({
   onZoomTo,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [lastMouseX, setLastMouseX] = useState<number | null>(null);
 
@@ -31,95 +32,96 @@ export default function TimelineCanvas({
     [centerYear, zoom]
   );
 
-  useEffect(() => {
+  const draw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    ctx.scale(dpr, dpr);
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
 
-    const drawTicks = (width: number, height: number) => {
-      ctx.strokeStyle = '#222';
-      ctx.fillStyle = '#666';
-      ctx.font = '10px monospace';
-      ctx.textAlign = 'center';
+    if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+    }
 
-      // Decide tick interval based on zoom (pixels per year)
-      // 1, 10, 100, 1000
-      let interval = 1000;
-      if (zoom > 0.5) interval = 100;
-      if (zoom > 5) interval = 10;
-      if (zoom > 50) interval = 1;
+    ctx.clearRect(0, 0, width, height);
+    
+    // Background baseline
+    ctx.beginPath();
+    ctx.moveTo(0, height / 2);
+    ctx.lineTo(width, height / 2);
+    ctx.strokeStyle = '#222';
+    ctx.lineWidth = 1;
+    ctx.stroke();
 
-      const startYear = Math.floor(screenToWorld(0, width) / interval) * interval;
-      const endYear = Math.ceil(screenToWorld(width, width) / interval) * interval;
+    // Adaptive Ticking Logic
+    let interval = 1000;
+    if (zoom > 0.5) interval = 100;
+    if (zoom > 5) interval = 10;
+    if (zoom > 50) interval = 1;
 
-      for (let year = startYear; year <= endYear; year += interval) {
-        const x = worldToScreen(year, centerYear, zoom, width);
-        const isMillennium = year % 1000 === 0;
-        const isCentury = year % 100 === 0;
+    const startYear = Math.floor(screenToWorld(0, width) / interval) * interval;
+    const endYear = Math.ceil(screenToWorld(width, width) / interval) * interval;
 
-        ctx.beginPath();
-        ctx.moveTo(x, height / 2 - (isMillennium ? 20 : isCentury ? 10 : 5));
-        ctx.lineTo(x, height / 2 + (isMillennium ? 20 : isCentury ? 10 : 5));
-        ctx.stroke();
+    ctx.textAlign = 'center';
+    ctx.font = '10px monospace';
 
-        if (isMillennium || (zoom > 2 && isCentury) || zoom > 20) {
-          ctx.fillText(year.toString(), x, height / 2 + (isMillennium ? 35 : 25));
-        }
-      }
-    };
+    for (let year = startYear; year <= endYear; year += interval) {
+      const x = worldToScreen(year, centerYear, zoom, width);
+      const isMillennium = year % 1000 === 0;
+      const isCentury = year % 100 === 0;
 
-    const drawEvents = (width: number, height: number) => {
-      events.forEach((event) => {
-        const x = worldToScreen(event.year, centerYear, zoom, width);
-        if (x < -100 || x > width + 100) return;
-
-        // Draw marker
-        ctx.beginPath();
-        ctx.arc(x, height / 2, 4, 0, Math.PI * 2);
-        ctx.fillStyle = event.year === 12026.3 ? '#f00' : '#fff';
-        ctx.fill();
-
-        // Draw label if space allows or importance is high
-        const shouldShowLabel = zoom > 10 || event.importance >= 3 || (zoom > 1 && event.importance >= 2);
-        
-        if (shouldShowLabel) {
-          ctx.fillStyle = event.year === 12026.3 ? '#f00' : '#fff';
-          ctx.font = 'bold 11px sans-serif';
-          ctx.textAlign = 'left';
-          ctx.fillText(event.title, x + 8, height / 2 - 10);
-          
-          if (zoom > 5) {
-            ctx.font = '10px sans-serif';
-            ctx.fillStyle = '#888';
-            ctx.fillText(event.year.toFixed(0), x + 8, height / 2 + 5);
-          }
-        }
-      });
-    };
-
-    const render = () => {
-      ctx.clearRect(0, 0, rect.width, rect.height);
-      
-      // Horizontal baseline
       ctx.beginPath();
-      ctx.moveTo(0, rect.height / 2);
-      ctx.lineTo(rect.width, rect.height / 2);
-      ctx.strokeStyle = '#111';
+      ctx.moveTo(x, height / 2 - (isMillennium ? 25 : isCentury ? 15 : 8));
+      ctx.lineTo(x, height / 2 + (isMillennium ? 25 : isCentury ? 15 : 8));
+      ctx.strokeStyle = isMillennium ? '#666' : isCentury ? '#333' : '#222';
       ctx.stroke();
 
-      drawTicks(rect.width, rect.height);
-      drawEvents(rect.width, rect.height);
-    };
+      if (isMillennium || (zoom > 2 && isCentury) || zoom > 20) {
+        ctx.fillStyle = isMillennium ? '#fff' : '#888';
+        ctx.fillText(year.toString(), x, height / 2 + (isMillennium ? 40 : 30));
+      }
+    }
 
-    render();
+    // Historical Events
+    events.forEach((event) => {
+      const x = worldToScreen(event.year, centerYear, zoom, width);
+      if (x < -200 || x > width + 200) return;
+
+      const isToday = event.year >= 12026.3;
+      
+      // Marker
+      ctx.beginPath();
+      ctx.arc(x, height / 2, isToday ? 5 : 4, 0, Math.PI * 2);
+      ctx.fillStyle = isToday ? '#f00' : '#fff';
+      ctx.fill();
+
+      // Label
+      const shouldShowLabel = zoom > 5 || event.importance >= 3 || (zoom > 1 && event.importance >= 2);
+      if (shouldShowLabel || isToday) {
+        ctx.fillStyle = isToday ? '#f00' : '#fff';
+        ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(event.title, x + 10, height / 2 - 15);
+        
+        if (zoom > 1 || isToday) {
+          ctx.fillStyle = '#666';
+          ctx.font = '10px monospace';
+          ctx.fillText(`${Math.floor(event.year)} HE`, x + 10, height / 2 + 5);
+        }
+      }
+    });
   }, [centerYear, zoom, screenToWorld]);
+
+  useEffect(() => {
+    draw();
+    window.addEventListener('resize', draw);
+    return () => window.removeEventListener('resize', draw);
+  }, [draw]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -139,6 +141,28 @@ export default function TimelineCanvas({
     setLastMouseX(null);
   };
 
+  const handleClick = (e: React.MouseEvent) => {
+    if (isDragging) return;
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const width = rect.width;
+
+    // Hit detection for events
+    for (const event of events) {
+      const x = worldToScreen(event.year, centerYear, zoom, width);
+      const y = rect.height / 2;
+      const dist = Math.sqrt(Math.pow(x - mouseX, 2) + Math.pow(y - mouseY, 2));
+      
+      if (dist < 15) {
+        alert(`${event.title}\n\n${event.description}\nYear: ${Math.floor(event.year)} HE`);
+        break;
+      }
+    }
+  };
+
   const handleWheel = (e: React.WheelEvent) => {
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -156,21 +180,23 @@ export default function TimelineCanvas({
   };
 
   return (
-    <canvas
-      ref={canvasRef}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-      onWheel={handleWheel}
-      onDoubleClick={handleDoubleClick}
-      style={{
-        width: '100%',
-        height: '400px',
-        cursor: isDragging ? 'grabbing' : 'grab',
-        touchAction: 'none',
-        background: '#000',
-      }}
-    />
+    <div ref={containerRef} style={{ width: '100%', height: '400px', margin: '2rem 0' }}>
+      <canvas
+        ref={canvasRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onClick={handleClick}
+        onWheel={handleWheel}
+        onDoubleClick={handleDoubleClick}
+        style={{
+          width: '100%',
+          height: '100%',
+          cursor: isDragging ? 'grabbing' : 'grab',
+          touchAction: 'none',
+        }}
+      />
+    </div>
   );
 }

@@ -27,50 +27,64 @@ export default function App() {
         overflow: 'hidden',
       }}
     >
-      {!revealDone ? (
-        <>
-          <h1
-            style={{
-              fontWeight: 300,
-              marginBottom: '2rem',
-              letterSpacing: '0.1rem',
-              textTransform: 'lowercase',
-              color: '#888',
-            }}
-          >
-            the year is
-          </h1>
-          <Odometer
-            targetYear={12026}
-            initialYear={2026}
-            onComplete={() => setRevealDone(true)}
-          />
-        </>
-      ) : (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'all 1s ease-in-out',
+          transform: revealDone ? 'translateY(-25vh)' : 'translateY(0)',
+          position: 'relative',
+          zIndex: 10,
+        }}
+      >
+        <h1
+          style={{
+            fontWeight: 300,
+            marginBottom: '2rem',
+            letterSpacing: '0.1rem',
+            textTransform: 'lowercase',
+            color: '#888',
+            fontSize: '1rem',
+          }}
+        >
+          the year is
+        </h1>
+        <Odometer
+          targetYear={12026}
+          initialYear={2026}
+          onComplete={() => setRevealDone(true)}
+        />
         <div
           style={{
+            marginTop: '2rem',
+            opacity: revealDone ? 0.5 : 0,
+            transition: 'opacity 1s ease-in',
+            fontFamily: 'monospace',
+            fontSize: '0.8rem',
+            letterSpacing: '2px',
+          }}
+        >
+          human era (HE)
+        </div>
+      </div>
+
+      {revealDone && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
             width: '100%',
             height: '100vh',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            animation: 'fadeIn 1s ease-out',
+            animation: 'fadeIn 1.5s ease-out forwards',
           }}
         >
-          <div
-            style={{
-              position: 'fixed',
-              top: '10%',
-              textAlign: 'center',
-            }}
-          >
-            <h1 style={{ fontWeight: 300, fontSize: '1rem', color: '#888' }}>
-              the year is
-            </h1>
-            <div style={{ fontSize: '4rem', fontWeight: 800 }}>12026</div>
-          </div>
-
           <TimelineCanvas
             centerYear={centerYear}
             zoom={zoom}
@@ -80,7 +94,7 @@ export default function App() {
           />
 
           <ZoomSlider zoom={zoom} onZoomChange={(z) => setZoom(z)} />
-          
+
           <div
             style={{
               position: 'fixed',
@@ -88,6 +102,7 @@ export default function App() {
               opacity: 0.3,
               fontFamily: 'monospace',
               fontSize: '0.7rem',
+              pointerEvents: 'none',
             }}
           >
             scroll or drag to explore the past
@@ -96,8 +111,8 @@ export default function App() {
       )}
       <style>{`
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
       `}</style>
     </div>
