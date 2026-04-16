@@ -10,6 +10,7 @@ import { useTimeline } from './components/Timeline/useTimeline';
  */
 export default function App() {
   const [revealDone, setRevealDone] = useState(false);
+  // Initial center such that TODAY is centered at zoom=10
   const { centerYear, zoom, setZoom, scroll, zoomDelta, zoomTo } = useTimeline(12026.3);
 
   return (
@@ -93,7 +94,7 @@ export default function App() {
             onZoomTo={zoomTo}
           />
 
-          <ZoomSlider zoom={zoom} onZoomChange={(z) => setZoom(z)} />
+          <ZoomSlider zoom={zoom} onZoomChange={setZoom} />
 
           <div
             style={{

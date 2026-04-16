@@ -5,9 +5,9 @@ import { events } from '../../data/events';
 interface Props {
   centerYear: number;
   zoom: number;
-  onScroll: (deltaX: number) => void;
-  onZoom: (delta: number, zoomCenterYear: number) => void;
-  onZoomTo: (targetZoom: number, zoomCenterYear: number) => void;
+  onScroll: (deltaX: number, screenWidth: number) => void;
+  onZoom: (delta: number, zoomCenterYear: number, screenWidth: number) => void;
+  onZoomTo: (targetZoom: number, zoomCenterYear: number, screenWidth: number) => void;
 }
 
 /**
@@ -130,8 +130,10 @@ export default function TimelineCanvas({
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isDragging && lastMouseX !== null) {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (!rect) return;
       const deltaX = e.clientX - lastMouseX;
-      onScroll(deltaX);
+      onScroll(deltaX, rect.width);
       setLastMouseX(e.clientX);
     }
   };
@@ -168,7 +170,7 @@ export default function TimelineCanvas({
     if (!rect) return;
     const mouseX = e.clientX - rect.left;
     const zoomCenterYear = screenToWorld(mouseX, rect.width);
-    onZoom(-e.deltaY, zoomCenterYear);
+    onZoom(-e.deltaY, zoomCenterYear, rect.width);
   };
 
   const handleDoubleClick = (e: React.MouseEvent) => {
@@ -176,7 +178,7 @@ export default function TimelineCanvas({
     if (!rect) return;
     const mouseX = e.clientX - rect.left;
     const zoomCenterYear = screenToWorld(mouseX, rect.width);
-    onZoomTo(zoom * 2, zoomCenterYear);
+    onZoomTo(zoom * 2, zoomCenterYear, rect.width);
   };
 
   return (

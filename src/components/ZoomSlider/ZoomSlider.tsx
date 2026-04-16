@@ -2,7 +2,7 @@ import React from 'react';
 
 interface Props {
   zoom: number;
-  onZoomChange: (zoom: number) => void;
+  onZoomChange: (zoom: number, screenWidth: number) => void;
 }
 
 /**
@@ -11,8 +11,8 @@ interface Props {
 export default function ZoomSlider({ zoom, onZoomChange }: Props) {
   // Use a logarithmic scale for the slider (0 to 100 range)
   // Mapping 0-100 to a range of pixels per year
-  const minZoom = 0.1; // Furthest zoom (entire epoch)
-  const maxZoom = 200; // Closest zoom (single year)
+  const minZoom = 0.05; // Slightly less than 1280 / 12026
+  const maxZoom = 1000;
 
   const toSliderValue = (z: number) => {
     return (
@@ -47,7 +47,7 @@ export default function ZoomSlider({ zoom, onZoomChange }: Props) {
         min="0"
         max="100"
         value={toSliderValue(zoom)}
-        onChange={(e) => onZoomChange(fromSliderValue(parseFloat(e.target.value)))}
+        onChange={(e) => onZoomChange(fromSliderValue(parseFloat(e.target.value)), window.innerWidth)}
         style={{ width: '100%', accentColor: '#fff', cursor: 'pointer' }}
       />
       <div style={{ fontSize: '0.7rem', color: '#666', fontFamily: 'monospace' }}>
