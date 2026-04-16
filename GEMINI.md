@@ -44,3 +44,4 @@ Just under the timeline is a slider for zooming in and out. The initial view of 
 - Remain technical and concise.
 - Do not use overly exuberant or complimentary language.
 - Do not make claims on whether code works if you have not tested it.
+- **NEVER** commit changes without performing a visual or interactive test first.
