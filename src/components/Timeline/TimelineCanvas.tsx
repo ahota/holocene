@@ -8,6 +8,7 @@ interface Props {
   onScroll: (deltaX: number, screenWidth: number) => void;
   onZoom: (delta: number, zoomCenterYear: number, screenWidth: number) => void;
   onZoomTo: (targetZoom: number, zoomCenterYear: number, screenWidth: number) => void;
+  todayHE: number;
 }
 
 /**
@@ -19,14 +20,13 @@ export default function TimelineCanvas({
   onScroll,
   onZoom,
   onZoomTo,
+  todayHE,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [lastPointerX, setLastPointerX] = useState<number | null>(null);
   const [hasMoved, setHasMoved] = useState(false);
-
-  const TODAY = 12026.3;
 
   const screenToWorld = useCallback(
     (screenX: number, screenWidth: number) => {
@@ -53,7 +53,7 @@ export default function TimelineCanvas({
 
     ctx.clearRect(0, 0, width, height);
     
-    // Background baseline - draw infinitely across screen
+    // Background baseline
     ctx.beginPath();
     ctx.moveTo(0, height / 2);
     ctx.lineTo(width, height / 2);
@@ -74,8 +74,7 @@ export default function TimelineCanvas({
     ctx.font = '10px monospace';
 
     for (let year = startYear; year <= endYear; year += interval) {
-      // ONLY draw ticks for year <= TODAY
-      if (year > TODAY) continue;
+      if (year > todayHE) continue;
 
       const x = worldToScreen(year, centerYear, zoom, width);
       const isMillennium = year % 1000 === 0;
@@ -95,18 +94,19 @@ export default function TimelineCanvas({
 
     // Historical Events
     events.forEach((event) => {
-      const x = worldToScreen(event.year, centerYear, zoom, width);
+      // Use dynamic today for "Present Day" event
+      const eventYear = event.isToday ? todayHE : event.year;
+      
+      const x = worldToScreen(eventYear, centerYear, zoom, width);
       if (x < -200 || x > width + 200) return;
 
-      const isToday = event.year >= TODAY;
+      const isToday = event.isToday || eventYear >= todayHE;
       
-      // Marker
       ctx.beginPath();
       ctx.arc(x, height / 2, isToday ? 5 : 4, 0, Math.PI * 2);
       ctx.fillStyle = isToday ? '#f00' : '#fff';
       ctx.fill();
 
-      // Label
       const shouldShowLabel = zoom > 5 || event.importance >= 3 || (zoom > 1 && event.importance >= 2);
       if (shouldShowLabel || isToday) {
         ctx.fillStyle = isToday ? '#f00' : '#fff';
@@ -117,11 +117,11 @@ export default function TimelineCanvas({
         if (zoom > 1 || isToday) {
           ctx.fillStyle = '#666';
           ctx.font = '10px monospace';
-          ctx.fillText(`${Math.floor(event.year)} HE`, x + 10, height / 2 + 5);
+          ctx.fillText(`${Math.floor(eventYear)} HE`, x + 10, height / 2 + 5);
         }
       }
     });
-  }, [centerYear, zoom, screenToWorld, TODAY]);
+  }, [centerYear, zoom, screenToWorld, todayHE]);
 
   useEffect(() => {
     draw();
@@ -163,7 +163,6 @@ export default function TimelineCanvas({
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    // Avoid triggering click if we just finished a drag
     if (hasMoved) return;
     
     const rect = canvasRef.current?.getBoundingClientRect();
@@ -173,14 +172,14 @@ export default function TimelineCanvas({
     const mouseY = e.clientY - rect.top;
     const width = rect.width;
 
-    // Hit detection for events
     for (const event of events) {
-      const x = worldToScreen(event.year, centerYear, zoom, width);
+      const eventYear = event.isToday ? todayHE : event.year;
+      const x = worldToScreen(eventYear, centerYear, zoom, width);
       const y = rect.height / 2;
       const dist = Math.sqrt(Math.pow(x - mouseX, 2) + Math.pow(y - mouseY, 2));
       
       if (dist < 20) {
-        alert(`${event.title}\n\n${event.description}\nYear: ${Math.floor(event.year)} HE`);
+        alert(`${event.title}\n\n${event.description}\nYear: ${Math.floor(eventYear)} HE`);
         break;
       }
     }

@@ -3,6 +3,7 @@ export interface HistoryEvent {
   title: string;
   description: string;
   importance: number; // 1-3 for adaptive labeling
+  isToday?: boolean;
 }
 
 export const events: HistoryEvent[] = [
@@ -59,5 +60,6 @@ export const events: HistoryEvent[] = [
     title: 'Present Day',
     description: 'Today in the Holocene calendar.',
     importance: 1,
+    isToday: true,
   },
 ];

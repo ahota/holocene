@@ -1,30 +1,21 @@
 import { useState, useCallback, useRef } from 'react';
+import { currentHEYear } from '../../utils/math';
 
 /**
- * Custom hook to manage the timeline's camera state:
- * - centerYear: The year currently in the horizontal center of the viewport.
- * - zoom: The scale in pixels per year.
+ * Custom hook to manage the timeline's camera state.
  */
 export function useTimeline(initialYear: number) {
-  const [centerYear, setCenterYear] = useState(initialYear);
-  const [zoom, setZoom] = useState(10); // initial pixels per year
-
-  const TODAY = 12026.3;
+  const TODAY = currentHEYear();
   const EPOCH_START = 0;
   
-  // Store the initial half-width in years to allow the "Today at center" padding
+  const [centerYear, setCenterYear] = useState(initialYear);
+  const [zoom, setZoom] = useState(10);
+
   const initialHalfWidthRef = useRef<number | null>(null);
 
-  /**
-   * Clamps the view according to the following rules:
-   * 1. 0 HE is the hard left limit for the viewport.
-   * 2. Today is the right-most limit for the center of the screen (Today at center).
-   * 3. As we zoom out, the future padding is reduced until Today hits the right edge.
-   */
   const clampView = useCallback((year: number, currentZoom: number, screenWidth: number) => {
     const halfWidth = (screenWidth / 2) / currentZoom;
     
-    // Initialize initialHalfWidth once we have a screenWidth
     if (initialHalfWidthRef.current === null && screenWidth > 0) {
       initialHalfWidthRef.current = halfWidth;
     }
@@ -32,31 +23,29 @@ export function useTimeline(initialYear: number) {
     const padding = initialHalfWidthRef.current || halfWidth;
     let newCenter = year;
 
-    // 1. Never scroll further into the future than Today at center
+    // Never scroll further into the future than Today at center
     if (newCenter > TODAY) {
       newCenter = TODAY;
     }
 
-    // 2. As we zoom out, slide Today to the right edge if needed
-    // The right-most year we can see is TODAY + padding (where padding is the initial half-width)
+    // As we zoom out, slide Today to the right edge
     if (newCenter + halfWidth > TODAY + padding) {
       newCenter = TODAY + padding - halfWidth;
     }
 
-    // 3. 0 HE is the absolute left limit
+    // 0 HE is the absolute left limit
     if (newCenter - halfWidth < EPOCH_START) {
       newCenter = EPOCH_START + halfWidth;
     }
 
-    // 4. Final safety check: if zoomed out so far that the epoch fits, 
-    // center it between edges (0 on left, Today on right)
+    // If zoomed out so far that the epoch fits, center it
     const totalEpochInPixels = (TODAY - EPOCH_START) * currentZoom;
     if (totalEpochInPixels <= screenWidth) {
       newCenter = (TODAY + EPOCH_START) / 2;
     }
 
     return newCenter;
-  }, []);
+  }, [TODAY]);
 
   const scroll = useCallback(
     (deltaX: number, screenWidth: number) => {
@@ -68,6 +57,7 @@ export function useTimeline(initialYear: number) {
   const zoomTo = useCallback(
     (targetZoom: number, zoomCenterYear: number, screenWidth: number) => {
       setZoom((prevZoom) => {
+        // Range is 0 to TODAY
         const minZoom = screenWidth / TODAY;
         const newZoom = Math.max(minZoom, Math.min(1000, targetZoom));
         
@@ -102,5 +92,6 @@ export function useTimeline(initialYear: number) {
     scroll,
     zoomTo,
     zoomDelta,
+    TODAY,
   };
 }

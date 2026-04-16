@@ -3,20 +3,21 @@ import React from 'react';
 interface Props {
   zoom: number;
   onZoomChange: (zoom: number, screenWidth: number) => void;
+  todayHE: number;
 }
 
 /**
- * Logarithmic zoom slider to navigate from 1 year/screen to 12,026 years/screen.
+ * Logarithmic zoom slider with dynamic range based on screen width and epoch length.
  */
-export default function ZoomSlider({ zoom, onZoomChange }: Props) {
-  // Use a logarithmic scale for the slider (0 to 100 range)
+export default function ZoomSlider({ zoom, onZoomChange, todayHE }: Props) {
   // Mapping 0-100 to a range of pixels per year
-  const minZoom = 0.05; // Slightly less than 1280 / 12026
+  const screenWidth = window.innerWidth;
+  const minZoom = screenWidth / todayHE; // Zoom out to see exactly the full range
   const maxZoom = 1000;
 
   const toSliderValue = (z: number) => {
     return (
-      (Math.log(z) - Math.log(minZoom)) /
+      (Math.log(Math.max(z, minZoom)) - Math.log(minZoom)) /
       (Math.log(maxZoom) - Math.log(minZoom))
     ) * 100;
   };
@@ -35,7 +36,7 @@ export default function ZoomSlider({ zoom, onZoomChange }: Props) {
         bottom: '40px',
         left: '50%',
         transform: 'translateX(-50%)',
-        width: '300px',
+        width: 'min(300px, 80%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -47,7 +48,7 @@ export default function ZoomSlider({ zoom, onZoomChange }: Props) {
         min="0"
         max="100"
         value={toSliderValue(zoom)}
-        onChange={(e) => onZoomChange(fromSliderValue(parseFloat(e.target.value)), window.innerWidth)}
+        onChange={(e) => onZoomChange(fromSliderValue(parseFloat(e.target.value)), screenWidth)}
         style={{ width: '100%', accentColor: '#fff', cursor: 'pointer' }}
       />
       <div style={{ fontSize: '0.7rem', color: '#666', fontFamily: 'monospace' }}>

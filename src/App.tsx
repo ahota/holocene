@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Odometer from './components/Odometer/Odometer';
 import TimelineCanvas from './components/Timeline/TimelineCanvas';
 import ZoomSlider from './components/ZoomSlider/ZoomSlider';
 import { useTimeline } from './components/Timeline/useTimeline';
+import { currentHEYear } from './utils/math';
 
 /**
  * Main application component managing the initial reveal sequence
@@ -10,8 +11,8 @@ import { useTimeline } from './components/Timeline/useTimeline';
  */
 export default function App() {
   const [revealDone, setRevealDone] = useState(false);
-  // Initial center such that TODAY is centered at zoom=10
-  const { centerYear, zoom, setZoom, scroll, zoomDelta, zoomTo } = useTimeline(12026.3);
+  const [initialHE] = useState(() => Math.floor(currentHEYear()));
+  const { centerYear, zoom, setZoom, scroll, zoomDelta, zoomTo, TODAY } = useTimeline(currentHEYear());
 
   return (
     <div
@@ -53,8 +54,8 @@ export default function App() {
           the year is
         </h1>
         <Odometer
-          targetYear={12026}
-          initialYear={2026}
+          targetYear={initialHE}
+          initialYear={new Date().getFullYear()}
           onComplete={() => setRevealDone(true)}
         />
         <div
@@ -92,9 +93,10 @@ export default function App() {
             onScroll={scroll}
             onZoom={zoomDelta}
             onZoomTo={zoomTo}
+            todayHE={TODAY}
           />
 
-          <ZoomSlider zoom={zoom} onZoomChange={setZoom} />
+          <ZoomSlider zoom={zoom} onZoomChange={setZoom} todayHE={TODAY} />
 
           <div
             style={{
