@@ -4,15 +4,16 @@ interface Props {
   zoom: number;
   onZoomChange: (zoom: number, screenWidth: number) => void;
   todayHE: number;
+  margin: number;
 }
 
 /**
- * Logarithmic zoom slider with dynamic range based on screen width and epoch length.
+ * Logarithmic zoom slider with dynamic range based on screen width, margins, and epoch length.
  */
-export default function ZoomSlider({ zoom, onZoomChange, todayHE }: Props) {
-  // Mapping 0-100 to a range of pixels per year
+export default function ZoomSlider({ zoom, onZoomChange, todayHE, margin }: Props) {
   const screenWidth = window.innerWidth;
-  const minZoom = screenWidth / todayHE; // Zoom out to see exactly the full range
+  const effectiveWidth = screenWidth - 2 * margin;
+  const minZoom = Math.max(0.01, effectiveWidth / todayHE); 
   const maxZoom = 1000;
 
   const toSliderValue = (z: number) => {

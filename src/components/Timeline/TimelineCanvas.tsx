@@ -9,6 +9,7 @@ interface Props {
   onZoom: (delta: number, zoomCenterYear: number, screenWidth: number) => void;
   onZoomTo: (targetZoom: number, zoomCenterYear: number, screenWidth: number) => void;
   todayHE: number;
+  margin: number;
 }
 
 /**
@@ -21,6 +22,7 @@ export default function TimelineCanvas({
   onZoom,
   onZoomTo,
   todayHE,
+  margin,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -28,11 +30,16 @@ export default function TimelineCanvas({
   const [lastPointerX, setLastPointerX] = useState<number | null>(null);
   const [hasMoved, setHasMoved] = useState(false);
 
+  const getEffectiveWidth = (width: number) => width - 2 * margin;
+
   const screenToWorld = useCallback(
-    (screenX: number, screenWidth: number) => {
-      return (screenX - screenWidth / 2) / zoom + centerYear;
+    (screenX: number, width: number) => {
+      const effectiveWidth = getEffectiveWidth(width);
+      // Adjust mouseX to be relative to the effective area center
+      const relativeX = screenX - margin;
+      return (relativeX - effectiveWidth / 2) / zoom + centerYear;
     },
-    [centerYear, zoom]
+    [centerYear, zoom, margin]
   );
 
   const draw = useCallback(() => {
@@ -44,6 +51,7 @@ export default function TimelineCanvas({
     const dpr = window.devicePixelRatio || 1;
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
+    const effectiveWidth = getEffectiveWidth(width);
 
     if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
       canvas.width = width * dpr;
@@ -53,7 +61,7 @@ export default function TimelineCanvas({
 
     ctx.clearRect(0, 0, width, height);
     
-    // Background baseline
+    // Background baseline - still edge-to-edge
     ctx.beginPath();
     ctx.moveTo(0, height / 2);
     ctx.lineTo(width, height / 2);
@@ -67,8 +75,8 @@ export default function TimelineCanvas({
     if (zoom > 5) interval = 10;
     if (zoom > 50) interval = 1;
 
-    const startYear = Math.floor(screenToWorld(0, width) / interval) * interval;
-    const endYear = Math.ceil(screenToWorld(width, width) / interval) * interval;
+    const startYear = Math.floor(screenToWorld(margin, width) / interval) * interval;
+    const endYear = Math.ceil(screenToWorld(width - margin, width) / interval) * interval;
 
     ctx.textAlign = 'center';
     ctx.font = '10px monospace';
@@ -76,7 +84,7 @@ export default function TimelineCanvas({
     for (let year = startYear; year <= endYear; year += interval) {
       if (year > todayHE) continue;
 
-      const x = worldToScreen(year, centerYear, zoom, width);
+      const x = worldToScreen(year, centerYear, zoom, effectiveWidth) + margin;
       const isMillennium = year % 1000 === 0;
       const isCentury = year % 100 === 0;
 
@@ -94,10 +102,9 @@ export default function TimelineCanvas({
 
     // Historical Events
     events.forEach((event) => {
-      // Use dynamic today for "Present Day" event
       const eventYear = event.isToday ? todayHE : event.year;
+      const x = worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + margin;
       
-      const x = worldToScreen(eventYear, centerYear, zoom, width);
       if (x < -200 || x > width + 200) return;
 
       const isToday = event.isToday || eventYear >= todayHE;
@@ -121,7 +128,7 @@ export default function TimelineCanvas({
         }
       }
     });
-  }, [centerYear, zoom, screenToWorld, todayHE]);
+  }, [centerYear, zoom, screenToWorld, todayHE, margin]);
 
   useEffect(() => {
     draw();
@@ -171,10 +178,11 @@ export default function TimelineCanvas({
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
     const width = rect.width;
+    const effectiveWidth = getEffectiveWidth(width);
 
     for (const event of events) {
       const eventYear = event.isToday ? todayHE : event.year;
-      const x = worldToScreen(eventYear, centerYear, zoom, width);
+      const x = worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + margin;
       const y = rect.height / 2;
       const dist = Math.sqrt(Math.pow(x - mouseX, 2) + Math.pow(y - mouseY, 2));
       

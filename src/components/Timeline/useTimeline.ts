@@ -7,6 +7,7 @@ import { currentHEYear } from '../../utils/math';
 export function useTimeline(initialYear: number) {
   const TODAY = currentHEYear();
   const EPOCH_START = 0;
+  const MARGIN = 32; // Horizontal padding from edges
   
   const [centerYear, setCenterYear] = useState(initialYear);
   const [zoom, setZoom] = useState(10);
@@ -14,33 +15,36 @@ export function useTimeline(initialYear: number) {
   const initialHalfWidthRef = useRef<number | null>(null);
 
   const clampView = useCallback((year: number, currentZoom: number, screenWidth: number) => {
-    const halfWidth = (screenWidth / 2) / currentZoom;
+    const effectiveWidth = screenWidth - 2 * MARGIN;
+    if (effectiveWidth <= 0) return year;
+
+    const halfWidth = (effectiveWidth / 2) / currentZoom;
     
-    if (initialHalfWidthRef.current === null && screenWidth > 0) {
+    if (initialHalfWidthRef.current === null && effectiveWidth > 0) {
       initialHalfWidthRef.current = halfWidth;
     }
 
     const padding = initialHalfWidthRef.current || halfWidth;
     let newCenter = year;
 
-    // Never scroll further into the future than Today at center
+    // 1. Never scroll further into the future than Today at center
     if (newCenter > TODAY) {
       newCenter = TODAY;
     }
 
-    // As we zoom out, slide Today to the right edge
+    // 2. As we zoom out, slide Today to the right edge (with margin)
     if (newCenter + halfWidth > TODAY + padding) {
       newCenter = TODAY + padding - halfWidth;
     }
 
-    // 0 HE is the absolute left limit
+    // 3. 0 HE is the absolute left limit
     if (newCenter - halfWidth < EPOCH_START) {
       newCenter = EPOCH_START + halfWidth;
     }
 
-    // If zoomed out so far that the epoch fits, center it
+    // 4. If zoomed out so far that the epoch fits, center it
     const totalEpochInPixels = (TODAY - EPOCH_START) * currentZoom;
-    if (totalEpochInPixels <= screenWidth) {
+    if (totalEpochInPixels <= effectiveWidth) {
       newCenter = (TODAY + EPOCH_START) / 2;
     }
 
@@ -57,8 +61,8 @@ export function useTimeline(initialYear: number) {
   const zoomTo = useCallback(
     (targetZoom: number, zoomCenterYear: number, screenWidth: number) => {
       setZoom((prevZoom) => {
-        // Range is 0 to TODAY
-        const minZoom = screenWidth / TODAY;
+        const effectiveWidth = screenWidth - 2 * MARGIN;
+        const minZoom = effectiveWidth / TODAY;
         const newZoom = Math.max(minZoom, Math.min(1000, targetZoom));
         
         setCenterYear((prevCenter) => {
@@ -93,5 +97,6 @@ export function useTimeline(initialYear: number) {
     zoomTo,
     zoomDelta,
     TODAY,
+    MARGIN,
   };
 }
