@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import { worldToScreen } from '../../utils/math';
 import { events } from '../../data/events';
+import { MARGIN_UNIT } from '../../constants';
 
 interface Props {
   centerYear: number;
@@ -29,10 +30,6 @@ export default function TimelineCanvas({
   const [isDragging, setIsDragging] = useState(false);
   const [lastPointerX, setLastPointerX] = useState<number | null>(null);
   const [hasMoved, setHasMoved] = useState(false);
-
-  // Constants for fading logic (matches useTimeline's calculation)
-  const MARGIN_UNIT = 32;
-  const LABEL_PADDING = 24;
 
   const adaptiveMargins = useMemo(() => {
     const dpr = window.devicePixelRatio || 1;
@@ -79,7 +76,7 @@ export default function TimelineCanvas({
 
     ctx.clearRect(0, 0, width, height);
     
-    // Background baseline - Increased contrast
+    // Background baseline
     ctx.beginPath();
     ctx.moveTo(0, height / 2);
     ctx.lineTo(width, height / 2);
@@ -105,7 +102,6 @@ export default function TimelineCanvas({
       const x = worldToScreen(year, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
       const opacity = getEdgeOpacity(x, width);
       
-      // Reset state for each item to prevent transparency leak
       ctx.globalAlpha = opacity;
       if (opacity <= 0) continue;
 
@@ -115,7 +111,6 @@ export default function TimelineCanvas({
       ctx.beginPath();
       ctx.moveTo(x, height / 2 - (isMillennium ? 25 : isCentury ? 15 : 8));
       ctx.lineTo(x, height / 2 + (isMillennium ? 25 : isCentury ? 15 : 8));
-      // Increased contrast for lines
       ctx.strokeStyle = isMillennium ? '#999' : isCentury ? '#666' : '#444';
       ctx.stroke();
 
@@ -179,8 +174,6 @@ export default function TimelineCanvas({
       const rect = canvasRef.current?.getBoundingClientRect();
       if (!rect) return;
       const deltaX = e.clientX - lastPointerX;
-      
-      // Increased movement threshold slightly for noisy touch sensors
       if (Math.abs(deltaX) > 0.5) {
         onScroll(deltaX, rect.width);
         setLastPointerX(e.clientX);
@@ -211,8 +204,6 @@ export default function TimelineCanvas({
       const x = worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
       const y = rect.height / 2;
       const dist = Math.sqrt(Math.pow(x - mouseX, 2) + Math.pow(y - mouseY, 2));
-      
-      // Larger hit area for mobile fingers
       if (dist < 25) {
         alert(`${event.title}\n\n${event.description}\nYear: ${Math.floor(eventYear)} HE`);
         break;
@@ -243,7 +234,7 @@ export default function TimelineCanvas({
         width: '100%', 
         height: '400px', 
         margin: '2rem 0',
-        touchAction: 'none', // Critical to prevent browser scroll during drag
+        touchAction: 'none',
       }}
     >
       <canvas

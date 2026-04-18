@@ -9,7 +9,6 @@ interface Props {
 
 /**
  * A mechanical-style odometer reveal with a "sliding down" effect.
- * Features steep quart-in-out easing and leading digits sliding from blanks.
  */
 export default function Odometer({
   targetYear,
@@ -25,14 +24,10 @@ export default function Odometer({
     const timer = setTimeout(() => {
       const step = (timestamp: number) => {
         if (!startTime.current) startTime.current = timestamp;
-        const progress = Math.min(
-          (timestamp - startTime.current) / animationDuration,
-          1
-        );
+        const progress = Math.min((timestamp - startTime.current) / animationDuration, 1);
 
         // Quart-in-out easing
-        const ease =
-          progress < 0.5
+        const ease = progress < 0.5
             ? 8 * progress * progress * progress * progress
             : 1 - Math.pow(-2 * progress + 2, 4) / 2;
 
@@ -52,39 +47,27 @@ export default function Odometer({
     return () => clearTimeout(timer);
   }, [targetYear, initialYear, onComplete]);
 
-  // Digits array for sliding DOWN. 
-  // Standard: [0, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
-  // Value 0 -> index 10
-  // Value 1 -> index 9
-  // ...
   const standardDigits = useMemo(() => [0, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0], []);
-  
-  // For the leading digit, we want value 0 to be a blank space
   const digitsWithBlank = useMemo(() => [0, 9, 8, 7, 6, 5, 4, 3, 2, 1, ' '], []);
-  
   const itemHeightPercent = 100 / 11;
 
-  const getOffsets = (value: number) => {
-    const offsets = [0, 0, 0, 0, 0];
+  const offsets = useMemo(() => {
+    const res = [0, 0, 0, 0, 0];
     for (let i = 4; i >= 0; i--) {
       const power = Math.pow(10, 4 - i);
       if (i === 4) {
-        offsets[i] = (Math.floor(value) % 10) + (value % 1);
+        res[i] = (Math.floor(current) % 10) + (current % 1);
       } else {
-        const prevOffset = offsets[i + 1];
-        const pull = prevOffset > 9 ? prevOffset - 9 : 0;
-        offsets[i] = (Math.floor(value / power) % 10) + pull;
+        const pull = res[i + 1] > 9 ? res[i + 1] - 9 : 0;
+        res[i] = (Math.floor(current / power) % 10) + pull;
       }
     }
-    return offsets;
-  };
-
-  const offsets = getOffsets(current);
+    return res;
+  }, [current]);
 
   return (
     <div className="odometer-container" aria-label={`The year is ${Math.floor(current)}`}>
       {offsets.map((offset, i) => {
-        // The first reel (ten-thousands) uses the blank-leading digit stack
         const reelDigits = i === 0 ? digitsWithBlank : standardDigits;
         const visualOffset = 10 - offset;
         
@@ -92,24 +75,17 @@ export default function Odometer({
           <div key={i} className="reel-container">
             <div 
               className="reel" 
-              style={{ 
-                transform: `translateY(${-visualOffset * itemHeightPercent}%)`,
-              }}
+              style={{ transform: `translateY(${-visualOffset * itemHeightPercent}%)` }}
             >
-              {reelDigits.map((digit, dIndex) => {
-                const dist = Math.abs(dIndex - visualOffset);
-                const opacity = Math.max(0, 1 - dist * 0.7);
-                
-                return (
-                  <div 
-                    key={dIndex} 
-                    className="digit"
-                    style={{ opacity }}
-                  >
-                    {digit}
-                  </div>
-                );
-              })}
+              {reelDigits.map((digit, dIndex) => (
+                <div 
+                  key={dIndex} 
+                  className="digit"
+                  style={{ opacity: Math.max(0, 1 - Math.abs(dIndex - visualOffset) * 0.7) }}
+                >
+                  {digit}
+                </div>
+              ))}
             </div>
           </div>
         );

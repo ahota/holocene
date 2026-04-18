@@ -1,3 +1,5 @@
+import { TODAY_HE } from '../constants';
+
 export interface HistoryEvent {
   year: number; // HE
   title: string;
@@ -56,7 +58,7 @@ export const events: HistoryEvent[] = [
     importance: 2,
   },
   {
-    year: 12026.3,
+    year: TODAY_HE,
     title: 'Present Day',
     description: 'Today in the Holocene calendar.',
     importance: 1,

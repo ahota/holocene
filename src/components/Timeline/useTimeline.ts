@@ -1,29 +1,16 @@
 import { useState, useCallback, useRef } from 'react';
-import { currentHEYear } from '../../utils/math';
+import { TODAY_HE, getInnerBound } from '../../constants';
 
 /**
  * Custom hook to manage the timeline's camera state with adaptive margins.
  */
 export function useTimeline(initialYear: number) {
-  const TODAY = currentHEYear();
   const EPOCH_START = 0;
-  
-  const MARGIN_UNIT = 32;
-  const LABEL_PADDING = 24; // Extra space for labels at the edges
   
   const [centerYear, setCenterYear] = useState(initialYear);
   const [zoom, setZoom] = useState(10);
 
   const initialHalfWidthRef = useRef<number | null>(null);
-
-  /**
-   * Returns the absolute inner boundary where markers are 100% opaque.
-   */
-  const getInnerBound = useCallback((screenWidth: number) => {
-    const scale = screenWidth < 600 ? 1 : 1.2;
-    // gutter (margin_unit) + fadeZone (margin_unit) + labelPadding
-    return (MARGIN_UNIT * 2 * scale) + LABEL_PADDING;
-  }, []);
 
   const clampView = useCallback((year: number, currentZoom: number, screenWidth: number) => {
     const innerBound = getInnerBound(screenWidth);
@@ -40,18 +27,18 @@ export function useTimeline(initialYear: number) {
     let newCenter = year;
 
     // 1. Lock scrolling if epoch fits
-    const totalEpochInPixels = (TODAY - EPOCH_START) * currentZoom;
+    const totalEpochInPixels = (TODAY_HE - EPOCH_START) * currentZoom;
     if (totalEpochInPixels <= effectiveWidth) {
-      return (TODAY + EPOCH_START) / 2;
+      return (TODAY_HE + EPOCH_START) / 2;
     }
 
     // 2. Clamping
-    if (newCenter > TODAY) newCenter = TODAY;
-    if (newCenter + halfWidth > TODAY + padding) newCenter = TODAY + padding - halfWidth;
+    if (newCenter > TODAY_HE) newCenter = TODAY_HE;
+    if (newCenter + halfWidth > TODAY_HE + padding) newCenter = TODAY_HE + padding - halfWidth;
     if (newCenter - halfWidth < EPOCH_START) newCenter = EPOCH_START + halfWidth;
 
     return newCenter;
-  }, [TODAY, getInnerBound]);
+  }, [getInnerBound]);
 
   const scroll = useCallback(
     (deltaX: number, screenWidth: number) => {
@@ -65,7 +52,7 @@ export function useTimeline(initialYear: number) {
       setZoom((prevZoom) => {
         const innerBound = getInnerBound(screenWidth);
         const effectiveWidth = screenWidth - 2 * innerBound;
-        const minZoom = effectiveWidth / TODAY;
+        const minZoom = effectiveWidth / TODAY_HE;
         const newZoom = Math.max(minZoom, Math.min(1000, targetZoom));
         
         setCenterYear((prevCenter) => {
@@ -76,7 +63,7 @@ export function useTimeline(initialYear: number) {
         return newZoom;
       });
     },
-    [clampView, TODAY, getInnerBound]
+    [clampView, getInnerBound]
   );
 
   const zoomDelta = useCallback(
@@ -99,8 +86,7 @@ export function useTimeline(initialYear: number) {
     scroll,
     zoomTo,
     zoomDelta,
-    TODAY,
-    // Ensure we return the derived inner bound as the Margin for the UI
+    TODAY: TODAY_HE,
     INNER_BOUND: getInnerBound(window.innerWidth),
   };
 }
