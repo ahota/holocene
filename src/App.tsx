@@ -12,7 +12,7 @@ import { currentHEYear } from './utils/math';
 export default function App() {
   const [revealDone, setRevealDone] = useState(false);
   const [initialHE] = useState(() => Math.floor(currentHEYear()));
-  const { centerYear, zoom, setZoom, scroll, zoomDelta, zoomTo, TODAY, MARGIN } = useTimeline(currentHEYear());
+  const { centerYear, zoom, setZoom, scroll, zoomDelta, zoomTo, TODAY, INNER_BOUND } = useTimeline(currentHEYear());
 
   return (
     <div
@@ -94,10 +94,10 @@ export default function App() {
             onZoom={zoomDelta}
             onZoomTo={zoomTo}
             todayHE={TODAY}
-            margin={MARGIN}
+            margin={INNER_BOUND}
           />
 
-          <ZoomSlider zoom={zoom} onZoomChange={setZoom} todayHE={TODAY} margin={MARGIN} />
+          <ZoomSlider zoom={zoom} onZoomChange={setZoom} todayHE={TODAY} margin={INNER_BOUND} />
 
           <div
             style={{
