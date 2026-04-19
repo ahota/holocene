@@ -1,28 +1,23 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import Odometer from './components/Odometer/Odometer';
 import TimelineCanvas from './components/Timeline/TimelineCanvas';
 import ZoomSlider from './components/ZoomSlider/ZoomSlider';
 import { useTimeline } from './components/Timeline/useTimeline';
-import { currentHEYear } from './utils/math';
+import { currentHEYear, worldToScreen } from './utils/math';
 import { HistoryEvent } from './data/events';
 
-/**
- * Main application component managing the initial reveal sequence
- * and Holocene timeline state.
- */
 export default function App() {
   const [revealDone, setRevealDone] = useState(false);
   const [initialHE] = useState(() => Math.floor(currentHEYear()));
   const { centerYear, zoom, setZoom, scroll, zoomDelta, zoomTo, TODAY, INNER_BOUND } = useTimeline(currentHEYear());
 
-  // Popup state management for smooth entry/exit animations
-  const [displayedEvent, setDisplayedEvent] = useState<{ event: HistoryEvent; x: number } | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<HistoryEvent | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const dismissTimerRef = useRef<number | null>(null);
 
-  const handleEventClick = useCallback((event: HistoryEvent, x: number) => {
+  const handleEventClick = useCallback((event: HistoryEvent) => {
     if (dismissTimerRef.current) clearTimeout(dismissTimerRef.current);
-    setDisplayedEvent({ event, x });
+    setSelectedEvent(event);
     setShowPopup(true);
   }, []);
 
@@ -30,163 +25,93 @@ export default function App() {
     if (!showPopup) return;
     setShowPopup(false);
     dismissTimerRef.current = window.setTimeout(() => {
-      setDisplayedEvent(null);
-    }, 200); // Matches the animation duration
+      setSelectedEvent(null);
+    }, 200);
   }, [showPopup]);
+
+  const getPopupX = () => {
+    if (!selectedEvent) return 0;
+    const eventYear = selectedEvent.isToday ? TODAY : selectedEvent.year;
+    const sw = window.innerWidth;
+    const effectiveWidth = sw - 2 * INNER_BOUND;
+    return worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + INNER_BOUND;
+  };
+
+  const popupX = getPopupX();
+  const popupWidth = 280;
+  const clampedX = Math.max(popupWidth / 2 + 10, Math.min(window.innerWidth - popupWidth / 2 - 10, popupX));
+
+  // Dismiss if marker scrolls off-screen (including margins)
+  useEffect(() => {
+    if (showPopup && (popupX < 20 || popupX > window.innerWidth - 20)) {
+      handleDismiss();
+    }
+  }, [popupX, showPopup, handleDismiss]);
 
   return (
     <div
       className="app"
-      style={{
-        backgroundColor: '#000',
-        color: '#fff',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-      onClick={handleDismiss}
+      style={{ backgroundColor: '#000', color: '#fff', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}
+      onPointerDown={() => handleDismiss()}
     >
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'all 1s ease-in-out',
-          transform: revealDone ? 'translateY(-25vh)' : 'translateY(0)',
-          position: 'relative',
-          zIndex: 10,
-        }}
-      >
-        <h1
-          style={{
-            fontWeight: 300,
-            marginBottom: '2rem',
-            letterSpacing: '0.1rem',
-            textTransform: 'lowercase',
-            color: '#888',
-            fontSize: '1rem',
-          }}
-        >
-          the year is
-        </h1>
-        <Odometer
-          targetYear={initialHE}
-          initialYear={new Date().getFullYear()}
-          onComplete={() => setRevealDone(true)}
-        />
-        <div
-          style={{
-            marginTop: '2rem',
-            opacity: revealDone ? 0.5 : 0,
-            transition: 'opacity 1s ease-in',
-            fontFamily: 'monospace',
-            fontSize: '0.8rem',
-            letterSpacing: '2px',
-          }}
-        >
-          human era (HE)
-        </div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transition: 'all 1s ease-in-out', transform: revealDone ? 'translateY(-25vh)' : 'translateY(0)', position: 'relative', zIndex: 10, pointerEvents: revealDone ? 'none' : 'auto' }}>
+        <h1 style={{ fontWeight: 300, marginBottom: '2rem', letterSpacing: '0.1rem', textTransform: 'lowercase', color: '#888', fontSize: '1rem' }}>the year is</h1>
+        <Odometer targetYear={initialHE} initialYear={new Date().getFullYear()} onComplete={() => setRevealDone(true)} />
+        <div style={{ marginTop: '2rem', opacity: revealDone ? 0.5 : 0, transition: 'opacity 1s ease-in', fontFamily: 'monospace', fontSize: '0.8rem', letterSpacing: '2px' }}>human era (HE)</div>
       </div>
 
       {revealDone && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100vh',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            animation: 'fadeIn 1.5s ease-out forwards',
-          }}
-        >
-          <div 
-            style={{ position: 'relative', width: '100%' }}
-            onClick={(e) => e.stopPropagation()}
-          >
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 1.5s ease-out forwards' }}>
+          <div style={{ position: 'relative', width: '100%' }} onPointerDown={(e) => e.stopPropagation()}>
             <TimelineCanvas
               centerYear={centerYear}
               zoom={zoom}
-              onScroll={(dx, sw) => {
-                scroll(dx, sw);
-                handleDismiss();
-              }}
-              onZoom={(d, zc, sw) => {
-                zoomDelta(d, zc, sw);
-                handleDismiss();
-              }}
-              onZoomTo={(tz, zc, sw) => {
-                zoomTo(tz, zc, sw);
-                handleDismiss();
-              }}
+              onScroll={scroll}
+              onZoom={zoomDelta}
+              onZoomTo={zoomTo}
               todayHE={TODAY}
               margin={INNER_BOUND}
               onEventClick={handleEventClick}
             />
 
-            {displayedEvent && (
+            {selectedEvent && (
               <div
                 style={{
                   position: 'absolute',
-                  left: displayedEvent.x,
+                  left: clampedX,
                   top: '50%',
                   transform: 'translate(-50%, -100%) translateY(-20px)',
                   backgroundColor: '#111',
                   border: '1px solid #333',
                   padding: '1rem',
-                  width: 'min(280px, 80vw)',
+                  width: `${popupWidth}px`,
                   zIndex: 100,
                   boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
                   animation: `${showPopup ? 'popIn' : 'popOut'} 0.2s ease-out forwards`,
+                  pointerEvents: 'auto',
                 }}
-                onClick={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
               >
-                <div style={{ fontWeight: 800, fontSize: '0.9rem', marginBottom: '0.5rem', color: '#fff' }}>
-                  {displayedEvent.event.title}
-                </div>
-                <div style={{ fontSize: '0.75rem', color: '#aaa', lineHeight: 1.4 }}>
-                  {displayedEvent.event.description}
-                </div>
-                <div style={{ marginTop: '0.8rem', fontSize: '0.7rem', color: '#666', fontFamily: 'monospace' }}>
-                  Year: {Math.floor(displayedEvent.event.isToday ? TODAY : displayedEvent.event.year)} HE
-                </div>
+                <div style={{ fontWeight: 800, fontSize: '0.9rem', marginBottom: '0.5rem', color: '#fff' }}>{selectedEvent.title}</div>
+                <div style={{ fontSize: '0.75rem', color: '#aaa', lineHeight: 1.4 }}>{selectedEvent.description}</div>
+                <div style={{ marginTop: '0.8rem', fontSize: '0.7rem', color: '#666', fontFamily: 'monospace' }}>Year: {Math.floor(selectedEvent.isToday ? TODAY : selectedEvent.year)} HE</div>
                 <div style={{
                   position: 'absolute',
                   bottom: '-6px',
-                  left: '50%',
+                  left: `calc(50% + ${popupX - clampedX}px)`,
                   transform: 'translateX(-50%) rotate(45deg)',
                   width: '10px',
                   height: '10px',
                   backgroundColor: '#111',
                   borderRight: '1px solid #333',
                   borderBottom: '1px solid #333',
+                  display: Math.abs(popupX - clampedX) > popupWidth / 2 - 5 ? 'none' : 'block'
                 }} />
               </div>
             )}
           </div>
-
           <ZoomSlider zoom={zoom} onZoomChange={setZoom} todayHE={TODAY} margin={INNER_BOUND} />
-
-          <div
-            style={{
-              position: 'fixed',
-              bottom: '20px',
-              opacity: 0.3,
-              fontFamily: 'monospace',
-              fontSize: '0.7rem',
-              pointerEvents: 'none',
-            }}
-          >
-            scroll or drag to explore the past
-          </div>
+          <div style={{ position: 'fixed', bottom: '20px', opacity: 0.3, fontFamily: 'monospace', fontSize: '0.7rem', pointerEvents: 'none' }}>scroll or drag to explore the past</div>
         </div>
       )}
       <style>{`

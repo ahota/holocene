@@ -11,9 +11,12 @@ interface Props {
   onZoomTo: (targetZoom: number, zoomCenterYear: number, screenWidth: number) => void;
   todayHE: number;
   margin: number;
-  onEventClick: (event: HistoryEvent, screenX: number) => void;
+  onEventClick: (event: HistoryEvent) => void;
 }
 
+/**
+ * Performance-optimized canvas component with adaptive margins and smart collision-aware labels.
+ */
 export default function TimelineCanvas({
   centerYear,
   zoom,
@@ -76,6 +79,8 @@ export default function TimelineCanvas({
     }
 
     ctx.clearRect(0, 0, width, height);
+    
+    // Background baseline
     ctx.beginPath();
     ctx.moveTo(0, height / 2);
     ctx.lineTo(width, height / 2);
@@ -83,6 +88,7 @@ export default function TimelineCanvas({
     ctx.lineWidth = 1;
     ctx.stroke();
 
+    // Ticks
     let interval = 1000;
     if (zoom > 0.5) interval = 100;
     if (zoom > 5) interval = 10;
@@ -116,10 +122,25 @@ export default function TimelineCanvas({
       }
     }
 
+    // Historical Events with smarter collision avoidance
+    // Keep track of occupied horizontal space at various vertical levels
+    const labelHeight = 15;
+    const minPadding = 20;
+    const occupiedLevels: { [key: number]: number[] } = {
+      [-15]: [], // Level 1 (top)
+      [-30]: [], // Level 2 (further top)
+      [-45]: [], // Level 3
+      [15]: [],  // Level -1 (bottom)
+      [30]: [],  // Level -2 (further bottom)
+    };
+
+    const levels = [-15, 15, -30, 30, -45];
+
     events.forEach((event) => {
       const eventYear = event.isToday ? todayHE : event.year;
       const x = worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
       const opacity = getEdgeOpacity(x, width);
+      
       ctx.globalAlpha = opacity;
       if (opacity <= 0) return;
 
@@ -131,25 +152,39 @@ export default function TimelineCanvas({
 
       const shouldShowLabel = zoom > 5 || event.importance >= 3 || (zoom > 1 && event.importance >= 2);
       if (shouldShowLabel || isToday) {
-        ctx.fillStyle = isToday ? '#ff4444' : '#ffffff';
         ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
+        const labelWidth = ctx.measureText(event.title).width + minPadding;
+        
+        // Find first available level
+        let selectedY = levels[0];
+        for (const y of levels) {
+          const isOverlap = occupiedLevels[y].some(rangeX => Math.abs(rangeX - x) < labelWidth);
+          if (!isOverlap) {
+            selectedY = y;
+            break;
+          }
+        }
+        occupiedLevels[selectedY].push(x);
+
+        ctx.fillStyle = isToday ? '#ff4444' : '#ffffff';
         ctx.textAlign = 'left';
-        ctx.fillText(event.title, x + 12, height / 2 - 15);
+        ctx.fillText(event.title, x + 12, height / 2 + selectedY);
+        
         if (zoom > 1 || isToday) {
           ctx.fillStyle = '#888';
           ctx.font = '10px monospace';
-          ctx.fillText(`${Math.floor(eventYear)} HE`, x + 12, height / 2 + 5);
+          // Place year slightly below/above the title based on selectedY
+          const yearY = selectedY < 0 ? selectedY + 12 : selectedY + 12; 
+          // Keep it simple: title at Y, year at Y+12 (or similar)
+          ctx.fillText(`${Math.floor(eventYear)} HE`, x + 12, height / 2 + selectedY + 12);
         }
       }
     });
+    
     ctx.globalAlpha = 1.0;
   }, [centerYear, zoom, screenToWorld, todayHE, adaptiveMargins, getEdgeOpacity]);
 
-  useEffect(() => {
-    draw();
-    window.addEventListener('resize', draw);
-    return () => window.removeEventListener('resize', draw);
-  }, [draw]);
+  useEffect(() => { draw(); }, [draw]);
 
   const triggerHitDetection = (clientX: number, clientY: number) => {
     const rect = canvasRef.current?.getBoundingClientRect();
@@ -163,8 +198,8 @@ export default function TimelineCanvas({
       const x = worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
       const y = rect.height / 2;
       const dist = Math.sqrt(Math.pow(x - mouseX, 2) + Math.pow(y - mouseY, 2));
-      if (dist < 30) { // Increased hit area for touch
-        onEventClick(event, x);
+      if (dist < 30) {
+        onEventClick(event);
         return true;
       }
     }
@@ -187,10 +222,7 @@ export default function TimelineCanvas({
         const rect = canvasRef.current?.getBoundingClientRect();
         if (rect) onScroll(deltaX, rect.width);
         setLastPointerX(e.clientX);
-        // Only mark as moved if displacement is significant (> 5px)
-        if (Math.abs(e.clientX - (lastPointerX || 0)) > 5) {
-           setHasMovedSignificant(true);
-        }
+        if (Math.abs(e.clientX - (lastPointerX || 0)) > 5) setHasMovedSignificant(true);
       }
     }
   };
@@ -200,46 +232,31 @@ export default function TimelineCanvas({
     if (canvas && e.pointerId !== undefined) {
       try { canvas.releasePointerCapture(e.pointerId); } catch(e) {}
     }
-    
-    // If it was a clean tap (no significant move), trigger hit detection
     if (!hasMovedSignificant) {
-      const hit = triggerHitDetection(e.clientX, e.clientY);
-      if (hit) e.stopPropagation();
+      triggerHitDetection(e.clientX, e.clientY);
     }
-
     setIsDragging(false);
     setLastPointerX(null);
   };
 
-  const handleWheel = (e: React.WheelEvent) => {
-    const rect = canvasRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const mouseX = e.clientX - rect.left;
-    const zoomCenterYear = screenToWorld(mouseX, rect.width);
-    onZoom(-e.deltaY, zoomCenterYear, rect.width);
-  };
-
-  const handleDoubleClick = (e: React.MouseEvent) => {
-    const rect = canvasRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const mouseX = e.clientX - rect.left;
-    const zoomCenterYear = screenToWorld(mouseX, rect.width);
-    onZoomTo(zoom * 2, zoomCenterYear, rect.width);
-  };
-
   return (
-    <div 
-      ref={containerRef} 
-      style={{ width: '100%', height: '400px', margin: '2rem 0', touchAction: 'none' }}
-    >
+    <div ref={containerRef} style={{ width: '100%', height: '400px', margin: '2rem 0', touchAction: 'none' }}>
       <canvas
         ref={canvasRef}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
-        onWheel={handleWheel}
-        onDoubleClick={handleDoubleClick}
+        onWheel={(e) => {
+          const rect = canvasRef.current?.getBoundingClientRect();
+          if (!rect) return;
+          onZoom(-e.deltaY, screenToWorld(e.clientX - rect.left, rect.width), rect.width);
+        }}
+        onDoubleClick={(e) => {
+          const rect = canvasRef.current?.getBoundingClientRect();
+          if (!rect) return;
+          onZoomTo(zoom * 2, screenToWorld(e.clientX - rect.left, rect.width), rect.width);
+        }}
         style={{ width: '100%', height: '100%', cursor: isDragging ? 'grabbing' : 'grab', touchAction: 'none' }}
       />
     </div>
