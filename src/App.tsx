@@ -3,6 +3,7 @@ import Odometer from './components/Odometer/Odometer';
 import TimelineCanvas from './components/Timeline/TimelineCanvas';
 import ZoomSlider from './components/ZoomSlider/ZoomSlider';
 import { useTimeline } from './components/Timeline/useTimeline';
+import { useEventLoader } from './hooks/useEventLoader';
 import { currentHEYear, worldToScreen } from './utils/math';
 import { HistoryEvent } from './data/events';
 
@@ -10,6 +11,7 @@ export default function App() {
   const [revealDone, setRevealDone] = useState(false);
   const [initialHE] = useState(() => Math.floor(currentHEYear()));
   const { centerYear, zoom, setZoom, scroll, zoomDelta, zoomTo, TODAY, INNER_BOUND } = useTimeline(currentHEYear());
+  const events = useEventLoader(centerYear, zoom, window.innerWidth, INNER_BOUND);
 
   const [selectedEvent, setSelectedEvent] = useState<HistoryEvent | null>(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -41,7 +43,6 @@ export default function App() {
   const popupWidth = 280;
   const clampedX = Math.max(popupWidth / 2 + 10, Math.min(window.innerWidth - popupWidth / 2 - 10, popupX));
 
-  // Dismiss if marker scrolls off-screen (including margins)
   useEffect(() => {
     if (showPopup && (popupX < 20 || popupX > window.innerWidth - 20)) {
       handleDismiss();
@@ -66,6 +67,7 @@ export default function App() {
             <TimelineCanvas
               centerYear={centerYear}
               zoom={zoom}
+              events={events}
               onScroll={scroll}
               onZoom={zoomDelta}
               onZoomTo={zoomTo}

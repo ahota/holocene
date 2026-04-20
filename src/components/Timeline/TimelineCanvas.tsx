@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import { worldToScreen } from '../../utils/math';
-import { events, HistoryEvent } from '../../data/events';
+import { HistoryEvent } from '../../data/events';
 import { MARGIN_UNIT } from '../../constants';
 
 interface Props {
   centerYear: number;
   zoom: number;
+  events: HistoryEvent[];
   onScroll: (deltaX: number, screenWidth: number) => void;
   onZoom: (delta: number, zoomCenterYear: number, screenWidth: number) => void;
   onZoomTo: (targetZoom: number, zoomCenterYear: number, screenWidth: number) => void;
@@ -20,6 +21,7 @@ interface Props {
 export default function TimelineCanvas({
   centerYear,
   zoom,
+  events,
   onScroll,
   onZoom,
   onZoomTo,
@@ -182,7 +184,7 @@ export default function TimelineCanvas({
     });
     
     ctx.globalAlpha = 1.0;
-  }, [centerYear, zoom, screenToWorld, todayHE, adaptiveMargins, getEdgeOpacity]);
+  }, [centerYear, zoom, events, screenToWorld, todayHE, adaptiveMargins, getEdgeOpacity]);
 
   useEffect(() => { draw(); }, [draw]);
 
