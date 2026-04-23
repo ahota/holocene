@@ -1,5 +1,83 @@
 [
   {
+    "year": 6900,
+    "title": "Unification of Egypt",
+    "description": "Narmer unites Upper and Lower Egypt, launching the dynastic age of Pharaohs.",
+    "importance": 3
+  },
+  {
+    "year": 7650,
+    "title": "Indus Valley Cities Rise",
+    "description": "Harappa and Mohenjo-daro flourish into planned cities with drainage, trade, and standardized weights.",
+    "importance": 3
+  },
+  {
+    "year": 7670,
+    "title": "Akkadian Empire",
+    "description": "Sargon of Akkad forges a new kind of empire, linking Mesopotamian city-states under one rule.",
+    "importance": 3
+  },
+  {
+    "year": 8230,
+    "title": "Code of Hammurabi",
+    "description": "A Babylonian king carves a famous law code into stone, proclaiming order, justice, and harsh penalties.",
+    "importance": 3
+  },
+  {
+    "year": 8350,
+    "title": "Bronze Age Collapse",
+    "description": "Palaces burn, trade networks snap, and great powers across the Eastern Mediterranean fall into chaos.",
+    "importance": 3
+  },
+  {
+    "year": 8379,
+    "title": "Oracle Bones",
+    "description": "Diviners inscribe questions onto turtle shells and ox scapulae, preserving the earliest known Chinese writing.",
+    "importance": 3
+  },
+  {
+    "year": 9216,
+    "title": "The Silk Road Opens",
+    "description": "Han envoys reach into Central Asia, igniting long-distance routes that move silk, horses, ideas, and disease.",
+    "importance": 3
+  },
+  {
+    "year": 9648,
+    "title": "Thera Eruption",
+    "description": "A volcanic cataclysm shatters the island of Santorini, sending ash and tsunamis across the Aegean.",
+    "importance": 2
+  },
+  {
+    "year": 10947,
+    "title": "The Black Death",
+    "description": "A plague pandemic rips through Eurasia, emptying cities and reshaping economies and empires.",
+    "importance": 3
+  },
+  {
+    "year": 11582,
+    "title": "Gregorian Calendar",
+    "description": "A new calendar corrects the drifting year, eventually becoming the global standard for dates.",
+    "importance": 2
+  },
+  {
+    "year": 11652,
+    "title": "The Scientific Revolution",
+    "description": "New laws of motion and gravitation crystallize a mechanistic universe, fueling modern science.",
+    "importance": 3
+  },
+  {
+    "year": 11865,
+    "title": "Germ Theory",
+    "description": "Invisible microbes are revealed as the agents of infection, transforming medicine, sanitation, and survival.",
+    "importance": 3
+  },
+  {
+    "year": 11953,
+    "title": "DNA Double Helix",
+    "description": "The structure of DNA is described, unlocking a molecular blueprint for heredity.",
+    "importance": 3
+  },
+  {
     "year": 0,
     "title": "Neolithic Age Begins",
     "description": "Transition from hunter-gatherer to agricultural societies.",
