@@ -610,5 +610,197 @@
     "title": "Present Day",
     "description": "Today in the Holocene calendar.",
     "importance": 1
+  },
+  {
+    "year": 5600,
+    "title": "Ggantija Temples",
+    "description": "Massive limestone megaliths rise on Malta, built by a culture that then vanishes — older than Stonehenge and the pyramids.",
+    "importance": 3
+  },
+  {
+    "year": 6800,
+    "title": "Skara Brae",
+    "description": "A Neolithic village is buried under Scottish sand dunes, its stone furniture preserved intact for five thousand years.",
+    "importance": 3
+  },
+  {
+    "year": 7000,
+    "title": "Newgrange",
+    "description": "A passage tomb is built in Ireland, its inner chamber aligned with razor precision to the winter solstice sunrise.",
+    "importance": 3
+  },
+  {
+    "year": 5500,
+    "title": "Carnac Stones",
+    "description": "Thousands of standing stones are arranged in long rows across Brittany by a culture that left no explanation.",
+    "importance": 2
+  },
+  {
+    "year": 4500,
+    "title": "Invention of the Wheel",
+    "description": "Mesopotamian potters spin the first wheels, and someone realizes they can move things on them.",
+    "importance": 3
+  },
+  {
+    "year": 4500,
+    "title": "First Sailboat",
+    "description": "Wind-powered boats appear on the Nile and Persian Gulf, bending nature to move cargo and people across water.",
+    "importance": 3
+  },
+  {
+    "year": 3500,
+    "title": "Invention of the Plow",
+    "description": "A simple blade dragged through soil unlocks large-scale agriculture and drives the first population explosions.",
+    "importance": 3
+  },
+  {
+    "year": 5000,
+    "title": "Varna Gold Necropolis",
+    "description": "A Bulgarian cemetery yields the oldest worked gold ever found, buried with a single individual of unknown status.",
+    "importance": 3
+  },
+  {
+    "year": 6500,
+    "title": "Proto-Sinaitic Script",
+    "description": "Turquoise miners in the Sinai desert scrawl a crude alphabet that becomes the ancestor of nearly every writing system on Earth.",
+    "importance": 3
+  },
+  {
+    "year": 4500,
+    "title": "First Clay Tokens",
+    "description": "Mesopotamian accountants track goods with shaped clay pieces, unknowingly laying the groundwork for writing itself.",
+    "importance": 2
+  },
+  {
+    "year": 1800,
+    "title": "8.2 Kiloyear Event",
+    "description": "Glacial meltwater floods the North Atlantic, triggering a cold snap that disrupts early farming cultures across the Near East.",
+    "importance": 3
+  },
+  {
+    "year": 3500,
+    "title": "Storegga Landslide",
+    "description": "A colossal underwater collapse off Norway sends a megatsunami crashing across the North Sea, swallowing coastal settlements.",
+    "importance": 3
+  },
+  {
+    "year": 2000,
+    "title": "Obsidian Trade Networks",
+    "description": "Anatolian obsidian appears thousands of miles from its source, revealing surprisingly sophisticated long-distance exchange in the early Neolithic.",
+    "importance": 2
+  },
+  {
+    "year": 7800,
+    "title": "Rise of Carthage",
+    "description": "Phoenician settlers plant a colony on the North African coast that grows into a maritime empire to rival Rome.",
+    "importance": 3
+  },
+  {
+    "year": 9700,
+    "title": "Assyrian Empire Peak",
+    "description": "The world's first true military superpower crushes rivals from Egypt to Persia with iron discipline.",
+    "importance": 3
+  },
+  {
+    "year": 9480,
+    "title": "Achaemenid Persian Empire",
+    "description": "Cyrus the Great forges the largest empire yet seen, stretching from the Aegean to the Indus.",
+    "importance": 3
+  },
+  {
+    "year": 10320,
+    "title": "Gupta Empire Golden Age",
+    "description": "India's classical peak births decimal numerals, advanced astronomy, and the concept of zero.",
+    "importance": 3
+  },
+  {
+    "year": 10650,
+    "title": "Tang Dynasty Peak",
+    "description": "China's most cosmopolitan era opens its capital to the world, blending poetry, silk, and Buddhist art with reach from Korea to Persia.",
+    "importance": 3
+  },
+  {
+    "year": 11450,
+    "title": "Fall of Constantinople",
+    "description": "Ottoman cannons breach the walls of the Eastern Roman Empire, ending a thousand-year successor to Rome.",
+    "importance": 3
+  },
+  {
+    "year": 11500,
+    "title": "Ottoman Empire Peak",
+    "description": "Suleiman the Magnificent rules a three-continent empire from Vienna's gates to the Persian Gulf.",
+    "importance": 3
+  },
+  {
+    "year": 7600,
+    "title": "Nebra Sky Disk",
+    "description": "A bronze disk inlaid with gold stars and a crescent moon is buried in Saxony — the oldest known depiction of the cosmos.",
+    "importance": 3
+  },
+  {
+    "year": 11404,
+    "title": "Voynich Manuscript",
+    "description": "An illustrated book in an entirely unknown script, filled with unidentified plants and figures, defying decipherment to this day.",
+    "importance": 2
+  },
+  {
+    "year": 9950,
+    "title": "Dead Sea Scrolls Deposited",
+    "description": "A sect seals ancient scripture into desert caves at Qumran, where it will lie hidden for two thousand years.",
+    "importance": 3
+  },
+  {
+    "year": 10500,
+    "title": "Invention of Zero",
+    "description": "Indian mathematicians formalize zero as a number, laying the foundation for all of modern mathematics and computing.",
+    "importance": 3
+  },
+  {
+    "year": 10820,
+    "title": "Al-Khwarizmi's Algebra",
+    "description": "A Baghdad scholar codifies equation-solving into a system, gifting the world both algebra and the word algorithm.",
+    "importance": 3
+  },
+  {
+    "year": 11796,
+    "title": "First Smallpox Vaccine",
+    "description": "Jenner inoculates a boy with cowpox and proves immunity to smallpox, launching the age of vaccination.",
+    "importance": 3
+  },
+  {
+    "year": 11915,
+    "title": "General Relativity",
+    "description": "Einstein describes gravity as the curvature of spacetime, predicting black holes, gravitational waves, and the expanding universe.",
+    "importance": 3
+  },
+  {
+    "year": 11200,
+    "title": "Polynesian Settlement of Hawaii",
+    "description": "Navigators reading stars, swells, and birds sail thousands of miles of open ocean to reach the most remote island chain on Earth.",
+    "importance": 3
+  },
+  {
+    "year": 11492,
+    "title": "Columbus Reaches the Americas",
+    "description": "A Genoese captain stumbles into a hemisphere unknown to Europeans, triggering the most consequential collision of civilizations in history.",
+    "importance": 3
+  },
+  {
+    "year": 11498,
+    "title": "Vasco da Gama Rounds the Cape",
+    "description": "A Portuguese fleet reaches India by sea, shattering the Arab monopoly on Eastern trade and redrawing global commerce.",
+    "importance": 3
+  },
+  {
+    "year": 11257,
+    "title": "Samalas Eruption",
+    "description": "An Indonesian volcano explodes in the largest eruption of the past seven millennia, triggering a decade of famine across Eurasia.",
+    "importance": 3
+  },
+  {
+    "year": 11666,
+    "title": "Great Fire of London",
+    "description": "A bakery fire consumes most of the medieval city in four days, prompting a total architectural rebuild and the birth of modern insurance.",
+    "importance": 2
   }
 ]
