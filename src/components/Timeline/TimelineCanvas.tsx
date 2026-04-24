@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import { worldToScreen } from '../../utils/math';
+import { calculateLabelLevels } from '../../utils/layout';
 import { HistoryEvent } from '../../data/events';
 import { MARGIN_UNIT } from '../../constants';
 
@@ -124,19 +125,22 @@ export default function TimelineCanvas({
       }
     }
 
-    // Historical Events with smarter collision avoidance
-    // Keep track of occupied horizontal space at various vertical levels
-    const labelHeight = 15;
-    const minPadding = 20;
-    const occupiedLevels: { [key: number]: number[] } = {
-      [-15]: [], // Level 1 (top)
-      [-30]: [], // Level 2 (further top)
-      [-45]: [], // Level 3
-      [15]: [],  // Level -1 (bottom)
-      [30]: [],  // Level -2 (further bottom)
-    };
+    // Historical Events with stable collision-aware labels
+    const minPadding = 24;
+    const levels = [-35, -70, -105, 70, 105, 140];
 
-    const levels = [-15, 15, -30, 30, -45];
+    // Calculate assignments once per draw (stable because it's independent of centerYear)
+    const labelAssignments = calculateLabelLevels(
+      events,
+      zoom,
+      todayHE,
+      (text, isToday) => {
+        ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
+        return ctx.measureText(text).width;
+      },
+      minPadding,
+      levels
+    );
 
     events.forEach((event) => {
       const eventYear = event.isToday ? todayHE : event.year;
@@ -152,22 +156,9 @@ export default function TimelineCanvas({
       ctx.fillStyle = isToday ? '#ff0000' : '#ffffff';
       ctx.fill();
 
-      const shouldShowLabel = zoom > 5 || event.importance >= 3 || (zoom > 1 && event.importance >= 2);
-      if (shouldShowLabel || isToday) {
+      const selectedY = labelAssignments.get(event);
+      if (selectedY !== undefined) {
         ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
-        const labelWidth = ctx.measureText(event.title).width + minPadding;
-        
-        // Find first available level
-        let selectedY = levels[0];
-        for (const y of levels) {
-          const isOverlap = occupiedLevels[y].some(rangeX => Math.abs(rangeX - x) < labelWidth);
-          if (!isOverlap) {
-            selectedY = y;
-            break;
-          }
-        }
-        occupiedLevels[selectedY].push(x);
-
         ctx.fillStyle = isToday ? '#ff4444' : '#ffffff';
         ctx.textAlign = 'left';
         ctx.fillText(event.title, x + 12, height / 2 + selectedY);
@@ -175,9 +166,7 @@ export default function TimelineCanvas({
         if (zoom > 1 || isToday) {
           ctx.fillStyle = '#888';
           ctx.font = '10px monospace';
-          // Place year slightly below/above the title based on selectedY
-          const yearY = selectedY < 0 ? selectedY + 12 : selectedY + 12; 
-          // Keep it simple: title at Y, year at Y+12 (or similar)
+          // Place year slightly below the title
           ctx.fillText(`${Math.floor(eventYear)} HE`, x + 12, height / 2 + selectedY + 12);
         }
       }
