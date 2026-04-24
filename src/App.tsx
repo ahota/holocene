@@ -14,12 +14,14 @@ export default function App() {
   const events = useEventLoader(centerYear, zoom, window.innerWidth, INNER_BOUND);
 
   const [selectedEvent, setSelectedEvent] = useState<HistoryEvent | null>(null);
+  const [popupAnchor, setPopupAnchor] = useState<{ year: number, yOffset: number, xOffset: number } | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const dismissTimerRef = useRef<number | null>(null);
 
-  const handleEventClick = useCallback((event: HistoryEvent) => {
+  const handleEventClick = useCallback((event: HistoryEvent, year: number, yOffset: number, xOffset: number) => {
     if (dismissTimerRef.current) clearTimeout(dismissTimerRef.current);
     setSelectedEvent(event);
+    setPopupAnchor({ year, yOffset, xOffset });
     setShowPopup(true);
   }, []);
 
@@ -28,18 +30,14 @@ export default function App() {
     setShowPopup(false);
     dismissTimerRef.current = window.setTimeout(() => {
       setSelectedEvent(null);
+      setPopupAnchor(null);
     }, 200);
   }, [showPopup]);
 
-  const getPopupX = () => {
-    if (!selectedEvent) return 0;
-    const eventYear = selectedEvent.isToday ? TODAY : selectedEvent.year;
-    const sw = window.innerWidth;
-    const effectiveWidth = sw - 2 * INNER_BOUND;
-    return worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + INNER_BOUND;
-  };
-
-  const popupX = getPopupX();
+  const sw = window.innerWidth;
+  const effectiveWidth = sw - 2 * INNER_BOUND;
+  const popupX = popupAnchor ? worldToScreen(popupAnchor.year, centerYear, zoom, effectiveWidth) + INNER_BOUND + popupAnchor.xOffset : 0;
+  const popupY = popupAnchor ? 200 + popupAnchor.yOffset : 0; // 200 is center of 400px canvas
   const popupWidth = 280;
   const clampedX = Math.max(popupWidth / 2 + 10, Math.min(window.innerWidth - popupWidth / 2 - 10, popupX));
 
@@ -63,7 +61,7 @@ export default function App() {
 
       {revealDone && (
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 1.5s ease-out forwards' }}>
-          <div style={{ position: 'relative', width: '100%' }} onPointerDown={(e) => e.stopPropagation()}>
+          <div style={{ position: 'relative', width: '100%', margin: '2rem 0' }} onPointerDown={(e) => e.stopPropagation()}>
             <TimelineCanvas
               centerYear={centerYear}
               zoom={zoom}
@@ -81,8 +79,8 @@ export default function App() {
                 style={{
                   position: 'absolute',
                   left: clampedX,
-                  top: '50%',
-                  transform: 'translate(-50%, -100%) translateY(-20px)',
+                  top: popupY,
+                  transform: 'translate(-50%, -100%) translateY(-10px)',
                   backgroundColor: '#111',
                   border: '1px solid #333',
                   padding: '1rem',
@@ -119,12 +117,12 @@ export default function App() {
       <style>{`
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes popIn {
-          from { opacity: 0; transform: translate(-50%, -100%) translateY(-10px) scale(0.95); }
-          to { opacity: 1; transform: translate(-50%, -100%) translateY(-20px) scale(1); }
+          from { opacity: 0; transform: translate(-50%, -100%) translateY(0px) scale(0.95); }
+          to { opacity: 1; transform: translate(-50%, -100%) translateY(-10px) scale(1); }
         }
         @keyframes popOut {
-          from { opacity: 1; transform: translate(-50%, -100%) translateY(-20px) scale(1); }
-          to { opacity: 0; transform: translate(-50%, -100%) translateY(-10px) scale(0.95); }
+          from { opacity: 1; transform: translate(-50%, -100%) translateY(-10px) scale(1); }
+          to { opacity: 0; transform: translate(-50%, -100%) translateY(0px) scale(0.95); }
         }
       `}</style>
     </div>

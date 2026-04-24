@@ -13,7 +13,7 @@ interface Props {
   onZoomTo: (targetZoom: number, zoomCenterYear: number, screenWidth: number) => void;
   todayHE: number;
   margin: number;
-  onEventClick: (event: HistoryEvent) => void;
+  onEventClick: (event: HistoryEvent, year: number, yOffset: number, xOffset: number) => void;
 }
 
 /**
@@ -220,7 +220,8 @@ export default function TimelineCanvas({
       // Marker hit detection
       const dist = Math.sqrt(Math.pow(x - mouseX, 2) + Math.pow(y - mouseY, 2));
       if (dist < 15) {
-        onEventClick(event);
+        // Anchor to the top of the dot (radius 5)
+        onEventClick(event, eventYear, -5, 0);
         return true;
       }
 
@@ -231,9 +232,12 @@ export default function TimelineCanvas({
         ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
         const titleWidth = ctx.measureText(event.title).width;
         
-        const labelX = x + 12; // Start of connector/bracket
-        const labelWidth = 8 + titleWidth + 10; // offset to text + text + extra padding
         const hasYear = zoom > 1 || isToday;
+        const yearWidth = hasYear ? ctx.measureText(`${Math.floor(eventYear)} HE`).width : 0;
+        const textMaxWidth = Math.max(titleWidth, yearWidth);
+        
+        const labelX = x + 12; // Start of connector/bracket
+        const labelWidth = 8 + textMaxWidth + 10; // bracket-to-text offset (8) + text + extra padding
         const labelHeight = hasYear ? 32 : 16;
         const labelTop = y + selectedY - 12;
 
@@ -243,7 +247,8 @@ export default function TimelineCanvas({
           mouseY >= labelTop && 
           mouseY <= labelTop + labelHeight
         ) {
-          onEventClick(event);
+          // Anchor to the top-center of the label
+          onEventClick(event, eventYear, selectedY - 12, 12 + labelWidth / 2);
           return true;
         }
       }
@@ -285,7 +290,7 @@ export default function TimelineCanvas({
   };
 
   return (
-    <div ref={containerRef} style={{ width: '100%', height: '400px', margin: '2rem 0', touchAction: 'none' }}>
+    <div ref={containerRef} style={{ width: '100%', height: '400px', touchAction: 'none' }}>
       <canvas
         ref={canvasRef}
         onPointerDown={handlePointerDown}
