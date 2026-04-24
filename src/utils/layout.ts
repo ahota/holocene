@@ -44,7 +44,7 @@ export function calculateLabelLevels(
   const occupiedRanges = new Map<number, { start: number; end: number }[]>();
   levels.forEach(l => occupiedRanges.set(l, []));
 
-  const dotOffset = 12; // Pixels from dot to label start
+  const dotOffset = 20; // Pixels from dot to label start (accounting for connector and padding)
 
   for (const event of sorted) {
     const isToday = event.isToday || event.year >= todayHE;

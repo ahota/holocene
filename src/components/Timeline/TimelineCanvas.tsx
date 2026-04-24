@@ -36,6 +36,28 @@ export default function TimelineCanvas({
   const [lastPointerX, setLastPointerX] = useState<number | null>(null);
   const [hasMovedSignificant, setHasMovedSignificant] = useState(false);
 
+  const labelAssignments = useMemo(() => {
+    // Note: We need a temporary ctx to measure text
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return new Map<HistoryEvent, number>();
+
+    const minPadding = 24;
+    const levels = [-35, -70, -105, 70, 105, 140];
+
+    return calculateLabelLevels(
+      events,
+      zoom,
+      todayHE,
+      (text, isToday) => {
+        ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
+        return ctx.measureText(text).width;
+      },
+      minPadding,
+      levels
+    );
+  }, [events, zoom, todayHE]);
+
   const MARGIN_UNIT_FIXED = 32;
 
   const adaptiveMargins = useMemo(() => {
@@ -126,22 +148,6 @@ export default function TimelineCanvas({
     }
 
     // Historical Events with stable collision-aware labels
-    const minPadding = 24;
-    const levels = [-35, -70, -105, 70, 105, 140];
-
-    // Calculate assignments once per draw (stable because it's independent of centerYear)
-    const labelAssignments = calculateLabelLevels(
-      events,
-      zoom,
-      todayHE,
-      (text, isToday) => {
-        ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
-        return ctx.measureText(text).width;
-      },
-      minPadding,
-      levels
-    );
-
     events.forEach((event) => {
       const eventYear = event.isToday ? todayHE : event.year;
       const x = worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
@@ -158,28 +164,50 @@ export default function TimelineCanvas({
 
       const selectedY = labelAssignments.get(event);
       if (selectedY !== undefined) {
+        const hasYear = zoom > 1 || isToday;
+        // The vertical center of the text group relative to selectedY
+        // If hasYear, we have two lines of text (approx 24px total height)
+        // Title is at selectedY, Year is at selectedY + 12.
+        // Center is roughly selectedY + 4.
+        const centerY = selectedY + (hasYear ? 4 : -2);
+
+        ctx.beginPath();
+        ctx.moveTo(x, height / 2);
+        ctx.lineTo(x, height / 2 + centerY); // Vertical line to center height
+        ctx.lineTo(x + 12, height / 2 + centerY); // Horizontal connector
+        
+        // Vertical bar "bracket" for the label group
+        ctx.moveTo(x + 12, height / 2 + selectedY - 10);
+        ctx.lineTo(x + 12, height / 2 + selectedY + (hasYear ? 16 : 4));
+        
+        ctx.strokeStyle = isToday ? 'rgba(255, 68, 68, 0.5)' : 'rgba(255, 255, 255, 0.25)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
         ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
         ctx.fillStyle = isToday ? '#ff4444' : '#ffffff';
         ctx.textAlign = 'left';
-        ctx.fillText(event.title, x + 12, height / 2 + selectedY);
+        ctx.fillText(event.title, x + 20, height / 2 + selectedY);
         
-        if (zoom > 1 || isToday) {
+        if (hasYear) {
           ctx.fillStyle = '#888';
           ctx.font = '10px monospace';
-          // Place year slightly below the title
-          ctx.fillText(`${Math.floor(eventYear)} HE`, x + 12, height / 2 + selectedY + 12);
+          ctx.fillText(`${Math.floor(eventYear)} HE`, x + 20, height / 2 + selectedY + 12);
         }
       }
     });
     
     ctx.globalAlpha = 1.0;
-  }, [centerYear, zoom, events, screenToWorld, todayHE, adaptiveMargins, getEdgeOpacity]);
+  }, [centerYear, zoom, events, screenToWorld, todayHE, adaptiveMargins, getEdgeOpacity, labelAssignments]);
 
   useEffect(() => { draw(); }, [draw]);
 
   const triggerHitDetection = (clientX: number, clientY: number) => {
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
+    const canvas = canvasRef.current!;
+    const ctx = canvas.getContext('2d')!;
+
     const mouseX = clientX - rect.left;
     const mouseY = clientY - rect.top;
     const effectiveWidth = getEffectiveWidth(rect.width);
@@ -188,10 +216,36 @@ export default function TimelineCanvas({
       const eventYear = event.isToday ? todayHE : event.year;
       const x = worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
       const y = rect.height / 2;
+      
+      // Marker hit detection
       const dist = Math.sqrt(Math.pow(x - mouseX, 2) + Math.pow(y - mouseY, 2));
-      if (dist < 30) {
+      if (dist < 15) {
         onEventClick(event);
         return true;
+      }
+
+      // Label hit detection
+      const selectedY = labelAssignments.get(event);
+      if (selectedY !== undefined) {
+        const isToday = event.isToday || eventYear >= todayHE;
+        ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
+        const titleWidth = ctx.measureText(event.title).width;
+        
+        const labelX = x + 12; // Start of connector/bracket
+        const labelWidth = 8 + titleWidth + 10; // offset to text + text + extra padding
+        const hasYear = zoom > 1 || isToday;
+        const labelHeight = hasYear ? 32 : 16;
+        const labelTop = y + selectedY - 12;
+
+        if (
+          mouseX >= labelX && 
+          mouseX <= labelX + labelWidth && 
+          mouseY >= labelTop && 
+          mouseY <= labelTop + labelHeight
+        ) {
+          onEventClick(event);
+          return true;
+        }
       }
     }
     return false;
