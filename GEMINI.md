@@ -14,6 +14,8 @@ Underneath the year is the timeline. In the center of the page is the last tick 
 
 Just under the timeline is a slider for zooming in and out. The initial view of one year is the closest zoom. The furthest zoom shows the entire timeline from 0 HE to the present day. Double clicking the timeline at any visible point zooms in by one step, centered on that date. Zoom levels should use a logarithmic scale.
 
+Historical events are rendered with smart collision-aware labels that remain stable during scrolling. Labels are connected to their markers via thin guide lines and vertical brackets. Both the markers and the labels themselves are interactive and can be clicked to reveal event details.
+
 ## General Guidelines 
 
 ### Code
@@ -35,8 +37,9 @@ Just under the timeline is a slider for zooming in and out. The initial view of 
   - All lowercase except acronyms.
   - Max 50 characters.
   - Message body wraps at 72 characters.
-  - Prefer concise bullet points over paragraphs.
-  - You may add a coauthor line at the end of the body, preceded by a blank line, containing "+gemini".
+  - Avoid body text if the subject fully describes the change.
+  - If body text is needed, use few succinct bullet points.
+  - You MUST add a coauthor line at the end of the body, preceded by a blank line, containing "+gemini".
 
 ### Persona 
 
