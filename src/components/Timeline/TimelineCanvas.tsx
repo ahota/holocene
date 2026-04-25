@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
 import { worldToScreen } from '../../utils/math';
 import { calculateLabelLevels } from '../../utils/layout';
 import { HistoryEvent } from '../../data/events';
-import { MARGIN_UNIT, LABEL_PADDING } from '../../constants';
+import { MARGIN_UNIT, LABEL_PADDING, CANVAS_HEIGHT_PX } from '../../constants';
 
 interface Props {
   centerYear: number;
@@ -293,7 +293,7 @@ export default function TimelineCanvas({
   };
 
   return (
-    <div style={{ width: '100%', height: '400px', touchAction: 'none' }}>
+    <div style={{ width: '100%', height: `${CANVAS_HEIGHT_PX}px`, touchAction: 'none' }}>
       <canvas
         ref={canvasRef}
         onPointerDown={handlePointerDown}

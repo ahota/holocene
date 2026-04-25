@@ -6,6 +6,7 @@ import { useTimeline } from './components/Timeline/useTimeline';
 import { useEventLoader } from './hooks/useEventLoader';
 import { currentHEYear, worldToScreen } from './utils/math';
 import { HistoryEvent } from './data/events';
+import { CANVAS_HEIGHT_PX } from './constants';
 
 export default function App() {
   const [revealDone, setRevealDone] = useState(false);
@@ -39,7 +40,7 @@ export default function App() {
   const sw = window.innerWidth;
   const effectiveWidth = sw - 2 * INNER_BOUND;
   const popupX = popupAnchor ? worldToScreen(popupAnchor.year, centerYear, zoom, effectiveWidth) + INNER_BOUND + popupAnchor.xOffset : 0;
-  const popupY = popupAnchor ? popupAnchor.baseY + 200 + popupAnchor.yOffset : 0; // 200 is center of 400px canvas, baseY anchors to viewport
+  const popupY = popupAnchor ? popupAnchor.baseY + CANVAS_HEIGHT_PX / 2 + popupAnchor.yOffset : 0;
   const popupWidth = 280;
   const clampedX = Math.max(popupWidth / 2 + 10, Math.min(window.innerWidth - popupWidth / 2 - 10, popupX));
 
