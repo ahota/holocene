@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import { worldToScreen } from '../../utils/math';
-import { calculateLabelLevels } from '../../utils/layout';
+import { calculateLabelLevels, getLabelGeometry, shouldShowYear } from '../../utils/layout';
 import { HistoryEvent } from '../../data/events';
 import { MARGIN_UNIT, LABEL_PADDING, CANVAS_HEIGHT_PX } from '../../constants';
 
@@ -164,22 +164,22 @@ export default function TimelineCanvas({
 
       const selectedY = labelAssignments.get(event);
       if (selectedY !== undefined) {
-        const hasYear = zoom > 1 || isToday;
-        // The vertical center of the text group relative to selectedY
-        // If hasYear, we have two lines of text (approx 24px total height)
-        // Title is at selectedY, Year is at selectedY + 12.
-        // Center is roughly selectedY + 4.
-        const centerY = selectedY + (hasYear ? 4 : -2);
+        const hasYear = shouldShowYear(zoom, isToday);
+        const yearLabel = `${Math.floor(eventYear)} HE`;
+
+        ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
+        const titleWidth = ctx.measureText(event.title).width;
+        ctx.font = '10px monospace';
+        const yearWidth = hasYear ? ctx.measureText(yearLabel).width : 0;
+        const g = getLabelGeometry(selectedY, hasYear, Math.max(titleWidth, yearWidth));
+        const baseY = height / 2;
 
         ctx.beginPath();
-        ctx.moveTo(x, height / 2);
-        ctx.lineTo(x, height / 2 + centerY); // Vertical line to center height
-        ctx.lineTo(x + 12, height / 2 + centerY); // Horizontal connector
-        
-        // Vertical bar "bracket" for the label group
-        ctx.moveTo(x + 12, height / 2 + selectedY - 10);
-        ctx.lineTo(x + 12, height / 2 + selectedY + (hasYear ? 16 : 4));
-        
+        ctx.moveTo(x, baseY);
+        ctx.lineTo(x, baseY + g.centerYOffset);
+        ctx.lineTo(x + g.connectorX, baseY + g.centerYOffset);
+        ctx.moveTo(x + g.connectorX, baseY + g.bracketTop);
+        ctx.lineTo(x + g.connectorX, baseY + g.bracketBottom);
         ctx.strokeStyle = isToday ? 'rgba(255, 68, 68, 0.5)' : 'rgba(255, 255, 255, 0.25)';
         ctx.lineWidth = 1;
         ctx.stroke();
@@ -187,12 +187,12 @@ export default function TimelineCanvas({
         ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
         ctx.fillStyle = isToday ? '#ff4444' : '#ffffff';
         ctx.textAlign = 'left';
-        ctx.fillText(event.title, x + 20, height / 2 + selectedY);
-        
-        if (hasYear) {
+        ctx.fillText(event.title, x + g.textX, baseY + g.titleY);
+
+        if (g.yearY !== null) {
           ctx.fillStyle = '#888';
           ctx.font = '10px monospace';
-          ctx.fillText(`${Math.floor(eventYear)} HE`, x + 20, height / 2 + selectedY + 12);
+          ctx.fillText(yearLabel, x + g.textX, baseY + g.yearY);
         }
       }
     });
@@ -229,26 +229,25 @@ export default function TimelineCanvas({
       const selectedY = labelAssignments.get(event);
       if (selectedY !== undefined) {
         const isToday = event.isToday || eventYear >= todayHE;
+        const hasYear = shouldShowYear(zoom, isToday);
+
         ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
         const titleWidth = ctx.measureText(event.title).width;
-        
-        const hasYear = zoom > 1 || isToday;
+        ctx.font = '10px monospace';
         const yearWidth = hasYear ? ctx.measureText(`${Math.floor(eventYear)} HE`).width : 0;
-        const textMaxWidth = Math.max(titleWidth, yearWidth);
-        
-        const labelX = x + 12; // Start of connector/bracket
-        const labelWidth = 8 + textMaxWidth + 10; // bracket-to-text offset (8) + text + extra padding
-        const labelHeight = hasYear ? 32 : 16;
-        const labelTop = y + selectedY - 12;
+        const g = getLabelGeometry(selectedY, hasYear, Math.max(titleWidth, yearWidth));
+
+        const labelX = x + g.hitRect.x;
+        const labelTop = y + g.hitRect.y;
 
         if (
-          mouseX >= labelX && 
-          mouseX <= labelX + labelWidth && 
-          mouseY >= labelTop && 
-          mouseY <= labelTop + labelHeight
+          mouseX >= labelX &&
+          mouseX <= labelX + g.hitRect.w &&
+          mouseY >= labelTop &&
+          mouseY <= labelTop + g.hitRect.h
         ) {
           // Anchor to the top-center of the label
-          onEventClick(event, eventYear, selectedY - 12, 12 + labelWidth / 2);
+          onEventClick(event, eventYear, g.hitRect.y, g.hitRect.x + g.hitRect.w / 2);
           return true;
         }
       }

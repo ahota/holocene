@@ -4,6 +4,67 @@ export interface AssignedEvent extends HistoryEvent {
   level: number;
 }
 
+// Single source of truth for label drawing/hit-test geometry. All offsets are
+// measured from the marker (x = marker.x, y = canvas baseline = height/2).
+const CONNECTOR_X = 12;
+const TEXT_X = 20;
+const BRACKET_TOP_OFFSET = -10;
+const BRACKET_BOTTOM_NO_YEAR = 4;
+const BRACKET_BOTTOM_WITH_YEAR = 16;
+const CENTER_Y_NO_YEAR = -2;
+const CENTER_Y_WITH_YEAR = 4;
+const YEAR_BASELINE_OFFSET = 12;
+const HIT_TOP_OFFSET = -12;
+const HIT_LEFT_GAP = 8;
+const HIT_RIGHT_PAD = 10;
+const LABEL_HEIGHT_NO_YEAR = 16;
+const LABEL_HEIGHT_WITH_YEAR = 32;
+
+export interface LabelGeometry {
+  /** Y offset (from baseline) where the leader meets the horizontal connector. */
+  centerYOffset: number;
+  /** X offset (from marker x) for the vertical bracket / connector hinge. */
+  connectorX: number;
+  /** Y offsets (from baseline) for the top and bottom of the vertical bracket. */
+  bracketTop: number;
+  bracketBottom: number;
+  /** X offset (from marker x) for the title and year text. */
+  textX: number;
+  /** Y offset (from baseline) for the title baseline. */
+  titleY: number;
+  /** Y offset for the year baseline (null when no year is drawn). */
+  yearY: number | null;
+  /** Hit rectangle relative to (markerX, baseline). */
+  hitRect: { x: number; y: number; w: number; h: number };
+}
+
+/** True when the year line should appear under the title. */
+export function shouldShowYear(zoom: number, isToday: boolean): boolean {
+  return zoom > 1 || isToday;
+}
+
+/**
+ * Computes label geometry for a given level. `textWidth` is the max of the
+ * title and year measurements at the appropriate font.
+ */
+export function getLabelGeometry(level: number, hasYear: boolean, textWidth: number): LabelGeometry {
+  return {
+    centerYOffset: level + (hasYear ? CENTER_Y_WITH_YEAR : CENTER_Y_NO_YEAR),
+    connectorX: CONNECTOR_X,
+    bracketTop: level + BRACKET_TOP_OFFSET,
+    bracketBottom: level + (hasYear ? BRACKET_BOTTOM_WITH_YEAR : BRACKET_BOTTOM_NO_YEAR),
+    textX: TEXT_X,
+    titleY: level,
+    yearY: hasYear ? level + YEAR_BASELINE_OFFSET : null,
+    hitRect: {
+      x: CONNECTOR_X,
+      y: level + HIT_TOP_OFFSET,
+      w: HIT_LEFT_GAP + textWidth + HIT_RIGHT_PAD,
+      h: hasYear ? LABEL_HEIGHT_WITH_YEAR : LABEL_HEIGHT_NO_YEAR,
+    },
+  };
+}
+
 /**
  * Calculates stable vertical levels for event labels to prevent overlapping.
  * 
@@ -54,7 +115,7 @@ export function calculateLabelLevels(
     if (!shouldShowLabel && !isToday) continue;
 
     const textWidth = measureText(event.title, isToday);
-    const yearWidth = (zoom > 1 || isToday) ? measureText(`${Math.floor(event.year)} HE`, false) : 0;
+    const yearWidth = shouldShowYear(zoom, isToday) ? measureText(`${Math.floor(event.year)} HE`, false) : 0;
     const labelWidth = Math.max(textWidth, yearWidth) + minPadding;
     
     // yearX is the pixel position if centerYear was 0

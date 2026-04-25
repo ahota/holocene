@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateLabelLevels } from './layout';
+import { calculateLabelLevels, getLabelGeometry, shouldShowYear } from './layout';
 import { HistoryEvent } from '../data/events';
 
 describe('calculateLabelLevels', () => {
@@ -47,5 +47,37 @@ describe('calculateLabelLevels', () => {
     expect(res.get(events[0])).toBe(levels[0]);
     // Less So should be hidden
     expect(res.has(events[1])).toBe(false);
+  });
+});
+
+describe('shouldShowYear', () => {
+  it('shows year above zoom 1', () => {
+    expect(shouldShowYear(2, false)).toBe(true);
+    expect(shouldShowYear(0.5, false)).toBe(false);
+  });
+
+  it('always shows year for today', () => {
+    expect(shouldShowYear(0.1, true)).toBe(true);
+  });
+});
+
+describe('getLabelGeometry', () => {
+  it('drops the year line and shrinks the hit rect when hasYear is false', () => {
+    const withYear = getLabelGeometry(-35, true, 100);
+    const noYear = getLabelGeometry(-35, false, 100);
+
+    expect(withYear.yearY).not.toBeNull();
+    expect(noYear.yearY).toBeNull();
+    expect(withYear.hitRect.h).toBeGreaterThan(noYear.hitRect.h);
+  });
+
+  it('hit rect width grows linearly with text width', () => {
+    const a = getLabelGeometry(0, true, 50);
+    const b = getLabelGeometry(0, true, 150);
+    expect(b.hitRect.w - a.hitRect.w).toBe(100);
+  });
+
+  it('places title baseline at the assigned level', () => {
+    expect(getLabelGeometry(70, false, 100).titleY).toBe(70);
   });
 });
