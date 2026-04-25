@@ -7,6 +7,7 @@ import { useEventLoader } from './hooks/useEventLoader';
 import { currentHEYear, worldToScreen } from './utils/math';
 import { HistoryEvent } from './data/events';
 import { CANVAS_HEIGHT_PX } from './constants';
+import { COLOR, SHADOW, ANIM_MS, Z } from './theme';
 
 export default function App() {
   const [revealDone, setRevealDone] = useState(false);
@@ -34,7 +35,7 @@ export default function App() {
     dismissTimerRef.current = window.setTimeout(() => {
       setSelectedEvent(null);
       setPopupAnchor(null);
-    }, 200);
+    }, ANIM_MS.popup);
   }, [showPopup]);
 
   const sw = window.innerWidth;
@@ -53,17 +54,17 @@ export default function App() {
   return (
     <div
       className="app"
-      style={{ backgroundColor: '#000', color: '#fff', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}
+      style={{ backgroundColor: COLOR.bg, color: COLOR.fg, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}
       onPointerDown={() => handleDismiss()}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transition: 'all 1s ease-in-out', transform: revealDone ? 'translateY(-25vh)' : 'translateY(0)', position: 'relative', zIndex: 10, pointerEvents: revealDone ? 'none' : 'auto' }}>
-        <h1 style={{ fontWeight: 300, marginBottom: '2rem', letterSpacing: '0.1rem', textTransform: 'lowercase', color: '#888', fontSize: '1rem' }}>the year is</h1>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transition: `all ${ANIM_MS.reveal}ms ease-in-out`, transform: revealDone ? 'translateY(-25vh)' : 'translateY(0)', position: 'relative', zIndex: Z.reveal, pointerEvents: revealDone ? 'none' : 'auto' }}>
+        <h1 style={{ fontWeight: 300, marginBottom: '2rem', letterSpacing: '0.1rem', textTransform: 'lowercase', color: COLOR.muted, fontSize: '1rem' }}>the year is</h1>
         <Odometer targetYear={initialHE} initialYear={new Date().getFullYear()} onComplete={() => setRevealDone(true)} />
-        <div style={{ marginTop: '2rem', opacity: revealDone ? 0.5 : 0, transition: 'opacity 1s ease-in', fontFamily: 'monospace', fontSize: '0.8rem', letterSpacing: '2px' }}>human era (HE)</div>
+        <div style={{ marginTop: '2rem', opacity: revealDone ? 0.5 : 0, transition: `opacity ${ANIM_MS.reveal}ms ease-in`, fontFamily: 'monospace', fontSize: '0.8rem', letterSpacing: '2px' }}>human era (HE)</div>
       </div>
 
       {revealDone && (
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 1.5s ease-out forwards' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: `fadeIn ${ANIM_MS.fadeIn}ms ease-out forwards` }}>
           <div ref={timelineWrapperRef} style={{ position: 'relative', width: '100%', margin: '2rem 0' }} onPointerDown={(e) => e.stopPropagation()}>
             <TimelineCanvas
               centerYear={centerYear}
@@ -89,20 +90,20 @@ export default function App() {
             left: clampedX,
             top: popupY,
             transform: 'translate(-50%, -100%) translateY(-10px)',
-            backgroundColor: '#111',
-            border: '1px solid #333',
+            backgroundColor: COLOR.surface,
+            border: `1px solid ${COLOR.border}`,
             padding: '1rem',
             width: `${popupWidth}px`,
-            zIndex: 100,
-            boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-            animation: `${showPopup ? 'popIn' : 'popOut'} 0.2s ease-out forwards`,
+            zIndex: Z.popup,
+            boxShadow: SHADOW.popup,
+            animation: `${showPopup ? 'popIn' : 'popOut'} ${ANIM_MS.popup}ms ease-out forwards`,
             pointerEvents: 'auto',
           }}
           onPointerDown={(e) => e.stopPropagation()}
         >
-          <div style={{ fontWeight: 800, fontSize: '0.9rem', marginBottom: '0.5rem', color: '#fff' }}>{selectedEvent.title}</div>
-          <div style={{ fontSize: '0.75rem', color: '#aaa', lineHeight: 1.4 }}>{selectedEvent.description}</div>
-          <div style={{ marginTop: '0.8rem', fontSize: '0.7rem', color: '#666', fontFamily: 'monospace' }}>Year: {Math.floor(selectedEvent.isToday ? TODAY : selectedEvent.year)} HE</div>
+          <div style={{ fontWeight: 800, fontSize: '0.9rem', marginBottom: '0.5rem', color: COLOR.fg }}>{selectedEvent.title}</div>
+          <div style={{ fontSize: '0.75rem', color: COLOR.body, lineHeight: 1.4 }}>{selectedEvent.description}</div>
+          <div style={{ marginTop: '0.8rem', fontSize: '0.7rem', color: COLOR.dim, fontFamily: 'monospace' }}>Year: {Math.floor(selectedEvent.isToday ? TODAY : selectedEvent.year)} HE</div>
           <div style={{
             position: 'absolute',
             bottom: '-6px',
@@ -110,9 +111,9 @@ export default function App() {
             transform: 'translateX(-50%) rotate(45deg)',
             width: '10px',
             height: '10px',
-            backgroundColor: '#111',
-            borderRight: '1px solid #333',
-            borderBottom: '1px solid #333',
+            backgroundColor: COLOR.surface,
+            borderRight: `1px solid ${COLOR.border}`,
+            borderBottom: `1px solid ${COLOR.border}`,
             display: Math.abs(popupX - clampedX) > popupWidth / 2 - 5 ? 'none' : 'block'
           }} />
         </div>
