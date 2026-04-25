@@ -31,10 +31,13 @@ export default function TimelineCanvas({
   onEventClick,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [lastPointerX, setLastPointerX] = useState<number | null>(null);
-  const [hasMovedSignificant, setHasMovedSignificant] = useState(false);
+  const pointerDownXRef = useRef<number | null>(null);
+  const hasMovedSignificantRef = useRef(false);
+
+  const DRAG_THRESHOLD_PX = 5;
+  const SCROLL_DELTA_THRESHOLD_PX = 0.5;
 
   const labelAssignments = useMemo(() => {
     // Note: We need a temporary ctx to measure text
@@ -259,17 +262,19 @@ export default function TimelineCanvas({
     canvas.setPointerCapture(e.pointerId);
     setIsDragging(true);
     setLastPointerX(e.clientX);
-    setHasMovedSignificant(false);
+    pointerDownXRef.current = e.clientX;
+    hasMovedSignificantRef.current = false;
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (isDragging && lastPointerX !== null) {
       const deltaX = e.clientX - lastPointerX;
-      if (Math.abs(deltaX) > 0.5) {
+      if (Math.abs(deltaX) > SCROLL_DELTA_THRESHOLD_PX) {
         const rect = canvasRef.current?.getBoundingClientRect();
         if (rect) onScroll(deltaX, rect.width);
         setLastPointerX(e.clientX);
-        if (Math.abs(e.clientX - (lastPointerX || 0)) > 5) setHasMovedSignificant(true);
+        const downX = pointerDownXRef.current ?? e.clientX;
+        if (Math.abs(e.clientX - downX) > DRAG_THRESHOLD_PX) hasMovedSignificantRef.current = true;
       }
     }
   };
@@ -279,15 +284,16 @@ export default function TimelineCanvas({
     if (canvas && e.pointerId !== undefined) {
       try { canvas.releasePointerCapture(e.pointerId); } catch(e) {}
     }
-    if (!hasMovedSignificant) {
+    if (!hasMovedSignificantRef.current) {
       triggerHitDetection(e.clientX, e.clientY);
     }
     setIsDragging(false);
     setLastPointerX(null);
+    pointerDownXRef.current = null;
   };
 
   return (
-    <div ref={containerRef} style={{ width: '100%', height: '400px', touchAction: 'none' }}>
+    <div style={{ width: '100%', height: '400px', touchAction: 'none' }}>
       <canvas
         ref={canvasRef}
         onPointerDown={handlePointerDown}
