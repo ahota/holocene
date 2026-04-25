@@ -1,14 +1,12 @@
 import { useState, useCallback, useRef } from 'react';
-import { TODAY_HE, getInnerBound } from '../../constants';
+import { TODAY_HE, getInnerBound, EPOCH_START, INITIAL_ZOOM, MAX_ZOOM } from '../../constants';
 
 /**
  * Custom hook to manage the timeline's camera state with adaptive margins.
  */
 export function useTimeline(initialYear: number) {
-  const EPOCH_START = 0;
-  
   const [centerYear, setCenterYear] = useState(initialYear);
-  const [zoom, setZoom] = useState(10);
+  const [zoom, setZoom] = useState(INITIAL_ZOOM);
 
   const initialHalfWidthRef = useRef<number | null>(null);
 
@@ -53,7 +51,7 @@ export function useTimeline(initialYear: number) {
         const innerBound = getInnerBound(screenWidth);
         const effectiveWidth = screenWidth - 2 * innerBound;
         const minZoom = effectiveWidth / TODAY_HE;
-        const newZoom = Math.max(minZoom, Math.min(1000, targetZoom));
+        const newZoom = Math.max(minZoom, Math.min(MAX_ZOOM, targetZoom));
         
         setCenterYear((prevCenter) => {
           const newCenter = zoomCenterYear - (zoomCenterYear - prevCenter) * (prevZoom / newZoom);

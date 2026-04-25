@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { HistoryEvent } from '../data/events';
+import { CHUNK_SIZE, EPOCH_START, MAX_CHUNK_START } from '../constants';
 
 /**
  * Hook to load history events in 2,000-year chunks based on the current viewport.
@@ -36,14 +37,12 @@ export function useEventLoader(centerYear: number, zoom: number, screenWidth: nu
     const startYear = centerYear - halfWidth;
     const endYear = centerYear + halfWidth;
 
-    const CHUNK_SIZE = 2000;
     // Buffer by 1 chunk on each side as per design spec
     const startChunk = (Math.floor(startYear / CHUNK_SIZE) - 1) * CHUNK_SIZE;
     const endChunk = (Math.floor(endYear / CHUNK_SIZE) + 1) * CHUNK_SIZE;
 
     for (let i = startChunk; i <= endChunk; i += CHUNK_SIZE) {
-      // Data is partitioned in [0, 2000, 4000, 6000, 8000, 10000, 12000]
-      if (i >= 0 && i <= 12000) {
+      if (i >= EPOCH_START && i <= MAX_CHUNK_START) {
         fetchChunk(i);
       }
     }

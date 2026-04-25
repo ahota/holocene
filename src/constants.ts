@@ -12,3 +12,12 @@ export function getInnerBound(screenWidth: number): number {
 }
 
 export const TODAY_HE = currentHEYear();
+
+export const EPOCH_START = 0;
+export const INITIAL_ZOOM = 10;
+export const MAX_ZOOM = 1000;
+
+export const CHUNK_SIZE = 2000;
+// Largest chunk start year that could contain events. Derived from today so
+// adding events past 14000 HE (in CE 4000+) extends coverage automatically.
+export const MAX_CHUNK_START = Math.floor(TODAY_HE / CHUNK_SIZE) * CHUNK_SIZE;

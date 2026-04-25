@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
 import { worldToScreen } from '../../utils/math';
 import { calculateLabelLevels } from '../../utils/layout';
 import { HistoryEvent } from '../../data/events';
-import { MARGIN_UNIT } from '../../constants';
+import { MARGIN_UNIT, LABEL_PADDING } from '../../constants';
 
 interface Props {
   centerYear: number;
@@ -42,7 +42,6 @@ export default function TimelineCanvas({
     const ctx = canvas.getContext('2d');
     if (!ctx) return new Map<HistoryEvent, number>();
 
-    const minPadding = 24;
     const levels = [-35, -70, -105, 70, 105, 140];
 
     return calculateLabelLevels(
@@ -53,17 +52,15 @@ export default function TimelineCanvas({
         ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
         return ctx.measureText(text).width;
       },
-      minPadding,
+      LABEL_PADDING,
       levels
     );
   }, [events, zoom, todayHE]);
 
-  const MARGIN_UNIT_FIXED = 32;
-
   const adaptiveMargins = useMemo(() => {
     const dpr = window.devicePixelRatio || 1;
-    const gutter = MARGIN_UNIT_FIXED * (dpr > 1.5 ? 1 : 0.8);
-    const fadeZone = MARGIN_UNIT_FIXED;
+    const gutter = MARGIN_UNIT * (dpr > 1.5 ? 1 : 0.8);
+    const fadeZone = MARGIN_UNIT;
     return { gutter, fadeZone, innerBound: margin };
   }, [margin]);
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { MAX_ZOOM } from '../../constants';
 
 interface Props {
   zoom: number;
@@ -7,14 +8,16 @@ interface Props {
   margin: number;
 }
 
+const MIN_ZOOM_FLOOR = 0.01;
+
 /**
  * Logarithmic zoom slider with dynamic range based on screen width, margins, and epoch length.
  */
 export default function ZoomSlider({ zoom, onZoomChange, todayHE, margin }: Props) {
   const screenWidth = window.innerWidth;
   const effectiveWidth = screenWidth - 2 * margin;
-  const minZoom = Math.max(0.01, effectiveWidth / todayHE); 
-  const maxZoom = 1000;
+  const minZoom = Math.max(MIN_ZOOM_FLOOR, effectiveWidth / todayHE);
+  const maxZoom = MAX_ZOOM;
 
   const toSliderValue = (z: number) => {
     return (

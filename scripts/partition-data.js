@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Must match CHUNK_SIZE in src/constants.ts (cannot import .ts from a build script).
 const CHUNK_SIZE = 2000;
 const masterFile = path.join(__dirname, '../src/data/all_events.json');
 const outputDir = path.join(__dirname, '../public/data');
