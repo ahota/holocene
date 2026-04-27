@@ -69,9 +69,9 @@ export default function App() {
       onPointerDown={() => handleDismiss()}
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transition: `all ${ANIM_MS.reveal}ms ease-in-out`, transform: revealDone ? 'translateY(-25vh)' : 'translateY(0)', position: 'relative', zIndex: Z.reveal, pointerEvents: revealDone ? 'none' : 'auto' }}>
-        <h1 style={{ fontWeight: 300, marginBottom: '2rem', letterSpacing: '0.1rem', textTransform: 'lowercase', color: COLOR.muted, fontSize: '1rem' }}>the year is</h1>
+        <h1 style={{ fontWeight: 300, marginBottom: '2rem', letterSpacing: '0.1rem', textTransform: 'lowercase', color: COLOR.muted, fontSize: '1rem', fontFamily: '"JetBrains Mono", ui-monospace, monospace' }}>the year is</h1>
         <Annometer targetYear={initialHE} initialYear={new Date().getFullYear()} onComplete={() => setRevealDone(true)} />
-        <div style={{ marginTop: '2rem', opacity: revealDone ? 0.5 : 0, transition: `opacity ${ANIM_MS.reveal}ms ease-in`, fontFamily: 'monospace', fontSize: '0.8rem', letterSpacing: '2px' }}>human era (HE)</div>
+        <div style={{ marginTop: '2rem', opacity: revealDone ? 0.5 : 0, transition: `opacity ${ANIM_MS.reveal}ms ease-in`, fontFamily: '"JetBrains Mono", ui-monospace, monospace', fontSize: '0.8rem', letterSpacing: '2px', color: COLOR.dim }}>human era (HE)</div>
       </div>
 
       {revealDone && (
@@ -90,7 +90,7 @@ export default function App() {
             />
           </div>
           <ZoomSlider zoom={zoom} onZoomChange={setZoom} todayHE={TODAY} margin={INNER_BOUND} />
-          <div style={{ position: 'fixed', bottom: '20px', opacity: 0.3, fontFamily: 'monospace', fontSize: '0.7rem', pointerEvents: 'none' }}>scroll or drag to explore the past</div>
+          <div style={{ position: 'fixed', bottom: '20px', fontFamily: '"JetBrains Mono", ui-monospace, monospace', fontSize: '0.6rem', pointerEvents: 'none', color: COLOR.dim, letterSpacing: '0.16em', textTransform: 'lowercase' }}>scroll or drag to explore the past</div>
         </div>
       )}
 
@@ -102,19 +102,20 @@ export default function App() {
             top: popupY,
             transform: 'translate(-50%, -100%) translateY(-10px)',
             backgroundColor: COLOR.surface,
-            border: `1px solid ${COLOR.border}`,
+            borderLeft: `2px solid ${COLOR.bronze}`,
             padding: '1rem',
             width: `${popupWidth}px`,
             zIndex: Z.popup,
             boxShadow: SHADOW.popup,
             animation: `${showPopup ? 'popIn' : 'popOut'} ${ANIM_MS.popup}ms ease-out forwards`,
             pointerEvents: 'auto',
+            fontFamily: '"Inter", system-ui, sans-serif',
           }}
           onPointerDown={(e) => e.stopPropagation()}
         >
-          <div style={{ fontWeight: 800, fontSize: '0.9rem', marginBottom: '0.5rem', color: COLOR.fg }}>{selectedEvent.title}</div>
-          <div style={{ fontSize: '0.75rem', color: COLOR.body, lineHeight: 1.4 }}>{selectedEvent.description}</div>
-          <div style={{ marginTop: '0.8rem', fontSize: '0.7rem', color: COLOR.dim, fontFamily: 'monospace' }}>Year: {Math.floor(selectedEvent.isToday ? TODAY : selectedEvent.year)} HE</div>
+          <div style={{ fontWeight: 700, fontSize: '0.95rem', marginBottom: '0.5rem', color: COLOR.placardTitle, lineHeight: 1.2 }}>{selectedEvent.title}</div>
+          <div style={{ fontSize: '0.78rem', color: COLOR.placardBody, lineHeight: 1.55 }}>{selectedEvent.description}</div>
+          <div style={{ marginTop: '0.7rem', fontSize: '0.62rem', color: COLOR.placardYear, fontFamily: '"JetBrains Mono", ui-monospace, monospace', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{Math.floor(selectedEvent.isToday ? TODAY : selectedEvent.year)} HE</div>
           <div style={{
             position: 'absolute',
             bottom: '-6px',
@@ -123,9 +124,7 @@ export default function App() {
             width: '10px',
             height: '10px',
             backgroundColor: COLOR.surface,
-            borderRight: `1px solid ${COLOR.border}`,
-            borderBottom: `1px solid ${COLOR.border}`,
-            display: Math.abs(popupX - clampedX) > popupWidth / 2 - 5 ? 'none' : 'block'
+            display: Math.abs(popupX - clampedX) > popupWidth / 2 - 5 ? 'none' : 'block',
           }} />
         </div>
       )}

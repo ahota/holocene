@@ -28,10 +28,6 @@ export const COLOR = {
   placardBody: '#b3ad9d',
   placardYear: '#8a8275',
 
-  // legacy aliases (removed in Task 4 once App.tsx migrates)
-  fg: '#c9c3b4',
-  body: '#b3ad9d',
-  border: '#2c2a25',
 } as const;
 
 export const SHADOW = {
