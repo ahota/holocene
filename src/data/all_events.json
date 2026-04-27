@@ -609,7 +609,8 @@
     "year": 12026,
     "title": "Present Day",
     "description": "Today in the Holocene calendar.",
-    "importance": 1
+    "importance": 1,
+    "isToday": true
   },
   {
     "year": 5600,
