@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Interactive timeline visualization of the Holocene / Human Era (HE) calendar. `0 HE = 10,001 BC`, so the current year is roughly `current CE year + 10,000`. The app opens with an odometer reveal animating from the CE year to the HE year, then transitions to a draggable, zoomable canvas timeline of historical events.
+Interactive timeline visualization of the Holocene / Human Era (HE) calendar. `0 HE = 10,001 BC`, so the current year is roughly `current CE year + 10,000`. The app opens with an annometer reveal animating from the CE year to the HE year, then transitions to a draggable, zoomable canvas timeline of historical events.
 
 `GEMINI.md` is the spec/style document for this repo. Read it for design intent and the coding/git conventions (120-col limit, comments explain *why*, 50/72 commit messages in imperative lowercase, DRY/KISS, never commit without a visual or interactive test).
 
@@ -72,7 +72,7 @@ Chunks accumulate in component state; they're never evicted. This is fine becaus
 
 ### App-level glue — `App.tsx`
 
-Two-phase UI gated by `revealDone`: odometer first, then timeline. The popup for a clicked event is rendered by `App` (not the canvas) so it can sit above the timeline DOM and animate in/out. Popup x is `worldToScreen(...) + INNER_BOUND + xOffset`, then clamped to keep the 280px box on-screen; the little arrow under the popup hides itself when the clamp would otherwise detach it from the marker. The popup auto-dismisses if the anchored event scrolls outside the visible band.
+Two-phase UI gated by `revealDone`: annometer first, then timeline. The popup for a clicked event is rendered by `App` (not the canvas) so it can sit above the timeline DOM and animate in/out. Popup x is `worldToScreen(...) + INNER_BOUND + xOffset`, then clamped to keep the 280px box on-screen; the little arrow under the popup hides itself when the clamp would otherwise detach it from the marker. The popup auto-dismisses if the anchored event scrolls outside the visible band.
 
 ## Conventions specific to this repo
 
