@@ -3,6 +3,7 @@ import { worldToScreen } from '../../utils/math';
 import { calculateLabelLevels, getLabelGeometry, shouldShowYear } from '../../utils/layout';
 import { HistoryEvent } from '../../data/events';
 import { MARGIN_UNIT, LABEL_PADDING, CANVAS_HEIGHT_PX } from '../../constants';
+import { COLOR } from '../../theme';
 
 interface Props {
   centerYear: number;
@@ -52,7 +53,7 @@ export default function TimelineCanvas({
       zoom,
       todayHE,
       (text, isToday) => {
-        ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
+        ctx.font = isToday ? 'bold 12px "Inter", system-ui, sans-serif' : '11px "Inter", system-ui, sans-serif';
         return ctx.measureText(text).width;
       },
       LABEL_PADDING,
@@ -109,7 +110,7 @@ export default function TimelineCanvas({
     ctx.beginPath();
     ctx.moveTo(0, height / 2);
     ctx.lineTo(width, height / 2);
-    ctx.strokeStyle = '#333';
+    ctx.strokeStyle = COLOR.hairline;
     ctx.lineWidth = 1;
     ctx.stroke();
 
@@ -123,7 +124,7 @@ export default function TimelineCanvas({
     const endYear = Math.ceil(screenToWorld(width, width) / interval) * interval;
 
     ctx.textAlign = 'center';
-    ctx.font = '10px monospace';
+    ctx.font = '10px "JetBrains Mono", ui-monospace, monospace';
 
     for (let year = startYear; year <= endYear; year += interval) {
       if (year > todayHE) continue;
@@ -138,11 +139,11 @@ export default function TimelineCanvas({
       ctx.beginPath();
       ctx.moveTo(x, height / 2 - (isMillennium ? 25 : isCentury ? 15 : 8));
       ctx.lineTo(x, height / 2 + (isMillennium ? 25 : isCentury ? 15 : 8));
-      ctx.strokeStyle = isMillennium ? '#999' : isCentury ? '#666' : '#444';
+      ctx.strokeStyle = isMillennium ? COLOR.muted : isCentury ? COLOR.dim : COLOR.hairline;
       ctx.stroke();
 
       if (isMillennium || (zoom > 2 && isCentury) || zoom > 20) {
-        ctx.fillStyle = isMillennium ? '#fff' : '#aaa';
+        ctx.fillStyle = isMillennium ? COLOR.text : COLOR.muted;
         ctx.fillText(year.toString(), x, height / 2 + (isMillennium ? 40 : 30));
       }
     }
@@ -159,17 +160,25 @@ export default function TimelineCanvas({
       const isToday = event.isToday || eventYear >= todayHE;
       ctx.beginPath();
       ctx.arc(x, height / 2, isToday ? 5 : 4, 0, Math.PI * 2);
-      ctx.fillStyle = isToday ? '#ff0000' : '#ffffff';
+      if (isToday) {
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = COLOR.bronzeGlow;
+        ctx.fillStyle = COLOR.bronze;
+      } else {
+        ctx.fillStyle = COLOR.text;
+      }
       ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = 'transparent';
 
       const selectedY = labelAssignments.get(event);
       if (selectedY !== undefined) {
         const hasYear = shouldShowYear(zoom, isToday);
         const yearLabel = `${Math.floor(eventYear)} HE`;
 
-        ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
+        ctx.font = isToday ? 'bold 12px "Inter", system-ui, sans-serif' : '11px "Inter", system-ui, sans-serif';
         const titleWidth = ctx.measureText(event.title).width;
-        ctx.font = '10px monospace';
+        ctx.font = '10px "JetBrains Mono", ui-monospace, monospace';
         const yearWidth = hasYear ? ctx.measureText(yearLabel).width : 0;
         const g = getLabelGeometry(selectedY, hasYear, Math.max(titleWidth, yearWidth));
         const baseY = height / 2;
@@ -180,18 +189,18 @@ export default function TimelineCanvas({
         ctx.lineTo(x + g.connectorX, baseY + g.centerYOffset);
         ctx.moveTo(x + g.connectorX, baseY + g.bracketTop);
         ctx.lineTo(x + g.connectorX, baseY + g.bracketBottom);
-        ctx.strokeStyle = isToday ? 'rgba(255, 68, 68, 0.5)' : 'rgba(255, 255, 255, 0.25)';
+        ctx.strokeStyle = isToday ? COLOR.bronze : COLOR.hairline;
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
-        ctx.fillStyle = isToday ? '#ff4444' : '#ffffff';
+        ctx.font = isToday ? 'bold 12px "Inter", system-ui, sans-serif' : '11px "Inter", system-ui, sans-serif';
+        ctx.fillStyle = isToday ? COLOR.bronze : COLOR.text;
         ctx.textAlign = 'left';
         ctx.fillText(event.title, x + g.textX, baseY + g.titleY);
 
         if (g.yearY !== null) {
-          ctx.fillStyle = '#888';
-          ctx.font = '10px monospace';
+          ctx.fillStyle = COLOR.muted;
+          ctx.font = '10px "JetBrains Mono", ui-monospace, monospace';
           ctx.fillText(yearLabel, x + g.textX, baseY + g.yearY);
         }
       }
@@ -231,9 +240,9 @@ export default function TimelineCanvas({
         const isToday = event.isToday || eventYear >= todayHE;
         const hasYear = shouldShowYear(zoom, isToday);
 
-        ctx.font = isToday ? 'bold 12px sans-serif' : '11px sans-serif';
+        ctx.font = isToday ? 'bold 12px "Inter", system-ui, sans-serif' : '11px "Inter", system-ui, sans-serif';
         const titleWidth = ctx.measureText(event.title).width;
-        ctx.font = '10px monospace';
+        ctx.font = '10px "JetBrains Mono", ui-monospace, monospace';
         const yearWidth = hasYear ? ctx.measureText(`${Math.floor(eventYear)} HE`).width : 0;
         const g = getLabelGeometry(selectedY, hasYear, Math.max(titleWidth, yearWidth));
 
