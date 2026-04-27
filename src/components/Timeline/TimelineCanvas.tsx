@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
 import { worldToScreen } from '../../utils/math';
 import { calculateLabelLevels, getLabelGeometry, shouldShowYear } from '../../utils/layout';
 import { HistoryEvent } from '../../data/events';
+import { Era } from '../../data/eras';
+import { shouldShowEraLabel } from '../../utils/eraLayout';
 import { MARGIN_UNIT, LABEL_PADDING, CANVAS_HEIGHT_PX } from '../../constants';
 import { COLOR } from '../../theme';
 
@@ -9,6 +11,7 @@ interface Props {
   centerYear: number;
   zoom: number;
   events: HistoryEvent[];
+  eras: Era[];
   onScroll: (deltaX: number, screenWidth: number) => void;
   onZoom: (delta: number, zoomCenterYear: number, screenWidth: number) => void;
   onZoomTo: (targetZoom: number, zoomCenterYear: number, screenWidth: number) => void;
@@ -24,6 +27,7 @@ export default function TimelineCanvas({
   centerYear,
   zoom,
   events,
+  eras,
   onScroll,
   onZoom,
   onZoomTo,
@@ -105,7 +109,39 @@ export default function TimelineCanvas({
     }
 
     ctx.clearRect(0, 0, width, height);
-    
+
+    // Era bands — faint strips above the baseline; render before
+    // baseline/ticks so markers and labels stack on top.
+    const eraBandY = height / 2 - 35;
+    const eraBandH = 18;
+    eras.forEach((era) => {
+      const xStart = worldToScreen(era.start, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
+      const xEnd = worldToScreen(era.end, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
+      const bandWidth = xEnd - xStart;
+      if (xEnd < 0 || xStart > width) return;
+
+      // Apply edge-fade opacity using the band's center.
+      const cx = (xStart + xEnd) / 2;
+      ctx.globalAlpha = getEdgeOpacity(cx, width);
+      if (ctx.globalAlpha <= 0) return;
+
+      ctx.fillStyle = COLOR.eraBandBg;
+      ctx.fillRect(xStart, eraBandY, bandWidth, eraBandH);
+      ctx.strokeStyle = COLOR.hairline;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(xStart, eraBandY, bandWidth, eraBandH);
+
+      if (shouldShowEraLabel(bandWidth)) {
+        ctx.font = '9px "JetBrains Mono", ui-monospace, monospace';
+        ctx.fillStyle = COLOR.verdigris;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(era.name.toUpperCase(), cx, eraBandY + eraBandH / 2);
+        ctx.textBaseline = 'alphabetic';
+      }
+    });
+    ctx.globalAlpha = 1.0;
+
     // Background baseline
     ctx.beginPath();
     ctx.moveTo(0, height / 2);
@@ -207,7 +243,7 @@ export default function TimelineCanvas({
     });
     
     ctx.globalAlpha = 1.0;
-  }, [centerYear, zoom, events, screenToWorld, todayHE, adaptiveMargins, getEdgeOpacity, labelAssignments]);
+  }, [centerYear, zoom, events, eras, screenToWorld, todayHE, adaptiveMargins, getEdgeOpacity, labelAssignments]);
 
   useEffect(() => { draw(); }, [draw]);
 

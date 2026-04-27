@@ -6,6 +6,7 @@ import { useTimeline } from './components/Timeline/useTimeline';
 import { useEventLoader } from './hooks/useEventLoader';
 import { currentHEYear, worldToScreen } from './utils/math';
 import { HistoryEvent } from './data/events';
+import { ERAS } from './data/eras';
 import { CANVAS_HEIGHT_PX } from './constants';
 import { COLOR, SHADOW, ANIM_MS, Z } from './theme';
 
@@ -81,6 +82,7 @@ export default function App() {
               centerYear={centerYear}
               zoom={zoom}
               events={events}
+              eras={ERAS}
               onScroll={scroll}
               onZoom={zoomDelta}
               onZoomTo={zoomTo}
