@@ -118,7 +118,7 @@ export default function TimelineCanvas({
       const xStart = worldToScreen(era.start, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
       const xEnd = worldToScreen(era.end, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
       const bandWidth = xEnd - xStart;
-      if (xEnd < 0 || xStart > width) return;
+      if (xEnd < 0 || xStart > width || bandWidth <= 0) return;
 
       // Apply edge-fade opacity using the band's center.
       const cx = (xStart + xEnd) / 2;
@@ -138,6 +138,7 @@ export default function TimelineCanvas({
         ctx.textBaseline = 'middle';
         ctx.fillText(era.name.toUpperCase(), cx, eraBandY + eraBandH / 2);
         ctx.textBaseline = 'alphabetic';
+        ctx.textAlign = 'start';
       }
     });
     ctx.globalAlpha = 1.0;
