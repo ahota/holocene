@@ -54,7 +54,18 @@ export default function App() {
   return (
     <div
       className="app"
-      style={{ backgroundColor: COLOR.bg, color: COLOR.fg, minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}
+      style={{
+        backgroundColor: revealDone ? COLOR.bg : COLOR.bgReveal,
+        color: COLOR.text,
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+        transition: `background-color ${ANIM_MS.fadeIn}ms ease-out`,
+      }}
       onPointerDown={() => handleDismiss()}
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transition: `all ${ANIM_MS.reveal}ms ease-in-out`, transform: revealDone ? 'translateY(-25vh)' : 'translateY(0)', position: 'relative', zIndex: Z.reveal, pointerEvents: revealDone ? 'none' : 'auto' }}>
