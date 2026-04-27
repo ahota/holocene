@@ -70,7 +70,7 @@ export default function App() {
       }}
       onPointerDown={() => handleDismiss()}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transition: `all ${ANIM_MS.reveal}ms ease-in-out`, transform: revealDone ? 'translateY(-25vh)' : 'translateY(0)', position: 'relative', zIndex: Z.reveal, pointerEvents: revealDone ? 'none' : 'auto' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transition: `transform ${ANIM_MS.reveal}ms ease-in-out, color ${ANIM_MS.fadeIn}ms ease-out`, transform: revealDone ? 'translateY(-25vh)' : 'translateY(0)', color: revealDone ? COLOR.text : '#fff', position: 'relative', zIndex: Z.reveal, pointerEvents: revealDone ? 'none' : 'auto' }}>
         <h1 style={{ fontWeight: 300, marginBottom: '2rem', letterSpacing: '0.1rem', textTransform: 'lowercase', color: COLOR.muted, fontSize: '1rem', fontFamily: '"JetBrains Mono", ui-monospace, monospace' }}>the year is</h1>
         <Annometer targetYear={initialHE} initialYear={new Date().getFullYear()} onComplete={() => setRevealDone(true)} />
         <div style={{ marginTop: '2rem', opacity: revealDone ? 1 : 0, transition: `opacity ${ANIM_MS.reveal}ms ease-in`, fontFamily: '"JetBrains Mono", ui-monospace, monospace', fontSize: '0.8rem', letterSpacing: '2px', color: COLOR.dim }}>human era (HE)</div>

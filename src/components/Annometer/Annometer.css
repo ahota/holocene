@@ -7,7 +7,7 @@
   justify-content: flex-end;
   width: 5ch;
   background-color: transparent;
-  color: #fff;
+  color: inherit;
   line-height: 1.2;
   font-family: "JetBrains Mono", ui-monospace, monospace;
 }
