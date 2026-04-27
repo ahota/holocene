@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import Odometer from './components/Odometer/Odometer';
+import Annometer from './components/Annometer/Annometer';
 import TimelineCanvas from './components/Timeline/TimelineCanvas';
 import ZoomSlider from './components/ZoomSlider/ZoomSlider';
 import { useTimeline } from './components/Timeline/useTimeline';
@@ -70,7 +70,7 @@ export default function App() {
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', transition: `all ${ANIM_MS.reveal}ms ease-in-out`, transform: revealDone ? 'translateY(-25vh)' : 'translateY(0)', position: 'relative', zIndex: Z.reveal, pointerEvents: revealDone ? 'none' : 'auto' }}>
         <h1 style={{ fontWeight: 300, marginBottom: '2rem', letterSpacing: '0.1rem', textTransform: 'lowercase', color: COLOR.muted, fontSize: '1rem' }}>the year is</h1>
-        <Odometer targetYear={initialHE} initialYear={new Date().getFullYear()} onComplete={() => setRevealDone(true)} />
+        <Annometer targetYear={initialHE} initialYear={new Date().getFullYear()} onComplete={() => setRevealDone(true)} />
         <div style={{ marginTop: '2rem', opacity: revealDone ? 0.5 : 0, transition: `opacity ${ANIM_MS.reveal}ms ease-in`, fontFamily: 'monospace', fontSize: '0.8rem', letterSpacing: '2px' }}>human era (HE)</div>
       </div>
 

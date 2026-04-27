@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import './Odometer.css';
+import './Annometer.css';
 
 interface Props {
   targetYear: number;
@@ -8,9 +8,9 @@ interface Props {
 }
 
 /**
- * A mechanical-style odometer reveal with a "sliding down" effect.
+ * A mechanical-style year readout with a "sliding down" reveal effect.
  */
-export default function Odometer({
+export default function Annometer({
   targetYear,
   initialYear,
   onComplete,
@@ -66,20 +66,20 @@ export default function Odometer({
   }, [current]);
 
   return (
-    <div className="odometer-container" aria-label={`The year is ${Math.floor(current)}`}>
+    <div className="annometer-container" aria-label={`The year is ${Math.floor(current)}`}>
       {offsets.map((offset, i) => {
         const reelDigits = i === 0 ? digitsWithBlank : standardDigits;
         const visualOffset = 10 - offset;
-        
+
         return (
           <div key={i} className="reel-container">
-            <div 
-              className="reel" 
+            <div
+              className="reel"
               style={{ transform: `translateY(${-visualOffset * itemHeightPercent}%)` }}
             >
               {reelDigits.map((digit, dIndex) => (
-                <div 
-                  key={dIndex} 
+                <div
+                  key={dIndex}
                   className="digit"
                   style={{ opacity: Math.max(0, 1 - Math.abs(dIndex - visualOffset) * 0.7) }}
                 >

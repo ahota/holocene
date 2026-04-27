@@ -1,22 +1,22 @@
-.odometer-container {
+.annometer-container {
   display: flex;
   font-size: 5rem;
   font-weight: 800;
-  height: 1.2em; /* Fixed height for one digit */
+  height: 1.2em;
   overflow: hidden;
   justify-content: flex-end;
   width: 5ch;
   background-color: transparent;
   color: #fff;
   line-height: 1.2;
-  font-family: monospace;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
 }
 
 .reel-container {
   position: relative;
   width: 1ch;
   height: 100%;
-  overflow: visible; /* Show numbers above/below but they get clipped by odometer-container */
+  overflow: visible;
   transition: opacity 0.5s ease-in-out;
 }
 
