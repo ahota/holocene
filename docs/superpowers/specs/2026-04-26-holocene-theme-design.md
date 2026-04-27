@@ -4,12 +4,12 @@
 
 Replace the current high-contrast monochrome look with a warm, dim,
 "museum hall in fog" theme that supports the project brief: awe, wonder,
-mystique, and intentional restraint. The chronometer reveal stays stark
+mystique, and intentional restraint. The annometer reveal stays stark
 to anchor the "stepping into the hall" beat; everything that fades up
 beneath it adopts the new palette.
 
 This spec covers color tokens, typography, fog treatment, marker / era
-treatment, placard styling, chronometer integration, and minor UI
+treatment, placard styling, annometer integration, and minor UI
 elements (slider, hint). It does not change the timeline's data model,
 scroll/zoom behavior, layout math, or event content. Event curation is
 a separate spec.
@@ -28,13 +28,13 @@ for "today/now."
 |                |                        | timeline has faded up            |
 +----------------+------------------------+----------------------------------+
 | `bgReveal`     | `#000000`              | Background during the            |
-|                |                        | chronometer reveal               |
+|                |                        | annometer reveal               |
 +----------------+------------------------+----------------------------------+
 | `surface`      | `#2a2620`              | Placards (lighter than `bg`,     |
 |                |                        | visually elevated)               |
 +----------------+------------------------+----------------------------------+
 | `text`         | `#c9c3b4`              | Body text, default marker        |
-|                |                        | color, post-reveal chronometer   |
+|                |                        | color, post-reveal annometer   |
 |                |                        | year                             |
 +----------------+------------------------+----------------------------------+
 | `muted`        | `#7a7466`              | Secondary labels, eyebrows,      |
@@ -63,7 +63,7 @@ for "today/now."
 | `placardYear`  | `#8a8275`              | Placard year footer              |
 +----------------+------------------------+----------------------------------+
 
-The chronometer text color during the reveal is `#ffffff` on
+The annometer text color during the reveal is `#ffffff` on
 `bgReveal`. After reveal completes, the bg transitions to `bg` and the
 year text recolors from `#ffffff` to `text`.
 
@@ -71,7 +71,7 @@ year text recolors from `#ffffff` to `text`.
 
 Two faces, used semantically:
 
-- **JetBrains Mono** (400, 500, 700) — *measurement*: chronometer year,
+- **JetBrains Mono** (400, 500, 700) — *measurement*: annometer year,
   eyebrows ("the year is", "human era (HE)"), year labels under markers,
   era band labels, year ticks on the timeline rule, slider label, hint
   text.
@@ -90,7 +90,7 @@ JetBrains Mono.
 +============+============+================================================+
 | `popup`    | 200        | Placard appear / dismiss (existing)            |
 +------------+------------+------------------------------------------------+
-| `reveal`   | 1000       | Chronometer slide-up (existing)                |
+| `reveal`   | 1000       | Annometer slide-up (existing)                |
 +------------+------------+------------------------------------------------+
 | `fadeIn`   | 1500       | Timeline fade-up; `bg` transition window       |
 |            |            | (existing)                                     |
@@ -100,16 +100,16 @@ JetBrains Mono.
 
 ## Component treatments
 
-### Chronometer reveal
+### Annometer reveal
 
 Behavior unchanged. Visual updates:
 
 - Digit font: JetBrains Mono.
 - During the reveal, page bg is `bgReveal` (#000) and digits are
   `#ffffff` (current behavior).
-- When the reveal completes, the chronometer slides up; over `fadeIn`
+- When the reveal completes, the annometer slides up; over `fadeIn`
   ms the page bg transitions to `bg` while the timeline fades in
-  beneath. The chronometer year text recolors from `#ffffff` to `text`
+  beneath. The annometer year text recolors from `#ffffff` to `text`
   over the same window.
 - The "the year is" eyebrow and "human era (HE)" subtitle adopt
   palette colors (`muted` and `dim` respectively) throughout.
@@ -184,7 +184,7 @@ Tuning relative to the brainstorm demo: longer loop (28s vs 14s), lower
 opacity (~0.18 vs 0.28), wider mask falloff. The fog reads as "mist at
 the periphery"; it does not draw the eye.
 
-The fog overlay is hidden during the chronometer reveal. It appears
+The fog overlay is hidden during the annometer reveal. It appears
 together with the timeline.
 
 **Reduced motion**: respect `prefers-reduced-motion: reduce` by freezing
@@ -274,10 +274,10 @@ position and behavior retained.
 2. **Internal consistency**: Every token referenced in the component
    sections appears in the token table. The marker color rule (uniform
    past, bronze today) is stated identically in *Timeline canvas* and
-   *Component treatments*. The chronometer reveal's two-phase palette
-   is consistent across the *Chronometer reveal* and *Color* sections.
+   *Component treatments*. The annometer reveal's two-phase palette
+   is consistent across the *Annometer reveal* and *Color* sections.
 3. **Scope check**: Single coherent theme pass — palette, typography,
-   fog, era bands, placard, slider, hint, chronometer integration.
+   fog, era bands, placard, slider, hint, annometer integration.
    Sized for one implementation plan. Event curation explicitly cleaved
    off.
 4. **Ambiguity check**: "Bronze" applies only to today/now markers, the
