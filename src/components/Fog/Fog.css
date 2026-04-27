@@ -27,6 +27,7 @@
 
 .fog-noise {
   position: absolute;
+  will-change: transform;
   top: 0;
   bottom: 0;
   left: -100%;
@@ -37,7 +38,7 @@
   opacity: 0.18;
   -webkit-mask-image: linear-gradient(90deg, black 0%, transparent 18%, transparent 82%, black 100%);
           mask-image: linear-gradient(90deg, black 0%, transparent 18%, transparent 82%, black 100%);
-  animation: fog-drift 28s linear infinite;
+  animation: fog-drift var(--fog-drift, 28s) linear infinite;
 }
 
 @keyframes fog-drift {

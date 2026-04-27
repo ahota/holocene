@@ -1,5 +1,5 @@
 import React from 'react';
-import { COLOR } from '../../theme';
+import { COLOR, ANIM_MS } from '../../theme';
 import './Fog.css';
 
 /**
@@ -13,7 +13,10 @@ export default function Fog() {
     <div
       className="fog-overlay"
       aria-hidden="true"
-      style={{ ['--fog-bg' as string]: COLOR.bg }}
+      style={{
+        ['--fog-bg' as string]: COLOR.bg,
+        ['--fog-drift' as string]: `${ANIM_MS.fogDrift}ms`,
+      }}
     >
       <div className="fog-noise" />
     </div>
