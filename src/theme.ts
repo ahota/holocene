@@ -39,7 +39,7 @@ export const ANIM_MS = {
   popup: 200,
   reveal: 1000,
   fadeIn: 1500,
-  fogDrift: 28000,
+  fogDrift: 50000,
 } as const;
 
 export const Z = {
