@@ -2,7 +2,6 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import Annometer from './components/Annometer/Annometer';
 import TimelineCanvas from './components/Timeline/TimelineCanvas';
 import ZoomSlider from './components/ZoomSlider/ZoomSlider';
-import Fog from './components/Fog/Fog';
 import { useTimeline } from './components/Timeline/useTimeline';
 import { useEventLoader } from './hooks/useEventLoader';
 import { currentHEYear, worldToScreen } from './utils/math';
@@ -78,7 +77,6 @@ export default function App() {
 
       {revealDone && (
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: `fadeIn ${ANIM_MS.fadeIn}ms ease-out forwards` }}>
-          <Fog />
           <div ref={timelineWrapperRef} style={{ position: 'relative', width: '100%', margin: '2rem 0' }} onPointerDown={(e) => e.stopPropagation()}>
             <TimelineCanvas
               centerYear={centerYear}
