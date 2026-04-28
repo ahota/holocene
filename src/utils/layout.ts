@@ -91,9 +91,9 @@ export function calculateLabelLevels(
     if (aIsToday && !bIsToday) return -1;
     if (!aIsToday && bIsToday) return 1;
 
-    // Then Importance (higher first)
+    // Then Importance (lower number = higher priority)
     if (a.importance !== b.importance) {
-      return b.importance - a.importance;
+      return a.importance - b.importance;
     }
 
     // Then Year
@@ -111,7 +111,7 @@ export function calculateLabelLevels(
     const isToday = event.isToday || event.year >= todayHE;
     
     // Check if we should even show a label
-    const shouldShowLabel = zoom > 5 || event.importance >= 3 || (zoom > 1 && event.importance >= 2);
+    const shouldShowLabel = zoom > 5 || event.importance <= 1 || (zoom > 1 && event.importance <= 2);
     if (!shouldShowLabel && !isToday) continue;
 
     const textWidth = measureText(event.title, isToday);

@@ -9,8 +9,8 @@ describe('calculateLabelLevels', () => {
 
   it('assigns levels stably regardless of order in input array', () => {
     const events: HistoryEvent[] = [
-      { year: 10000, title: 'Event A', importance: 3, description: '' },
-      { year: 10005, title: 'Event B', importance: 3, description: '' },
+      { year: 10000, title: 'Event A', importance: 1, description: '' },
+      { year: 10005, title: 'Event B', importance: 1, description: '' },
     ];
 
     const res1 = calculateLabelLevels(events, 10, today, mockMeasure, 20, levels);
@@ -22,8 +22,8 @@ describe('calculateLabelLevels', () => {
 
   it('prevents overlap on the same level', () => {
     const events: HistoryEvent[] = [
-      { year: 10000, title: 'Long Event Name', importance: 3, description: '' },
-      { year: 10001, title: 'B', importance: 3, description: '' },
+      { year: 10000, title: 'Long Event Name', importance: 1, description: '' },
+      { year: 10001, title: 'B', importance: 1, description: '' },
     ];
 
     // zoom = 1px per year. Event A and B are 1px apart.
@@ -36,11 +36,11 @@ describe('calculateLabelLevels', () => {
 
   it('prioritizes importance', () => {
     const events: HistoryEvent[] = [
-      { year: 10000, title: 'Important', importance: 3, description: '' },
-      { year: 10000, title: 'Less So', importance: 1, description: '' },
+      { year: 10000, title: 'Important', importance: 1, description: '' },
+      { year: 10000, title: 'Less So', importance: 3, description: '' },
     ];
 
-    // At zoom 3, importance 1 should be hidden (zoom <= 5 and importance < 2)
+    // At zoom 3, importance 3 should be hidden (zoom <= 5 and importance > 2)
     const res = calculateLabelLevels(events, 3, today, mockMeasure, 20, levels);
     
     // Important should get the first level
