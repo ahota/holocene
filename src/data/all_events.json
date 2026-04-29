@@ -78,12 +78,6 @@
     "importance": 1
   },
   {
-    "year": 1,
-    "title": "Sabretooth Tiger Extinct",
-    "description": "The Smilodon goes extinct at the very beginning of the Holocene.",
-    "importance": 2
-  },
-  {
     "year": 350,
     "title": "Younger Dryas Closes",
     "description": "A 1,200-year cold snap ends abruptly. Global temperatures stabilize near modern values, opening the climatic window in which agriculture becomes possible.",
@@ -93,12 +87,6 @@
     "year": 1001,
     "title": "The Awakening of Göbekli Tepe",
     "description": "Massive T-shaped pillars carved with predatory beasts are raised.",
-    "importance": 1
-  },
-  {
-    "year": 1100,
-    "title": "Walls of Jericho",
-    "description": "Construction of the first stone walls and tower in the Neolithic city of Jericho.",
     "importance": 2
   },
   {
@@ -156,21 +144,9 @@
     "importance": 1
   },
   {
-    "year": 7001,
-    "title": "Stonehenge: The First Circle",
-    "description": "Earth circular bank and ditch formed; Aubrey Holes are dug.",
-    "importance": 2
-  },
-  {
-    "year": 7401,
-    "title": "Stonehenge Phase 3",
-    "description": "Bluestones and sarsen stones are arranged into the final familiar patterns.",
-    "importance": 2
-  },
-  {
     "year": 7441,
     "title": "The Great Pyramid of Giza",
-    "description": "Completion of the massive limestone monolith for Pharaoh Khufu.",
+    "description": "Two million limestone blocks rise on the Giza plateau into a tomb for Khufu — the tallest human structure for nearly four thousand years.",
     "importance": 2
   },
   {
@@ -192,12 +168,6 @@
     "importance": 2
   },
   {
-    "year": 8669,
-    "title": "Tutankhamun Takes the Throne",
-    "description": "The young Pharaoh begins his brief but famous reign.",
-    "importance": 2
-  },
-  {
     "year": 8678,
     "title": "Burial of Tutankhamun",
     "description": "A young king is laid to rest with legendary treasures.",
@@ -207,18 +177,6 @@
     "year": 9224,
     "title": "Founding of Rome",
     "description": "Traditional date for the founding of Rome by Romulus.",
-    "importance": 2
-  },
-  {
-    "year": 9401,
-    "title": "Hanging Gardens of Babylon",
-    "description": "Legendary terraced gardens built by Nebuchadnezzar II.",
-    "importance": 2
-  },
-  {
-    "year": 9451,
-    "title": "Temple of Artemis",
-    "description": "Completion of the grand temple in Ephesus.",
     "importance": 2
   },
   {
@@ -234,39 +192,9 @@
     "importance": 2
   },
   {
-    "year": 9566,
-    "title": "Statue of Zeus at Olympia",
-    "description": "Chryselephantine sculpture of the king of gods is completed.",
-    "importance": 2
-  },
-  {
-    "year": 9651,
-    "title": "Mausoleum at Halicarnassus",
-    "description": "Tomb built for Mausolus, satrap of Caria.",
-    "importance": 2
-  },
-  {
-    "year": 9721,
-    "title": "Colossus and Pharos",
-    "description": "Rhodes raises a bronze giant; Alexandria builds its lighthouse.",
-    "importance": 2
-  },
-  {
-    "year": 9780,
-    "title": "Great Wall of China",
-    "description": "First Emperor unifies the northern walls into a single defense.",
-    "importance": 2
-  },
-  {
     "year": 9791,
     "title": "The Terracotta Army",
     "description": "Emperor Qin Shi Huang is buried with thousands of unique soldiers.",
-    "importance": 2
-  },
-  {
-    "year": 9805,
-    "title": "Rosetta Stone Carved",
-    "description": "Decree issued in three scripts, later enabling the decipherment of hieroglyphs.",
     "importance": 2
   },
   {
@@ -279,7 +207,7 @@
     "year": 10060,
     "title": "Hero's Steam Engine",
     "description": "Description of the Aeolipile, the first known steam engine.",
-    "importance": 2
+    "importance": 1
   },
   {
     "year": 10079,
@@ -300,39 +228,15 @@
     "importance": 1
   },
   {
-    "year": 10800,
-    "title": "Charlemagne's Coronation",
-    "description": "Pope Leo III crowns Charlemagne Emperor of the Romans on Christmas Day.",
-    "importance": 2
-  },
-  {
     "year": 10900,
     "title": "Maya Civilization Decline",
     "description": "Great cities are abandoned as kings and calendars vanish.",
     "importance": 2
   },
   {
-    "year": 11000,
-    "title": "Voyage of Leif Erikson",
-    "description": "Norse explorer establishes a short-lived settlement in North America.",
-    "importance": 2
-  },
-  {
     "year": 11200,
     "title": "Easter Island Moai",
     "description": "The first massive stone statues are carved on Rapa Nui.",
-    "importance": 2
-  },
-  {
-    "year": 11200,
-    "title": "Rongorongo Script",
-    "description": "System of glyphs developed on Easter Island, potentially an independent invention of writing.",
-    "importance": 2
-  },
-  {
-    "year": 11227,
-    "title": "Death of Genghis Khan",
-    "description": "The Mongol Empire reaches its peak expansion under his successors.",
     "importance": 2
   },
   {
@@ -369,7 +273,7 @@
     "year": 11644,
     "title": "Great Wall Completion",
     "description": "The Ming Dynasty finishes the most extensive version of the defensive wall.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 11653,
@@ -574,7 +478,7 @@
     "year": 11450,
     "title": "Fall of Constantinople",
     "description": "Ottoman cannons breach the walls of the Eastern Roman Empire, ending a thousand-year successor to Rome.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 7600,
