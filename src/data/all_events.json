@@ -3,19 +3,19 @@
     "year": 6900,
     "title": "Unification of Egypt",
     "description": "Narmer unites Upper and Lower Egypt, launching the dynastic age of Pharaohs.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 7650,
     "title": "Indus Valley Cities Rise",
     "description": "Harappa and Mohenjo-daro flourish into planned cities with drainage, trade, and standardized weights.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 7670,
     "title": "Sargon Unites the City-States",
     "description": "An Akkadian conqueror joins Sumer's quarreling cities under one rule. The first multi-city empire in human history.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 8230,
@@ -60,12 +60,6 @@
     "importance": 2
   },
   {
-    "year": 11652,
-    "title": "The Scientific Revolution",
-    "description": "New laws of motion and gravitation crystallize a mechanistic universe, fueling modern science.",
-    "importance": 1
-  },
-  {
     "year": 11865,
     "title": "Germ Theory",
     "description": "Invisible microbes are revealed as the agents of infection, transforming medicine, sanitation, and survival.",
@@ -105,7 +99,7 @@
     "year": 2600,
     "title": "Growth of Çatalhöyük",
     "description": "Large proto-city in Anatolia reaches a peak population of several thousand.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 3600,
@@ -225,7 +219,7 @@
     "year": 10476,
     "title": "Fall of Western Rome",
     "description": "Odoacer deposes Romulus Augustulus, marking the end of the Western Empire.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 10900,
@@ -418,7 +412,7 @@
     "year": 6500,
     "title": "Proto-Sinaitic Script",
     "description": "Turquoise miners in the Sinai desert scrawl a crude alphabet that becomes the ancestor of nearly every writing system on Earth.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 4500,
@@ -460,7 +454,7 @@
     "year": 9479,
     "title": "Cyrus's Cylinder",
     "description": "A Persian king issues a clay-cylinder decree on the conquest of Babylon, releasing captives and restoring local gods. Read by some as the first declaration of religious tolerance.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 10330,
