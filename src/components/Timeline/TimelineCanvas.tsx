@@ -4,7 +4,7 @@ import { calculateLabelLevels, getLabelGeometry, shouldShowYear } from '../../ut
 import { HistoryEvent } from '../../data/events';
 import { Era } from '../../data/eras';
 import { shouldShowEraLabel } from '../../utils/eraLayout';
-import { MARGIN_UNIT, LABEL_PADDING, CANVAS_HEIGHT_PX } from '../../constants';
+import { MARGIN_UNIT, LABEL_PADDING, CANVAS_HEIGHT_PX, EPOCH_START } from '../../constants';
 import { COLOR } from '../../theme';
 
 interface Props {
@@ -164,7 +164,7 @@ export default function TimelineCanvas({
     ctx.font = '10px "JetBrains Mono", ui-monospace, monospace';
 
     for (let year = startYear; year <= endYear; year += interval) {
-      if (year > todayHE) continue;
+      if (year < EPOCH_START || year > todayHE) continue;
       const x = worldToScreen(year, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
       const opacity = getEdgeOpacity(x, width);
       ctx.globalAlpha = opacity;
