@@ -38,14 +38,23 @@ An event does not earn a placard if it is:
 
 ## Importance tiers
 
-The current numbering (3 = always shown, 1 = close-zoom only) is
-inverted to match natural reading (1 = top tier).
+Lower number = higher render priority. The label-collision algorithm
+sorts by importance ascending and assigns levels first-come-first-fit;
+tier 0 wins all priority contests, then tier 1, etc. The visibility
+gate also opens up by tier: tiers 0–1 are always considered, tier 2
+appears at moderate zoom, tier 3 at close zoom.
 
 +-------+-----------------------------+-----------+----------------+
 | Tier  | Bar                         | Volume    | Visibility     |
 +=======+=============================+===========+================+
-| 1     | Trajectory of humankind     | ~50–60    | always shown   |
-|       | toward Type 1 civilization  |           |                |
+| 0     | Absolute critical moments   | ~10–14    | pinned (top    |
+|       | of human history. Pinned    |           | sort priority; |
+|       | so the screen-capacity      |           | always         |
+|       | budget at low zoom is       |           | considered)    |
+|       | spent on these first.       |           |                |
++-------+-----------------------------+-----------+----------------+
+| 1     | Trajectory of humankind     | ~35–50    | always         |
+|       | toward Type 1 civilization  |           | considered     |
 |       | on the Kardashev scale —    |           |                |
 |       | energy capture, planetary   |           |                |
 |       | coordination, physical      |           |                |
@@ -54,7 +63,7 @@ inverted to match natural reading (1 = top tier).
 |       | that shaped what we         |           |                |
 |       | survived.                   |           |                |
 +-------+-----------------------------+-----------+----------------+
-| 2     | Emblematic specific moment  | ~50–70    | zoom > 1       |
+| 2     | Emblematic specific moment  | ~50–75    | zoom > 1       |
 |       | with broad cultural         |           |                |
 |       | resonance, not              |           |                |
 |       | trajectory-shaping.         |           |                |
@@ -65,10 +74,14 @@ inverted to match natural reading (1 = top tier).
 |       | but earned.                 |           |                |
 +-------+-----------------------------+-----------+----------------+
 
-Total target: ~150–180 events (currently 134).
+Total target: ~140–180 events.
 
-The voice rule applies equally across all three tiers. What differs
-is the scope of the implication, not its quality.
+The voice rule applies equally across all four tiers. What differs is
+the scope of the implication, not its quality. The renderer treats
+tiers 0 and 1 identically through the gate (`importance <= 1`); the
+distinction surfaces in the sort comparator (`a.importance -
+b.importance` ascending), which determines who wins level slots when
+the screen runs out.
 
 ### Tier exemplars
 
@@ -260,8 +273,8 @@ export interface HistoryEvent {
   year: number;        // HE
   title: string;       // ≤ 50 chars (target ≤ 30)
   description: string; // ≤ 180 chars (target 120–160)
-  importance: number;  // 1 = trajectory, 2 = cultural anchor,
-                       // 3 = quiet texture
+  importance: number;  // 0=pinned, 1=trajectory, 2=cultural anchor
+                       // (zoom>1), 3=texture (zoom>5)
   isToday?: boolean;
 }
 ```

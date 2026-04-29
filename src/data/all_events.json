@@ -27,7 +27,7 @@
     "year": 8350,
     "title": "Bronze Age Collapse",
     "description": "Palaces burn, trade networks snap, and great powers across the Eastern Mediterranean fall into chaos.",
-    "importance": 1
+    "importance": 0
   },
   {
     "year": 8379,
@@ -51,7 +51,7 @@
     "year": 10947,
     "title": "The Black Death",
     "description": "A plague pandemic rips through Eurasia, emptying cities and reshaping economies and empires.",
-    "importance": 1
+    "importance": 0
   },
   {
     "year": 11582,
@@ -141,7 +141,7 @@
     "year": 6800,
     "title": "Invention of Writing",
     "description": "Sumerians in Mesopotamia develop cuneiform.",
-    "importance": 1
+    "importance": 0
   },
   {
     "year": 7441,
@@ -249,7 +249,7 @@
     "year": 11450,
     "title": "Gutenberg Printing Press",
     "description": "Invention of the movable type printing press.",
-    "importance": 1
+    "importance": 0
   },
   {
     "year": 11522,
@@ -291,7 +291,7 @@
     "year": 11769,
     "title": "Watt's Steam Engine",
     "description": "James Watt patents his efficient steam engine design.",
-    "importance": 2
+    "importance": 0
   },
   {
     "year": 11831,
@@ -339,13 +339,13 @@
     "year": 11969,
     "title": "Apollo 11 Moon Landing",
     "description": "Humans set foot on the Moon for the first time.",
-    "importance": 1
+    "importance": 0
   },
   {
     "year": 11989,
     "title": "World Wide Web Invention",
     "description": "Tim Berners-Lee proposes the global hypertext system.",
-    "importance": 1
+    "importance": 0
   },
   {
     "year": 11998,
@@ -394,7 +394,7 @@
     "year": 4500,
     "title": "Invention of the Wheel",
     "description": "Mesopotamian potters spin the first wheels, and someone realizes they can move things on them.",
-    "importance": 1
+    "importance": 0
   },
   {
     "year": 4500,
@@ -529,18 +529,6 @@
     "importance": 1
   },
   {
-    "year": 11492,
-    "title": "Columbus Reaches the Americas",
-    "description": "A Genoese captain stumbles into a hemisphere unknown to Europeans, triggering the most consequential collision of civilizations in history.",
-    "importance": 1
-  },
-  {
-    "year": 11498,
-    "title": "Vasco da Gama Rounds the Cape",
-    "description": "A Portuguese fleet reaches India by sea, shattering the Arab monopoly on Eastern trade and redrawing global commerce.",
-    "importance": 1
-  },
-  {
     "year": 11257,
     "title": "Samalas Eruption",
     "description": "An Indonesian volcano explodes in the largest eruption of the past seven millennia, triggering a decade of famine across Eurasia.",
@@ -568,7 +556,7 @@
     "year": 11945,
     "title": "Hiroshima",
     "description": "A single bomb destroys a city. The atomic age begins, and humanity now possesses the means to end itself in an afternoon.",
-    "importance": 1
+    "importance": 0
   },
   {
     "year": 11989,
@@ -802,7 +790,7 @@
     "year": 1900,
     "title": "First Farmed Wheat",
     "description": "Foragers in southeastern Anatolia cultivate emmer and einkorn wheat, replacing wild gathering with deliberate planting. The slowest-motion revolution in human history begins.",
-    "importance": 1
+    "importance": 0
   },
   {
     "year": 2200,
