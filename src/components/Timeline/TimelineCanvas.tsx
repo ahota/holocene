@@ -65,31 +65,39 @@ export default function TimelineCanvas({
     );
   }, [events, zoom, todayHE]);
 
-  const adaptiveMargins = useMemo(() => {
+  // Margins shrink to compact values when the whole epoch fits on screen
+  // (no panning possible, so the gutter is purely decorative space).
+  const getMargins = useCallback((screenWidth: number) => {
     const dpr = window.devicePixelRatio || 1;
-    const gutter = MARGIN_UNIT * (dpr > 1.5 ? 1 : 0.8);
-    const fadeZone = MARGIN_UNIT;
-    return { gutter, fadeZone, innerBound: margin };
-  }, [margin]);
-
-  const getEffectiveWidth = (width: number) => width - 2 * adaptiveMargins.innerBound;
+    const epochInPixels = (todayHE - EPOCH_START) * zoom;
+    const compactMode = epochInPixels <= screenWidth - 2 * LABEL_PADDING;
+    if (compactMode) {
+      return { gutter: 4, fadeZone: 16, innerBound: LABEL_PADDING };
+    }
+    return {
+      gutter: MARGIN_UNIT * (dpr > 1.5 ? 1 : 0.8),
+      fadeZone: MARGIN_UNIT,
+      innerBound: margin,
+    };
+  }, [margin, zoom, todayHE]);
 
   const screenToWorld = useCallback(
     (screenX: number, width: number) => {
-      const effectiveWidth = getEffectiveWidth(width);
-      const relativeX = screenX - adaptiveMargins.innerBound;
+      const m = getMargins(width);
+      const effectiveWidth = width - 2 * m.innerBound;
+      const relativeX = screenX - m.innerBound;
       return (relativeX - effectiveWidth / 2) / zoom + centerYear;
     },
-    [centerYear, zoom, adaptiveMargins]
+    [centerYear, zoom, getMargins]
   );
 
   const getEdgeOpacity = useCallback((x: number, width: number) => {
-    const { gutter, fadeZone } = adaptiveMargins;
+    const { gutter, fadeZone } = getMargins(width);
     if (x < gutter || x > width - gutter) return 0;
     if (x < gutter + fadeZone) return (x - gutter) / fadeZone;
     if (x > width - (gutter + fadeZone)) return (width - gutter - x) / fadeZone;
     return 1;
-  }, [adaptiveMargins]);
+  }, [getMargins]);
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -100,7 +108,8 @@ export default function TimelineCanvas({
     const dpr = window.devicePixelRatio || 1;
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
-    const effectiveWidth = getEffectiveWidth(width);
+    const m = getMargins(width);
+    const effectiveWidth = width - 2 * m.innerBound;
 
     if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
       canvas.width = width * dpr;
@@ -115,8 +124,8 @@ export default function TimelineCanvas({
     const eraBandY = height / 2 - 35;
     const eraBandH = 18;
     eras.forEach((era) => {
-      const xStart = worldToScreen(era.start, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
-      const xEnd = worldToScreen(era.end, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
+      const xStart = worldToScreen(era.start, centerYear, zoom, effectiveWidth) + m.innerBound;
+      const xEnd = worldToScreen(era.end, centerYear, zoom, effectiveWidth) + m.innerBound;
       const bandWidth = xEnd - xStart;
       if (xEnd < 0 || xStart > width || bandWidth <= 0) return;
 
@@ -165,7 +174,7 @@ export default function TimelineCanvas({
 
     for (let year = startYear; year <= endYear; year += interval) {
       if (year < EPOCH_START || year > todayHE) continue;
-      const x = worldToScreen(year, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
+      const x = worldToScreen(year, centerYear, zoom, effectiveWidth) + m.innerBound;
       const opacity = getEdgeOpacity(x, width);
       ctx.globalAlpha = opacity;
       if (opacity <= 0) continue;
@@ -188,7 +197,7 @@ export default function TimelineCanvas({
     // Historical Events with stable collision-aware labels
     events.forEach((event) => {
       const eventYear = event.isToday ? todayHE : event.year;
-      const x = worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
+      const x = worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + m.innerBound;
       const opacity = getEdgeOpacity(x, width);
       
       ctx.globalAlpha = opacity;
@@ -244,7 +253,7 @@ export default function TimelineCanvas({
     });
     
     ctx.globalAlpha = 1.0;
-  }, [centerYear, zoom, events, eras, screenToWorld, todayHE, adaptiveMargins, getEdgeOpacity, labelAssignments]);
+  }, [centerYear, zoom, events, eras, screenToWorld, todayHE, getMargins, getEdgeOpacity, labelAssignments]);
 
   useEffect(() => { draw(); }, [draw]);
 
@@ -256,11 +265,12 @@ export default function TimelineCanvas({
 
     const mouseX = clientX - rect.left;
     const mouseY = clientY - rect.top;
-    const effectiveWidth = getEffectiveWidth(rect.width);
+    const m = getMargins(rect.width);
+    const effectiveWidth = rect.width - 2 * m.innerBound;
 
     for (const event of events) {
       const eventYear = event.isToday ? todayHE : event.year;
-      const x = worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + adaptiveMargins.innerBound;
+      const x = worldToScreen(eventYear, centerYear, zoom, effectiveWidth) + m.innerBound;
       const y = rect.height / 2;
       
       // Marker hit detection
