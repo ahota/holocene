@@ -21,7 +21,7 @@
     "year": 8230,
     "title": "Code of Hammurabi",
     "description": "A Babylonian king carves a famous law code into stone, proclaiming order, justice, and harsh penalties.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 8350,
@@ -33,7 +33,7 @@
     "year": 8379,
     "title": "Oracle Bones",
     "description": "Diviners inscribe questions onto turtle shells and ox scapulae, preserving the earliest known Chinese writing.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 9216,
@@ -105,7 +105,7 @@
     "year": 1100,
     "title": "Walls of Jericho",
     "description": "Construction of the first stone walls and tower in the Neolithic city of Jericho.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 1600,
@@ -177,13 +177,13 @@
     "year": 7441,
     "title": "The Great Pyramid of Giza",
     "description": "Completion of the massive limestone monolith for Pharaoh Khufu.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 7551,
     "title": "Stonehenge: The Sarsen Arrival",
     "description": "Giant sarsen stones are hoisted into the iconic trilithons.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 7600,
@@ -196,12 +196,6 @@
     "title": "Woolly Mammoth Extinct",
     "description": "The last isolated population dies out on Wrangel Island.",
     "importance": 2
-  },
-  {
-    "year": 8600,
-    "title": "Zenith of the Pharaohs",
-    "description": "Egypt reaches its height under Ramesses II.",
-    "importance": 1
   },
   {
     "year": 8669,
@@ -243,7 +237,7 @@
     "year": 9551,
     "title": "Height of Ancient Greece",
     "description": "Golden Age of Athens under Pericles; height of Greek cultural influence.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 9566,
@@ -267,25 +261,25 @@
     "year": 9780,
     "title": "Great Wall of China",
     "description": "First Emperor unifies the northern walls into a single defense.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 9791,
     "title": "The Terracotta Army",
     "description": "Emperor Qin Shi Huang is buried with thousands of unique soldiers.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 9805,
     "title": "Rosetta Stone Carved",
     "description": "Decree issued in three scripts, later enabling the decipherment of hieroglyphs.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 9901,
     "title": "Antikythera Mechanism",
     "description": "Creation of an ancient Greek analog computer of high complexity.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 10060,
@@ -303,7 +297,7 @@
     "year": 10250,
     "title": "Maya Classic Period Peak",
     "description": "Zenith of Maya culture, science, and urban construction.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 10476,
@@ -315,13 +309,13 @@
     "year": 10800,
     "title": "Charlemagne's Coronation",
     "description": "Pope Leo III crowns Charlemagne Emperor of the Romans on Christmas Day.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 10900,
     "title": "Maya Civilization Decline",
     "description": "Great cities are abandoned as kings and calendars vanish.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 11000,
@@ -360,18 +354,6 @@
     "importance": 1
   },
   {
-    "year": 11500,
-    "title": "Aztec Empire Peak",
-    "description": "The Triple Alliance dominates central Mexico from Tenochtitlan.",
-    "importance": 1
-  },
-  {
-    "year": 11500,
-    "title": "Inca Empire Peak",
-    "description": "The largest empire in pre-Columbian America reaches its height.",
-    "importance": 1
-  },
-  {
     "year": 11522,
     "title": "First Sea Circumnavigation",
     "description": "The Magellan-Elcano expedition completes the first trip around the world.",
@@ -382,12 +364,6 @@
     "title": "Copernican Revolution",
     "description": "Heliocentric model is published by Nicolas Copernicus.",
     "importance": 2
-  },
-  {
-    "year": 11600,
-    "title": "Spanish Golden Age",
-    "description": "The Spanish Empire becomes a global superpower.",
-    "importance": 1
   },
   {
     "year": 11608,
@@ -402,16 +378,10 @@
     "importance": 1
   },
   {
-    "year": 11650,
-    "title": "Dutch Golden Age",
-    "description": "The Dutch Republic dominates global trade and maritime power.",
-    "importance": 1
-  },
-  {
     "year": 11653,
     "title": "Completion of the Taj Mahal",
     "description": "Shah Jahan finishes the white marble tomb for his wife.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 11662,
@@ -424,12 +394,6 @@
     "title": "Watt's Steam Engine",
     "description": "James Watt patents his efficient steam engine design.",
     "importance": 2
-  },
-  {
-    "year": 11812,
-    "title": "First French Empire Peak",
-    "description": "Napoleon Bonaparte expands French dominance across Europe.",
-    "importance": 1
   },
   {
     "year": 11831,
@@ -460,12 +424,6 @@
     "title": "Amundsen Reaches South Pole",
     "description": "Expedition becomes the first to reach the geographic South Pole.",
     "importance": 2
-  },
-  {
-    "year": 11920,
-    "title": "British Empire Peak",
-    "description": "The largest empire in history reaches its maximum territorial extent.",
-    "importance": 1
   },
   {
     "year": 11924,
@@ -520,19 +478,19 @@
     "year": 5600,
     "title": "Ggantija Temples",
     "description": "Massive limestone megaliths rise on Malta, built by a culture that then vanishes — older than Stonehenge and the pyramids.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 6800,
     "title": "Skara Brae",
     "description": "A Neolithic village is buried under Scottish sand dunes, its stone furniture preserved intact for five thousand years.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 7000,
     "title": "Newgrange",
     "description": "A passage tomb is built in Ireland, its inner chamber aligned with razor precision to the winter solstice sunrise.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 5500,
@@ -562,7 +520,7 @@
     "year": 5000,
     "title": "Varna Gold Necropolis",
     "description": "A Bulgarian cemetery yields the oldest worked gold ever found, buried with a single individual of unknown status.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 6500,
@@ -598,7 +556,7 @@
     "year": 7800,
     "title": "Rise of Carthage",
     "description": "Phoenician settlers plant a colony on the North African coast that grows into a maritime empire to rival Rome.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 9700,
@@ -622,7 +580,7 @@
     "year": 10650,
     "title": "Tang Dynasty Peak",
     "description": "China's most cosmopolitan era opens its capital to the world, blending poetry, silk, and Buddhist art with reach from Korea to Persia.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 11450,
@@ -631,16 +589,10 @@
     "importance": 1
   },
   {
-    "year": 11500,
-    "title": "Ottoman Empire Peak",
-    "description": "Suleiman the Magnificent rules a three-continent empire from Vienna's gates to the Persian Gulf.",
-    "importance": 1
-  },
-  {
     "year": 7600,
     "title": "Nebra Sky Disk",
     "description": "A bronze disk inlaid with gold stars and a crescent moon is buried in Saxony — the oldest known depiction of the cosmos.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 11404,
@@ -652,7 +604,7 @@
     "year": 9950,
     "title": "Dead Sea Scrolls Deposited",
     "description": "A sect seals ancient scripture into desert caves at Qumran, where it will lie hidden for two thousand years.",
-    "importance": 1
+    "importance": 2
   },
   {
     "year": 10500,
@@ -707,5 +659,65 @@
     "title": "Great Fire of London",
     "description": "A bakery fire consumes most of the medieval city in four days, prompting a total architectural rebuild and the birth of modern insurance.",
     "importance": 2
+  },
+  {
+    "year": 11914,
+    "title": "Assassination at Sarajevo",
+    "description": "A Bosnian Serb shoots an archduke on a Sarajevo street. The gunshot triggers four years of trench warfare and twenty million dead.",
+    "importance": 1
+  },
+  {
+    "year": 11942,
+    "title": "Auschwitz",
+    "description": "Industrial-scale mass murder begins at a converted Polish camp. Six million Jews and millions of others die before the war ends.",
+    "importance": 1
+  },
+  {
+    "year": 11945,
+    "title": "Hiroshima",
+    "description": "A single bomb destroys a city. The atomic age begins, and humanity now possesses the means to end itself in an afternoon.",
+    "importance": 1
+  },
+  {
+    "year": 11989,
+    "title": "Fall of the Berlin Wall",
+    "description": "East Berliners breach the wall to cheering crowds. The Cold War ends without the nuclear exchange both sides had spent forty years preparing.",
+    "importance": 1
+  },
+  {
+    "year": 11859,
+    "title": "Carrington Event",
+    "description": "A solar storm overwhelms telegraph wires worldwide; sparks fly from operators' equipment. A storm of that size today would crash the modern grid.",
+    "importance": 1
+  },
+  {
+    "year": 11908,
+    "title": "Tunguska Event",
+    "description": "A meteor airbursts over Siberian forest, flattening 2,000 square kilometers of trees. No crater, no impactor recovered, no fatalities — by luck of geography.",
+    "importance": 1
+  },
+  {
+    "year": 11942,
+    "title": "First Nuclear Chain Reaction",
+    "description": "Beneath a Chicago squash court, scientists sustain the first controlled nuclear chain reaction. Energy capture at a new order of magnitude — and a new kind of weapon.",
+    "importance": 1
+  },
+  {
+    "year": 11957,
+    "title": "Sputnik",
+    "description": "A small radio-emitting sphere reaches orbit, becoming the first human-made object to circle Earth. Humanity has stepped off the planet.",
+    "importance": 1
+  },
+  {
+    "year": 11962,
+    "title": "Cuban Missile Crisis",
+    "description": "Soviet missiles in Cuba bring the United States and the USSR to within hours of nuclear exchange. Closest documented brush with self-extinction.",
+    "importance": 1
+  },
+  {
+    "year": 12012,
+    "title": "Voyager Crosses the Heliopause",
+    "description": "A 1977 spacecraft becomes the first human-made object to enter interstellar space. It carries a golden record of who we were when we sent it.",
+    "importance": 1
   }
 ]
