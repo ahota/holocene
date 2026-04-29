@@ -90,9 +90,9 @@
     "importance": 2
   },
   {
-    "year": 300,
-    "title": "End of the Last Ice Age",
-    "description": "Climate warms and glaciers retreat, stabilizing the Holocene epoch.",
+    "year": 350,
+    "title": "Younger Dryas Closes",
+    "description": "A 1,200-year cold snap ends abruptly. Global temperatures stabilize near modern values, opening the climatic window in which agriculture becomes possible.",
     "importance": 1
   },
   {
@@ -892,6 +892,42 @@
     "year": 11914,
     "title": "Last Passenger Pigeon",
     "description": "Martha, the last passenger pigeon, dies in Cincinnati Zoo. A species that once darkened the sky in flocks of billions is gone inside a century of industrialized hunting.",
+    "importance": 3
+  },
+  {
+    "year": 1500,
+    "title": "Natufian Burials at Eynan",
+    "description": "Hunter-gatherers in the Levant bury their dead with ground-stone tools and shell ornaments — among the first evidence of permanent settlements before farming.",
+    "importance": 3
+  },
+  {
+    "year": 1900,
+    "title": "First Farmed Wheat",
+    "description": "Foragers in southeastern Anatolia cultivate emmer and einkorn wheat, replacing wild gathering with deliberate planting. The slowest-motion revolution in human history begins.",
+    "importance": 1
+  },
+  {
+    "year": 2200,
+    "title": "Earliest Pottery in East Asia",
+    "description": "Jōmon foragers on the Japanese archipelago fire clay vessels for boiling — among the oldest known pottery anywhere, predating sedentism in their own region.",
+    "importance": 2
+  },
+  {
+    "year": 2800,
+    "title": "Domestication of Goats",
+    "description": "Herders in the Zagros Mountains tame the bezoar ibex into a pliable food and clothing source. Cheese and yogurt emerge as preservation strategies for milk.",
+    "importance": 2
+  },
+  {
+    "year": 3800,
+    "title": "Domestication of Sheep",
+    "description": "Herders in the Fertile Crescent tame mouflon into wool-bearing sheep. Textile manufacture becomes a continuous resource rather than a hunting outcome.",
+    "importance": 2
+  },
+  {
+    "year": 4200,
+    "title": "Earliest Cave Art at Magura",
+    "description": "Bulgarian artists paint dancing figures and astronomical observations using bat guano as pigment. Among the latest cave-art traditions, surviving into the Copper Age.",
     "importance": 3
   }
 ]
