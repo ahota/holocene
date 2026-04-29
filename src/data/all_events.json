@@ -13,8 +13,8 @@
   },
   {
     "year": 7670,
-    "title": "Akkadian Empire",
-    "description": "Sargon of Akkad forges a new kind of empire, linking Mesopotamian city-states under one rule.",
+    "title": "Sargon Unites the City-States",
+    "description": "An Akkadian conqueror joins Sumer's quarreling cities under one rule. The first multi-city empire in human history.",
     "importance": 1
   },
   {
@@ -560,26 +560,26 @@
   },
   {
     "year": 9700,
-    "title": "Assyrian Empire Peak",
-    "description": "The world's first true military superpower crushes rivals from Egypt to Persia with iron discipline.",
+    "title": "Library of Ashurbanipal",
+    "description": "An Assyrian king assembles tens of thousands of clay tablets at Nineveh — the first systematic library, copying everything its agents could find across the empire.",
+    "importance": 2
+  },
+  {
+    "year": 9479,
+    "title": "Cyrus's Cylinder",
+    "description": "A Persian king issues a clay-cylinder decree on the conquest of Babylon, releasing captives and restoring local gods. Read by some as the first declaration of religious tolerance.",
     "importance": 1
   },
   {
-    "year": 9480,
-    "title": "Achaemenid Persian Empire",
-    "description": "Cyrus the Great forges the largest empire yet seen, stretching from the Aegean to the Indus.",
-    "importance": 1
-  },
-  {
-    "year": 10320,
-    "title": "Gupta Empire Golden Age",
-    "description": "India's classical peak births decimal numerals, advanced astronomy, and the concept of zero.",
-    "importance": 1
+    "year": 10330,
+    "title": "Aryabhata Calculates Pi",
+    "description": "An Indian mathematician computes π to four decimals and proposes that Earth rotates on its axis. Among the founding works of the Gupta golden age.",
+    "importance": 2
   },
   {
     "year": 10650,
-    "title": "Tang Dynasty Peak",
-    "description": "China's most cosmopolitan era opens its capital to the world, blending poetry, silk, and Buddhist art with reach from Korea to Persia.",
+    "title": "Foreign Envoys at Chang'an",
+    "description": "Tang China's capital becomes the most cosmopolitan city on Earth — Persian, Korean, and Sogdian quarters trading silk, poetry, and Buddhist sutras.",
     "importance": 2
   },
   {
@@ -719,5 +719,113 @@
     "title": "Voyager Crosses the Heliopause",
     "description": "A 1977 spacecraft becomes the first human-made object to enter interstellar space. It carries a golden record of who we were when we sent it.",
     "importance": 1
+  },
+  {
+    "year": 11529,
+    "title": "Suleiman Besieges Vienna",
+    "description": "Ottoman cannons reach the gates of Vienna, the deepest Ottoman push into Europe. Suleiman withdraws; the boundary holds for the next two centuries.",
+    "importance": 2
+  },
+  {
+    "year": 9500,
+    "title": "Nok Terracottas",
+    "description": "Iron-working farmers on the Jos Plateau shape life-sized terracotta heads with precise human features. The earliest figurative sculpture from sub-Saharan Africa.",
+    "importance": 2
+  },
+  {
+    "year": 10350,
+    "title": "Aksum's Obelisks",
+    "description": "Stone slabs taller than five-story buildings rise over the highlands of what is now Ethiopia, marking royal tombs of one of antiquity's great trade empires.",
+    "importance": 2
+  },
+  {
+    "year": 11324,
+    "title": "Mansa Musa's Hajj",
+    "description": "The king of Mali crosses the Sahara to Mecca with a caravan of slaves and gold so vast it depresses the price of gold across Egypt for a decade.",
+    "importance": 2
+  },
+  {
+    "year": 11300,
+    "title": "Great Zimbabwe",
+    "description": "Drystone walls thirty feet high enclose a southern African capital of trade in gold, ivory, and Chinese porcelain — built without mortar.",
+    "importance": 2
+  },
+  {
+    "year": 7000,
+    "title": "Lapita Pottery Dispersal",
+    "description": "A distinctive geometric pottery style spreads across the western Pacific, marking the deep-time precursor to the great Polynesian voyages still millennia away.",
+    "importance": 2
+  },
+  {
+    "year": 11280,
+    "title": "Maori Reach New Zealand",
+    "description": "Polynesian voyagers cross thousands of miles of southern ocean to reach a temperate land previously empty of humans, the last large landmass in the habitable world to be settled.",
+    "importance": 2
+  },
+  {
+    "year": 6900,
+    "title": "Caral",
+    "description": "Pyramids and sunken plazas rise in a Peruvian valley with no pottery, no metallurgy, no writing — the oldest known city in the Americas.",
+    "importance": 2
+  },
+  {
+    "year": 8500,
+    "title": "Olmec Colossal Heads",
+    "description": "Mesoamerican carvers shape basalt boulders, some weighing twenty tons, into helmeted human heads. Each one is a portrait; we don't know whose.",
+    "importance": 2
+  },
+  {
+    "year": 11050,
+    "title": "Cahokia",
+    "description": "An earthwork city on the Mississippi swells past 20,000 people. Its central pyramid covers more ground than the Great Pyramid of Giza.",
+    "importance": 2
+  },
+  {
+    "year": 9740,
+    "title": "Ashoka's Pillars",
+    "description": "An Indian emperor renounces conquest after a brutal war and inscribes edicts of nonviolence on stone columns across his realm. The earliest decree of state-sponsored compassion.",
+    "importance": 2
+  },
+  {
+    "year": 10510,
+    "title": "Nalanda",
+    "description": "A monastic university in Bihar grows to ten thousand students from across Asia, with libraries so vast their burning later takes months.",
+    "importance": 2
+  },
+  {
+    "year": 10825,
+    "title": "Borobudur",
+    "description": "Two million stone blocks rise on a Javanese plain into the largest Buddhist monument ever built — a stepped mandala that pilgrims circumambulate from base to summit.",
+    "importance": 2
+  },
+  {
+    "year": 11150,
+    "title": "Angkor Wat",
+    "description": "Khmer builders raise a temple complex larger than any cathedral in Europe, oriented to the western horizon and the setting sun, then encode the Hindu cosmos in its layout.",
+    "importance": 2
+  },
+  {
+    "year": 11020,
+    "title": "First Paper Money",
+    "description": "Song-dynasty Sichuan merchants begin trading with printed promissory notes called jiaozi. Currency cuts loose from metal — abstraction enabling planetary trade centuries later.",
+    "importance": 1
+  },
+  {
+    "year": 11040,
+    "title": "Bi Sheng's Movable Type",
+    "description": "A Song printer carves individual characters into clay and fires them, then composes pages by arrangement. Four hundred years before Gutenberg.",
+    "importance": 2
+  },
+  {
+    "year": 11405,
+    "title": "Zheng He's Voyages",
+    "description": "Ming China sends fleets of treasure ships — some five times the length of Columbus's vessels — as far as East Africa, then voluntarily destroys them.",
+    "importance": 2
+  },
+  {
+    "year": 11241,
+    "title": "Mongol Wave Reaches Liegnitz",
+    "description": "Mongol cavalry crushes a combined European force at Legnica in modern Poland, then turns home for a succession crisis. Western Europe survives by accident.",
+    "importance": 2
   }
 ]
