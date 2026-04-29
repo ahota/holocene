@@ -138,12 +138,6 @@
     "importance": 2
   },
   {
-    "year": 5000,
-    "title": "Copper Age Starts",
-    "description": "Humans begin working with copper, transitioning from Stone to Bronze.",
-    "importance": 1
-  },
-  {
     "year": 5600,
     "title": "Horse Domestication",
     "description": "Early taming and milking of horses by the Botai culture in Central Asia.",
@@ -154,12 +148,6 @@
     "title": "Invention of Glass",
     "description": "Core-manufactured glass appears in Mesopotamia.",
     "importance": 2
-  },
-  {
-    "year": 6700,
-    "title": "Bronze Age Starts",
-    "description": "The use of bronze becomes widespread in the Near East.",
-    "importance": 1
   },
   {
     "year": 6701,
@@ -226,12 +214,6 @@
     "title": "Burial of Tutankhamun",
     "description": "A young king is laid to rest with legendary treasures.",
     "importance": 2
-  },
-  {
-    "year": 8800,
-    "title": "Iron Age Starts",
-    "description": "Smelting of iron begins to spread across Europe and Asia.",
-    "importance": 1
   },
   {
     "year": 9224,
@@ -306,12 +288,6 @@
     "importance": 1
   },
   {
-    "year": 10000,
-    "title": "Common Era Begins",
-    "description": "Transition from BC to AD in the Gregorian calendar.",
-    "importance": 1
-  },
-  {
     "year": 10060,
     "title": "Hero's Steam Engine",
     "description": "Description of the Aeolipile, the first known steam engine.",
@@ -334,18 +310,6 @@
     "title": "Fall of Western Rome",
     "description": "Odoacer deposes Romulus Augustulus, marking the end of the Western Empire.",
     "importance": 1
-  },
-  {
-    "year": 10500,
-    "title": "Middle Ages Begin",
-    "description": "Transition from antiquity to the medieval period in Europe.",
-    "importance": 1
-  },
-  {
-    "year": 10500,
-    "title": "The Dark Ages",
-    "description": "Early medieval period following the fall of the Western Roman Empire.",
-    "importance": 2
   },
   {
     "year": 10800,
@@ -388,12 +352,6 @@
     "title": "Invention of Eyeglasses",
     "description": "Spectacles for correcting vision are developed in Italy.",
     "importance": 2
-  },
-  {
-    "year": 11400,
-    "title": "The Renaissance",
-    "description": "Cultural and artistic rebirth starts in Italy.",
-    "importance": 1
   },
   {
     "year": 11450,
@@ -462,18 +420,6 @@
     "importance": 2
   },
   {
-    "year": 11700,
-    "title": "The Enlightenment",
-    "description": "Intellectual movement emphasizing reason and individualism.",
-    "importance": 1
-  },
-  {
-    "year": 11760,
-    "title": "Industrial Revolution Begins",
-    "description": "Shift to new manufacturing processes and steam power.",
-    "importance": 1
-  },
-  {
     "year": 11769,
     "title": "Watt's Steam Engine",
     "description": "James Watt patents his efficient steam engine design.",
@@ -516,18 +462,6 @@
     "importance": 2
   },
   {
-    "year": 11914,
-    "title": "World War I Begins",
-    "description": "Global conflict triggered by the assassination of Archduke Franz Ferdinand.",
-    "importance": 1
-  },
-  {
-    "year": 11918,
-    "title": "World War I Ends",
-    "description": "Armistice signed, ending the Great War.",
-    "importance": 1
-  },
-  {
     "year": 11920,
     "title": "British Empire Peak",
     "description": "The largest empire in history reaches its maximum territorial extent.",
@@ -546,24 +480,6 @@
     "importance": 2
   },
   {
-    "year": 11939,
-    "title": "World War II Begins",
-    "description": "Invasion of Poland marks the start of the deadliest conflict in history.",
-    "importance": 1
-  },
-  {
-    "year": 11945,
-    "title": "World War II Ends",
-    "description": "Surrender of Germany and Japan concludes the global war.",
-    "importance": 1
-  },
-  {
-    "year": 11947,
-    "title": "Cold War Begins",
-    "description": "Period of geopolitical tension between the US and the USSR starts.",
-    "importance": 1
-  },
-  {
     "year": 11958,
     "title": "The Microchip",
     "description": "Invention of the integrated circuit by Jack Kilby.",
@@ -576,21 +492,9 @@
     "importance": 1
   },
   {
-    "year": 11970,
-    "title": "Information Age Starts",
-    "description": "Shift from industrial to digital economies begins.",
-    "importance": 1
-  },
-  {
     "year": 11989,
     "title": "World Wide Web Invention",
     "description": "Tim Berners-Lee proposes the global hypertext system.",
-    "importance": 1
-  },
-  {
-    "year": 11991,
-    "title": "Cold War Ends",
-    "description": "Dissolution of the Soviet Union ends the decades-long rivalry.",
     "importance": 1
   },
   {
