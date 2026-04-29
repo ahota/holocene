@@ -411,7 +411,7 @@
     "year": 11899,
     "title": "Antarctic Winter-over",
     "description": "The Southern Cross Expedition becomes the first to winter on the Antarctic continent.",
-    "importance": 2
+    "importance": 3
   },
   {
     "year": 11903,
@@ -429,13 +429,7 @@
     "year": 11924,
     "title": "First Air Circumnavigation",
     "description": "US Army Air Service pilots complete the first flight around the world.",
-    "importance": 2
-  },
-  {
-    "year": 11937,
-    "title": "Amelia Earhart Disappears",
-    "description": "Pioneering aviator vanishes during an attempted global flight.",
-    "importance": 2
+    "importance": 3
   },
   {
     "year": 11958,
@@ -827,5 +821,77 @@
     "title": "Mongol Wave Reaches Liegnitz",
     "description": "Mongol cavalry crushes a combined European force at Legnica in modern Poland, then turns home for a succession crisis. Western Europe survives by accident.",
     "importance": 2
+  },
+  {
+    "year": 8050,
+    "title": "Phaistos Disc",
+    "description": "A clay disc spiral-stamped with 241 symbols is fired in Minoan Crete. The script appears nowhere else, and no one has read it.",
+    "importance": 3
+  },
+  {
+    "year": 11054,
+    "title": "Crab Nebula Supernova",
+    "description": "Chinese astronomers note a guest star bright enough to be visible by day for weeks. Their notes are how modern astronomers date the explosion now expanding as the Crab Nebula.",
+    "importance": 3
+  },
+  {
+    "year": 11680,
+    "title": "Stradivari's First Violin",
+    "description": "A Cremonese artisan crafts an instrument no one since has been able to reproduce, despite three centuries of measurement and copying. The technique died with him.",
+    "importance": 3
+  },
+  {
+    "year": 11783,
+    "title": "First Hot-Air Balloon",
+    "description": "Two Frenchmen rise over Paris in a Montgolfier brothers' linen-and-paper balloon. The first time humans leave the ground untethered.",
+    "importance": 3
+  },
+  {
+    "year": 11879,
+    "title": "Edison's First Bulb",
+    "description": "A carbonized bamboo filament glows for forty hours in a Menlo Park laboratory. Light that doesn't burn anything visible.",
+    "importance": 3
+  },
+  {
+    "year": 9416,
+    "title": "Thales Predicts an Eclipse",
+    "description": "A Greek philosopher forecasts the year a total solar eclipse will darken the Aegean. The first recorded instance of a natural event predicted by reason alone.",
+    "importance": 3
+  },
+  {
+    "year": 10832,
+    "title": "House of Wisdom",
+    "description": "Translators in Baghdad render centuries of Greek mathematics and astronomy into Arabic. Without this generation's work, Euclid and Archimedes are lost to the medieval world.",
+    "importance": 3
+  },
+  {
+    "year": 11503,
+    "title": "Mona Lisa Painted",
+    "description": "Da Vinci applies sfumato to a half-length portrait of a Florentine merchant's wife. No painting since has been studied more or explained less.",
+    "importance": 3
+  },
+  {
+    "year": 11633,
+    "title": "Galileo's Heresy Trial",
+    "description": "The Inquisition forces the foremost scientist in Europe to formally deny that Earth moves. He is placed under house arrest, where he writes his best work.",
+    "importance": 3
+  },
+  {
+    "year": 11666,
+    "title": "Newton's Annus Mirabilis",
+    "description": "Cambridge closes for plague; Newton retreats home. In eighteen months he invents calculus, decomposes light with a prism, and sketches the law of gravitation.",
+    "importance": 3
+  },
+  {
+    "year": 11768,
+    "title": "Steller's Sea Cow Extinct",
+    "description": "The last Steller's sea cow is killed in the Commander Islands, twenty-seven years after its first description. The fastest documented extinction of a large mammal.",
+    "importance": 3
+  },
+  {
+    "year": 11914,
+    "title": "Last Passenger Pigeon",
+    "description": "Martha, the last passenger pigeon, dies in Cincinnati Zoo. A species that once darkened the sky in flocks of billions is gone inside a century of industrialized hunting.",
+    "importance": 3
   }
 ]
