@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { TODAY_HE, getInnerBound, EPOCH_START, INITIAL_ZOOM, MAX_ZOOM } from '../../constants';
+import { TODAY_HE, getInnerBound, EPOCH_START, INITIAL_ZOOM, MAX_ZOOM, LABEL_PADDING } from '../../constants';
 
 /**
  * Custom hook to manage the timeline's camera state with adaptive margins.
@@ -13,10 +13,13 @@ export function useTimeline(initialYear: number) {
   const clampView = useCallback((year: number, currentZoom: number, screenWidth: number) => {
     const innerBound = getInnerBound(screenWidth);
     const effectiveWidth = screenWidth - 2 * innerBound;
-    if (effectiveWidth <= 0) return year;
+    // Compact effective width — used for the lock-when-epoch-fits check, so
+    // the view zooms out far enough to span almost the full screen.
+    const compactEffective = screenWidth - 2 * LABEL_PADDING;
+    if (compactEffective <= 0) return year;
 
     const halfWidth = (effectiveWidth / 2) / currentZoom;
-    
+
     if (initialHalfWidthRef.current === null && effectiveWidth > 0) {
       initialHalfWidthRef.current = halfWidth;
     }
@@ -24,13 +27,13 @@ export function useTimeline(initialYear: number) {
     const padding = initialHalfWidthRef.current || halfWidth;
     let newCenter = year;
 
-    // 1. Lock scrolling if epoch fits
+    // 1. Lock scrolling if epoch fits the compact effective width
     const totalEpochInPixels = (TODAY_HE - EPOCH_START) * currentZoom;
-    if (totalEpochInPixels <= effectiveWidth) {
+    if (totalEpochInPixels <= compactEffective) {
       return (TODAY_HE + EPOCH_START) / 2;
     }
 
-    // 2. Clamping
+    // 2. Clamping (uses full innerBound so panning has graceful edge fade)
     if (newCenter > TODAY_HE) newCenter = TODAY_HE;
     if (newCenter + halfWidth > TODAY_HE + padding) newCenter = TODAY_HE + padding - halfWidth;
     if (newCenter - halfWidth < EPOCH_START) newCenter = EPOCH_START + halfWidth;
@@ -48,9 +51,9 @@ export function useTimeline(initialYear: number) {
   const zoomTo = useCallback(
     (targetZoom: number, zoomCenterYear: number, screenWidth: number) => {
       setZoom((prevZoom) => {
-        const innerBound = getInnerBound(screenWidth);
-        const effectiveWidth = screenWidth - 2 * innerBound;
-        const minZoom = effectiveWidth / TODAY_HE;
+        // Min zoom uses LABEL_PADDING so the timeline extends close to the
+        // screen edges when fully zoomed out (when panning isn't possible).
+        const minZoom = (screenWidth - 2 * LABEL_PADDING) / TODAY_HE;
         const newZoom = Math.max(minZoom, Math.min(MAX_ZOOM, targetZoom));
         
         setCenterYear((prevCenter) => {

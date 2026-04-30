@@ -1,5 +1,5 @@
 import React from 'react';
-import { MAX_ZOOM } from '../../constants';
+import { MAX_ZOOM, LABEL_PADDING } from '../../constants';
 import { COLOR } from '../../theme';
 
 interface Props {
@@ -17,8 +17,11 @@ const MIN_ZOOM_FLOOR = 0.01;
  */
 export default function ZoomSlider({ zoom, onZoomChange, todayHE, margin }: Props) {
   const screenWidth = window.innerWidth;
-  const effectiveWidth = screenWidth - 2 * margin;
-  const minZoom = Math.max(MIN_ZOOM_FLOOR, effectiveWidth / todayHE);
+  // Match the timeline's compact-bound minZoom so slider all-the-way-left
+  // corresponds to the actual furthest-out view. `margin` is unused here
+  // but kept in the prop signature for symmetry with the timeline.
+  void margin;
+  const minZoom = Math.max(MIN_ZOOM_FLOOR, (screenWidth - 2 * LABEL_PADDING) / todayHE);
   const maxZoom = MAX_ZOOM;
 
   const toSliderValue = (z: number) =>
